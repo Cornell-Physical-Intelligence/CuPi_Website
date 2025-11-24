@@ -21,30 +21,42 @@ const TEAM_SECTIONS = [
       {
         name: 'Andre Boufama',
         imageBase: 'Andre',
-        bio: "Hi I'm Andre. I like making websites and CAD and also eating"
+        bio: "Hi I'm Andre. I like making websites and CAD and also eating",
+        major: 'Engineering',
+        year: 'Junior'
       },
       {
         name: 'Ollie Aizer',
         imageBase: 'Ollie',
-        bio: 'Hi, my name is Ollie and I like drone design and cooking.'
+        bio: 'Hi, my name is Ollie and I like drone design and cooking.',
+        major: 'Aerospace Engineering',
+        year: 'Sophomore'
       },
       {
         name: 'Daniel Sheth',
         imageBase: 'Daniel',
-        bio: 'I am an aspiring mechanical engineer interested in aerodynamics and propulsion systems'
+        bio: 'I am an aspiring mechanical engineer interested in aerodynamics and propulsion systems',
+        major: 'Mechanical Engineering',
+        year: 'Sophomore'
       },
       {
         name: 'Josh Lennon',
-        bio: BIO_PLACEHOLDER
+        bio: BIO_PLACEHOLDER,
+        year: 'TBD',
+        major: 'TBD'
       },
       {
         name: 'Jonathan Song',
         imageBase: 'Jon',
-        bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar"
+        bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
+        major: 'Electrical & Computer Engineering',
+        year: 'Junior'
       },
       {
         name: 'Yuki Wykoff',
-        bio: BIO_PLACEHOLDER
+        bio: BIO_PLACEHOLDER,
+        year: 'TBD',
+        major: 'TBD'
       }
     ]
   },
@@ -54,27 +66,37 @@ const TEAM_SECTIONS = [
       {
         name: 'Nicholas Letendre',
         imageBase: 'NickLet',
-        bio: "I'm Nicholas, and I am sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games."
+        bio: "I'm Nicholas, and I am sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
+        year: 'Sophomore',
+        major: 'Mechanical & Aerospace Engineering'
       },
       {
         name: 'Mic Robbins',
         imageBase: 'Mic',
-        bio: "I'm a sophmore eletrical engineer and like to play clash royale (15k)"
+        bio: "I'm a sophmore eletrical engineer and like to play clash royale (15k)",
+        year: 'Sophomore',
+        major: 'Electrical Engineering'
       },
       {
         name: 'Lindsay Kossoff',
         imageBase: 'Lindsay',
-        bio: 'Hi, my name is Lindsay Kossoff. I am a freshman from Maryland studying mechanical engineering.'
+        bio: 'Hi, my name is Lindsay Kossoff. I am a freshman from Maryland studying mechanical engineering.',
+        year: 'Freshman',
+        major: 'Mechanical Engineering'
       },
       {
         name: 'Christopher Guillen-Chacon',
         imageBase: 'Chris',
-        bio: "My name is Chris and I'm interested in drone design"
+        bio: "My name is Chris and I'm interested in drone design",
+        year: 'Sophomore',
+        major: 'Mechanical Engineering'
       },
       {
         name: 'Alan Munschy',
         imageBase: 'Alan',
-        bio: 'Hi, I like working on robot controls and I play chess'
+        bio: 'Hi, I like working on robot controls and I play chess',
+        year: 'Junior',
+        major: 'Robotics & Controls'
       }
     ]
   },
@@ -84,12 +106,16 @@ const TEAM_SECTIONS = [
       {
         name: 'Nick Lennon',
         imageBase: 'NickLen',
-        bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!'
+        bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
+        year: 'Junior',
+        major: 'Computer Science'
       },
       {
         name: 'Ronan Alo',
         imageBase: 'Ronan',
-        bio: 'I am a sophomore majoring in mechanical engineering and computer science, interested in drone pathing'
+        bio: 'I am a sophomore majoring in mechanical engineering and computer science, interested in drone pathing',
+        year: 'Sophomore',
+        major: 'Mechanical Engineering & Computer Science'
       }
     ]
   },
@@ -99,12 +125,16 @@ const TEAM_SECTIONS = [
       {
         name: 'Hamilton Jeong',
         imageBase: 'Hamilton',
-        bio: "I'm a BioStats major, I like competing in Taekwondo and playing piano"
+        bio: "I'm a BioStats major, I like competing in Taekwondo and playing piano",
+        year: 'Junior',
+        major: 'Biostatistics'
       },
       {
         name: 'Anthony Parlatore',
         imageBase: 'Anthony',
-        bio: "I'm Anthony, senior ChemE in masters of MechE interested in new technology (and I really like drones)"
+        bio: "I'm Anthony, senior ChemE in masters of MechE interested in new technology (and I really like drones)",
+        year: 'Senior',
+        major: 'Chemical Engineering & M.Eng Mechanical Engineering'
       }
     ]
   }
@@ -115,13 +145,15 @@ const PROFESSORS = [
     name: 'Prof. Jake Welde',
     imageBase: 'ProfWelde',
     formalSuffix: '_suit',
-    bio: 'He has worked extensively in drone control systems'
+    bio: 'He has worked extensively in drone control systems',
+    role: 'Faculty'
   },
   {
     name: 'Prof. Jingjie Yeo',
     imageBase: 'ProfYeo',
     formalSuffix: '_Suit',
-    bio: 'Joined Cornell in 2020 after research in Singapore and postdocs at Tufts & MIT.'
+    bio: 'Joined Cornell in 2020 after research in Singapore and postdocs at Tufts & MIT.',
+    role: 'Faculty'
   }
 ];
 
@@ -140,6 +172,9 @@ function App() {
   const [applyHovered, setApplyHovered] = useState(false);
   const [isApplyClickable, setIsApplyClickable] = useState(false);
   const debugCollapseTriggeredRef = useRef(false);
+  const scrollLockActiveRef = useRef(false);
+  const debugHideTimeoutRef = useRef(null);
+  const scrollUnlockTimeoutRef = useRef(null);
   const heroFontFamily = HERO_FONT_FAMILY;
   const heroAsciiConfig = isCompactHero
     ? { asciiFontSize: 7.8, textFontSize: 736, planeBaseHeight: 24, scaleMultiplier: 1.05, verticalOffset: 0.02 }
@@ -176,9 +211,11 @@ function App() {
   }, [applyHovered]);
 
   const handleApplyClick = () => {
-    if (isApplyClickable) {
-      window.open(APPLY_URL, '_blank', 'noopener,noreferrer');
+    if (!isApplyClickable) {
+      setApplyHovered(true);
+      return;
     }
+    window.open(APPLY_URL, '_blank', 'noopener,noreferrer');
   };
 
   const handleNavClick = (page) => {
@@ -216,28 +253,180 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const MOBILE_BREAKPOINT = 640;
+    const DEBUG_HIDE_DELAY = 500;
+    const SLOW_SCROLL_DURATION = DEBUG_HIDE_DELAY + 600; // Duration of slow phase
+    const EASE_OUT_DURATION = 1200; // Duration to ease back to normal speed
+    const INITIAL_DAMPING = 0.12; // Starting damping (lower = slower)
+    const scrollKeys = new Set(['Space', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End', ' ']);
+    let lastTouchY = 0;
+    let slowScrollStartTime = 0;
+
+    // Check if we're on mobile (no debug animation on mobile)
+    const isMobile = () => window.innerWidth < MOBILE_BREAKPOINT;
+
+    // Ease-out cubic function for smooth transition
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    // Calculate current damping based on elapsed time
+    const getCurrentDamping = () => {
+      if (!slowScrollStartTime) return 1;
+      
+      const elapsed = Date.now() - slowScrollStartTime;
+      
+      // During initial slow phase, use constant damping
+      if (elapsed < SLOW_SCROLL_DURATION) {
+        return INITIAL_DAMPING;
+      }
+      
+      // During ease-out phase, gradually increase damping to 1
+      const easeElapsed = elapsed - SLOW_SCROLL_DURATION;
+      if (easeElapsed >= EASE_OUT_DURATION) {
+        return 1; // Full speed
+      }
+      
+      const progress = easeElapsed / EASE_OUT_DURATION;
+      const easedProgress = easeOutCubic(progress);
+      return INITIAL_DAMPING + (1 - INITIAL_DAMPING) * easedProgress;
+    };
+
+    const enableSlowScroll = () => {
+      if (scrollLockActiveRef.current) return;
+      scrollLockActiveRef.current = true;
+      slowScrollStartTime = Date.now();
+      document.body.classList.add('slow-scroll-active');
+    };
+
+    const disableSlowScroll = () => {
+      scrollLockActiveRef.current = false;
+      slowScrollStartTime = 0;
+      document.body.classList.remove('slow-scroll-active');
+      if ((window.scrollY || window.pageYOffset) === 0) {
+        document.body.classList.remove('scrolled');
+      }
+    };
+
+    const triggerDebugCollapse = () => {
+      if (debugCollapseTriggeredRef.current) return;
+      debugCollapseTriggeredRef.current = true;
+      
+      // Only enable slow scroll on desktop where debug animation exists
+      if (!isMobile()) {
+        enableSlowScroll();
+      }
+      
+      document.body.classList.add('scrolled-once');
+
+      debugHideTimeoutRef.current = window.setTimeout(() => {
+        document.body.classList.add('debug-hidden');
+      }, DEBUG_HIDE_DELAY);
+
+      // Disable slow scroll after both slow phase and ease-out complete (only if not mobile)
+      if (!isMobile()) {
+        scrollUnlockTimeoutRef.current = window.setTimeout(() => {
+          disableSlowScroll();
+        }, SLOW_SCROLL_DURATION + EASE_OUT_DURATION);
+      }
+    };
+
+    const handleWheel = (event) => {
+      // Skip slow scroll handling on mobile
+      if (isMobile()) return;
+      
+      if (!debugCollapseTriggeredRef.current) {
+        event.preventDefault();
+        triggerDebugCollapse();
+        // Apply dampened scroll for this first event
+        const dampedDelta = event.deltaY * getCurrentDamping();
+        window.scrollBy({ top: dampedDelta, behavior: 'auto' });
+      } else if (scrollLockActiveRef.current) {
+        // During slow scroll mode, apply dynamic damping
+        event.preventDefault();
+        const dampedDelta = event.deltaY * getCurrentDamping();
+        window.scrollBy({ top: dampedDelta, behavior: 'auto' });
+      }
+    };
+
+    const handleTouchStart = (event) => {
+      // Only track touch on desktop (for trackpad simulation)
+      if (isMobile()) return;
+      if (event.touches.length > 0) {
+        lastTouchY = event.touches[0].clientY;
+      }
+    };
+
+    const handleTouchMove = (event) => {
+      // Skip slow scroll handling on mobile
+      if (isMobile()) return;
+      if (event.touches.length === 0) return;
+      
+      const currentY = event.touches[0].clientY;
+      const deltaY = lastTouchY - currentY; // Positive = scroll down
+      lastTouchY = currentY;
+
+      if (!debugCollapseTriggeredRef.current) {
+        event.preventDefault();
+        triggerDebugCollapse();
+        const dampedDelta = deltaY * getCurrentDamping();
+        window.scrollBy({ top: dampedDelta, behavior: 'auto' });
+      } else if (scrollLockActiveRef.current) {
+        event.preventDefault();
+        const dampedDelta = deltaY * getCurrentDamping();
+        window.scrollBy({ top: dampedDelta, behavior: 'auto' });
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      // Skip slow scroll handling on mobile
+      if (isMobile()) return;
+      
+      const pressedKey = event.code || event.key;
+      if (pressedKey && scrollKeys.has(pressedKey)) {
+        if (!debugCollapseTriggeredRef.current) {
+          event.preventDefault();
+          triggerDebugCollapse();
+        } else if (scrollLockActiveRef.current) {
+          event.preventDefault();
+          // Apply small scroll for key presses with current damping
+          const keyScrollAmount = 20 * getCurrentDamping();
+          const direction = ['ArrowUp', 'PageUp', 'Home'].includes(pressedKey) ? -1 : 1;
+          window.scrollBy({ top: keyScrollAmount * direction, behavior: 'auto' });
+        }
+      }
+    };
+
     const handleScroll = () => {
       const scrollY = window.scrollY || window.pageYOffset;
       if (scrollY > 0) {
         document.body.classList.add('scrolled');
-        // Only trigger the debug collapse animation once per session
         if (!debugCollapseTriggeredRef.current) {
-          debugCollapseTriggeredRef.current = true;
-          document.body.classList.add('scrolled-once');
-          setTimeout(() => {
-            document.body.classList.add('debug-hidden');
-          }, 500);
+          triggerDebugCollapse();
         }
-      } else {
+      } else if (!scrollLockActiveRef.current) {
         document.body.classList.remove('scrolled');
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('keydown', handleKeyDown);
     handleScroll(); // Check initial state
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('keydown', handleKeyDown);
+      if (debugHideTimeoutRef.current) {
+        clearTimeout(debugHideTimeoutRef.current);
+      }
+      if (scrollUnlockTimeoutRef.current) {
+        clearTimeout(scrollUnlockTimeoutRef.current);
+      }
+      document.body.classList.remove('slow-scroll-active');
     };
   }, []);
 
@@ -258,6 +447,16 @@ function App() {
       .slice(0, 2)
       .join('')
       .toUpperCase();
+
+  const getMemberMeta = (member) => {
+    if (member.role) return member.role;
+    const year = member.year && member.year !== 'TBD' ? member.year : null;
+    const major = member.major && member.major !== 'TBD' ? member.major : null;
+    if (year && major) return `${year} · ${major}`;
+    if (year) return year;
+    if (major) return major;
+    return 'Year / Major TBD';
+  };
   const clearTeamCardTilt = (cardId) => {
     setTeamCardTilt((prev) => {
       if (!prev[cardId]) return prev;
@@ -583,6 +782,7 @@ function App() {
                       const isPlaceholderBio = bio === BIO_PLACEHOLDER;
                       const cardId = `${section.title}-${member.name}`;
                       const isFlipped = activeBioCard === cardId;
+                      const meta = getMemberMeta(member);
 
                       return (
                         <article
@@ -616,9 +816,14 @@ function App() {
                               </div>
                               <div className="team-card__body">
                                 <p className="team-card__name">{member.name}</p>
+                                <p className="team-card__meta">{meta}</p>
                               </div>
                             </div>
                             <div className="team-card__face team-card__face--back">
+                              <div className="team-card__back-header">
+                                <p className="team-card__name team-card__name--back">{member.name}</p>
+                                <span className="team-card__meta team-card__meta--badge">{meta}</span>
+                              </div>
                               <p className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}>
                                 {bio}
                               </p>
@@ -641,6 +846,7 @@ function App() {
                     const isPlaceholderBio = bio === BIO_PLACEHOLDER;
                     const cardId = `Faculty-${prof.name}`;
                     const isFlipped = activeBioCard === cardId;
+                    const meta = getMemberMeta(prof);
 
                     return (
                       <article
@@ -674,9 +880,14 @@ function App() {
                             </div>
                             <div className="team-card__body">
                               <p className="team-card__name">{prof.name}</p>
+                              <p className="team-card__meta">{meta}</p>
                             </div>
                           </div>
                           <div className="team-card__face team-card__face--back">
+                            <div className="team-card__back-header">
+                              <p className="team-card__name team-card__name--back">{prof.name}</p>
+                              <span className="team-card__meta team-card__meta--badge">{meta}</span>
+                            </div>
                             <p className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}>
                               {bio}
                             </p>
