@@ -65,7 +65,7 @@ const TEAM_SECTIONS = [
       },
       {
         name: 'Yuki Wykoff',
-        bio: BIO_PLACEHOLDER,
+        bio: "I'm a mechanical engineer fueled by caffeine and the belief that duct tape counts as a legitimate solution",
         year: 'Sophomore'
       },
       {
