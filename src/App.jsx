@@ -612,6 +612,7 @@ function App() {
       return (
         <main className="alt-page">
           <section className="alt-section">
+            <h2 className="section-label">Current Projects</h2>
             <div className="project-gallery">
               <figure
                 className="project-panel"
@@ -755,6 +756,7 @@ function App() {
             </div>
           </section>
           <section className="gallery-section">
+            <h2 className="section-label">Gallery</h2>
             <div className="gallery-tapestry">
               {GALLERY_IMAGES.map((image, index) => (
                 <div
