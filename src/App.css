@@ -708,7 +708,7 @@ body.slow-scroll-active {
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.5);
   font-family: 'Questrial', sans-serif;
-  text-align: left;
+  text-align: center;
   width: 100%;
 }
 
