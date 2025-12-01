@@ -1672,7 +1672,7 @@ body.debug-hidden .spacer::after {
 
 .gallery-title {
   margin: 0;
-  font-size: clamp(32px, 6vw, 80px);
+  font-size: clamp(18px, 3vw, 36px);
   font-weight: 400;
   letter-spacing: 0.35em;
   text-transform: uppercase;
