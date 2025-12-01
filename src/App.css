@@ -27,7 +27,7 @@ body.slow-scroll-active {
   top: 32px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 9999;
+  z-index: 1000;
 }
 
 .menu-bar .glass-surface {
@@ -1764,15 +1764,9 @@ body.debug-hidden .spacer::after {
   font-family: 'Courier New', Courier, monospace;
 }
 
-/* Hide menu when lightbox is open */
+/* Disable menu interaction when lightbox is open (menu gets blurred by backdrop) */
 .demo-container:has(.gallery-lightbox) .menu-bar {
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.menu-bar {
-  transition: opacity 0.2s ease;
 }
 
 .gallery-item {
