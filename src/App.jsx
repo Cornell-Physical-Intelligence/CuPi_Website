@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlassSurface from './components/GlassSurface';
 import GridBackground from './components/GridBackground';
@@ -6,24 +6,25 @@ import MissionTiles from './components/MissionTiles';
 import SiteFooter from './components/SiteFooter';
 import './App.css';
 import { assetPath } from './utils/assetPath';
+import { preloadImages } from './utils/preloadImages';
 
 const ASCIIText = lazy(() => import('./components/ASCIIText'));
 
 const APPLY_URL = 'https://forms.gle/c5MmMmwd77zbBtSr8';
 
 const GALLERY_IMAGES = [
-  { filename: 'DigitizedDragonFlyflat.png', author: 'Sophie' },
-  { filename: 'DragonFlyPerched.png', author: 'Sophie' },
-  { filename: 'GlitchDrone.png', author: 'Andre' },
-  { filename: 'HexapodLeg.jpeg', author: 'Hamilton' },
-  { filename: 'MetalPoster.png', author: 'Sophie' },
-  { filename: 'PixelHands.png', author: 'Sophie' },
-  { filename: 'PosterRed.png', author: 'Hamilton' },
-  { filename: 'PosterSketch.png', author: 'Hamilton' },
-  { filename: 'PosterSlide.png', author: 'Hamilton' },
-  { filename: 'Separated.png', author: 'Hamilton' },
-  { filename: 'SpiderSketchDigital.png', author: 'Sophie' },
-  { filename: 'VTOL.png', author: 'Andre' }
+  { filename: 'DigitizedDragonFlyflat.png', author: 'Sophie', width: 1792, height: 2230 },
+  { filename: 'DragonFlyPerched.png', author: 'Sophie', width: 2367, height: 1364 },
+  { filename: 'GlitchDrone.png', author: 'Andre', width: 1024, height: 1024 },
+  { filename: 'HexapodLeg.jpeg', author: 'Hamilton', width: 4783, height: 2782 },
+  { filename: 'MetalPoster.png', author: 'Sophie', width: 1792, height: 2215 },
+  { filename: 'PixelHands.png', author: 'Sophie', width: 750, height: 1128 },
+  { filename: 'PosterRed.png', author: 'Hamilton', width: 880, height: 1168 },
+  { filename: 'PosterSketch.png', author: 'Hamilton', width: 1792, height: 2400 },
+  { filename: 'PosterSlide.png', author: 'Hamilton', width: 1346, height: 1440 },
+  { filename: 'Separated.png', author: 'Hamilton', width: 848, height: 721 },
+  { filename: 'SpiderSketchDigital.png', author: 'Sophie', width: 1696, height: 1906 },
+  { filename: 'VTOL.png', author: 'Andre', width: 2644, height: 1314 }
 ];
 
 const HERO_FONT_FAMILY = "'Times New Roman', Times, serif";
@@ -203,6 +204,41 @@ function App() {
     saturation: 1
   };
 
+  const aboutImagePaths = useMemo(() => {
+    const paths = new Set();
+
+    const addMemberImages = (member) => {
+      if (!member.imageBase) return;
+      const base = member.imageBase;
+      const formalSuffix = member.formalSuffix ?? '_suit';
+      paths.add(assetPath(`img/People/${base}.png`));
+      paths.add(assetPath(`img/People/${base}${formalSuffix}.png`));
+    };
+
+    TEAM_SECTIONS.forEach(({ members }) => members.forEach(addMemberImages));
+    PROFESSORS.forEach(addMemberImages);
+    paths.add(assetPath('img/People/Placeholder.png'));
+
+    return Array.from(paths);
+  }, []);
+
+  const galleryImagePaths = useMemo(
+    () => GALLERY_IMAGES.map((image) => assetPath(`img/Gallery/${image.filename}`)),
+    []
+  );
+
+  const projectImagePaths = useMemo(
+    () => [
+      assetPath('img/Quad.png'),
+      assetPath('img/DroneFlipped.png'),
+      assetPath('img/Hexapod.png'),
+      assetPath('img/LegFlipped.png'),
+      assetPath('img/SwallowProject.png'),
+      assetPath('img/LegRender.png'),
+    ],
+    []
+  );
+
   useEffect(() => {
     let timeout;
     if (applyHovered) {
@@ -215,6 +251,30 @@ function App() {
     }
     return () => clearTimeout(timeout);
   }, [applyHovered]);
+
+  useEffect(() => {
+    const cancelGallery = preloadImages(galleryImagePaths, { priority: 'low' });
+    const cancelProjects = preloadImages(projectImagePaths, { priority: 'low' });
+    return () => {
+      if (typeof cancelGallery === 'function') cancelGallery();
+      if (typeof cancelProjects === 'function') cancelProjects();
+    };
+  }, [galleryImagePaths, projectImagePaths]);
+
+  useEffect(() => {
+    if (!aboutImagePaths.length) return undefined;
+    const cancel = preloadImages(aboutImagePaths, { priority: 'low' });
+    return typeof cancel === 'function' ? cancel : undefined;
+  }, [aboutImagePaths]);
+
+  useEffect(() => {
+    if (currentPage === 'about' && aboutImagePaths.length) {
+      preloadImages(aboutImagePaths, { priority: 'high' });
+    }
+    if (currentPage === 'work') {
+      preloadImages([...galleryImagePaths, ...projectImagePaths], { priority: 'high' });
+    }
+  }, [currentPage, aboutImagePaths, galleryImagePaths, projectImagePaths]);
 
   const handleApplyClick = () => {
     if (!isApplyClickable) {
@@ -758,30 +818,37 @@ function App() {
           <section className="gallery-section">
             <h2 className="section-label">Gallery</h2>
             <div className="gallery-tapestry">
-              {GALLERY_IMAGES.map((image, index) => (
-                <div
-                  className="gallery-item"
-                  key={image.filename}
-                  onClick={() => setExpandedImage(image)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setExpandedImage(image);
-                    }
-                  }}
-                >
-                  <img
-                    src={assetPath(`img/Gallery/${image.filename}`)}
-                    alt={`Concept art ${index + 1}`}
-                    loading={index < 6 ? 'eager' : 'lazy'}
-                    decoding="async"
-                    fetchPriority={index < 3 ? 'high' : 'auto'}
-                    onLoad={(e) => e.target.classList.add('loaded')}
-                  />
-                </div>
-              ))}
+              {GALLERY_IMAGES.map((image, index) => {
+                const aspectRatio = image.width && image.height ? `${image.width}/${image.height}` : undefined;
+
+                return (
+                  <div
+                    className="gallery-item"
+                    key={image.filename}
+                    onClick={() => setExpandedImage(image)}
+                    role="button"
+                    tabIndex={0}
+                    style={aspectRatio ? { aspectRatio } : undefined}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setExpandedImage(image);
+                      }
+                    }}
+                  >
+                    <img
+                      src={assetPath(`img/Gallery/${image.filename}`)}
+                      alt={`Concept art ${index + 1}`}
+                      loading={index < 6 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      fetchPriority={index < 3 ? 'high' : 'auto'}
+                      width={image.width}
+                      height={image.height}
+                      onLoad={(e) => e.target.classList.add('loaded')}
+                    />
+                  </div>
+                );
+              })}
             </div>
             <div className="gallery-fade-end" />
             <p className="gallery-more">(more to come)</p>
