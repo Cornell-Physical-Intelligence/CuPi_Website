@@ -11,6 +11,21 @@ const ASCIIText = lazy(() => import('./components/ASCIIText'));
 
 const APPLY_URL = 'https://forms.gle/c5MmMmwd77zbBtSr8';
 
+const GALLERY_IMAGES = [
+  { filename: 'DigitizedDragonFlyflat.png', author: 'Sophie' },
+  { filename: 'DragonFlyPerched.png', author: 'Sophie' },
+  { filename: 'GlitchDrone.png', author: 'Andre' },
+  { filename: 'HexapodLeg.jpeg', author: 'Hamilton' },
+  { filename: 'MetalPoster.png', author: 'Sophie' },
+  { filename: 'PixelHands.png', author: 'Sophie' },
+  { filename: 'PosterRed.png', author: 'Hamilton' },
+  { filename: 'PosterSketch.png', author: 'Hamilton' },
+  { filename: 'PosterSlide.png', author: 'Hamilton' },
+  { filename: 'Separated.png', author: 'Hamilton' },
+  { filename: 'SpiderSketchDigital.png', author: 'Sophie' },
+  { filename: 'VTOL.png', author: 'Andre' }
+];
+
 const HERO_FONT_FAMILY = "'Times New Roman', Times, serif";
 const BIO_PLACEHOLDER = '[coming soon]';
 
@@ -18,36 +33,130 @@ const TEAM_SECTIONS = [
   {
     title: 'Design',
     members: [
-      { name: 'Andre Boufama', imageBase: 'Andre', year: 'Sophomore', bio: "Hi I'm Andre. I like making websites and CAD and also eating" },
-      { name: 'Ollie Aizer', imageBase: 'Ollie', year: 'Freshman', bio: 'Hi, my name is Ollie and I like drone design and cooking.' },
-      { name: 'Daniel Sheth', imageBase: 'Daniel', year: 'Freshman', bio: 'I am an aspiring mechanical engineer interested in aerodynamics and propulsion systems' },
-      { name: 'Josh Lennon', year: 'Sophomore' },
-      { name: 'Jonathan Song', imageBase: 'Jon', year: 'Freshman', bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar" },
-      { name: 'Yuki Wykoff', year: 'Sophomore' }
+      {
+        name: 'Andre Boufama',
+        imageBase: 'Andre',
+        bio: "Hi I'm Andre. I like making websites and CAD and also eating",
+        major: 'Engineering',
+        year: 'Junior'
+      },
+      {
+        name: 'Ollie Aizer',
+        imageBase: 'Ollie',
+        bio: 'Hi, my name is Ollie and I like drone design and cooking.',
+        major: 'Aerospace Engineering',
+        year: 'Sophomore'
+      },
+      {
+        name: 'Daniel Sheth',
+        imageBase: 'Daniel',
+        bio: 'I am an aspiring mechanical engineer interested in aerodynamics and propulsion systems',
+        major: 'Mechanical Engineering',
+        year: 'Sophomore'
+      },
+      {
+        name: 'Josh Lennon',
+        bio: BIO_PLACEHOLDER,
+        year: 'TBD',
+        major: 'TBD'
+      },
+      {
+        name: 'Jonathan Song',
+        imageBase: 'Jon',
+        bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
+        major: 'Electrical & Computer Engineering',
+        year: 'Junior'
+      },
+      {
+        name: 'Yuki Wykoff',
+        bio: BIO_PLACEHOLDER,
+        year: 'TBD',
+        major: 'TBD'
+      },
+      {
+        name: 'Sophie',
+        bio: BIO_PLACEHOLDER,
+        year: 'TBD',
+        major: 'TBD'
+      }
     ]
   },
   {
     title: 'Integration',
     members: [
-      { name: 'Nicholas Letendre', imageBase: 'NickLet', year: 'Sophomore', bio: "I'm Nicholas, and I am sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games." },
-      { name: 'Mic Robbins', imageBase: 'Mic', year: 'Sophomore', bio: "I'm a sophmore eletrical engineer and like to play clash royale (15k)" },
-      { name: 'Lindsay Kossoff', imageBase: 'Lindsay', year: 'Freshman', bio: 'Hi, my name is Lindsay Kossoff. I am a freshman from Maryland studying mechanical engineering.' },
-      { name: 'Christopher Guillen-Chacon', imageBase: 'Chris', year: 'Sophomore', bio: "My name is Chris and I'm interested in drone design" },
-      { name: 'Alan Munschy', imageBase: 'Alan', year: 'Junior', bio: 'Hi, I like working on robot controls and I play chess' }
+      {
+        name: 'Nicholas Letendre',
+        imageBase: 'NickLet',
+        bio: "I'm Nicholas, and I am sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
+        year: 'Sophomore',
+        major: 'Mechanical & Aerospace Engineering'
+      },
+      {
+        name: 'Mic Robbins',
+        imageBase: 'Mic',
+        bio: "I'm a sophmore eletrical engineer and like to play clash royale (15k)",
+        year: 'Sophomore',
+        major: 'Electrical Engineering'
+      },
+      {
+        name: 'Lindsay Kossoff',
+        imageBase: 'Lindsay',
+        bio: 'Hi, my name is Lindsay Kossoff. I am a freshman from Maryland studying mechanical engineering.',
+        year: 'Freshman',
+        major: 'Mechanical Engineering'
+      },
+      {
+        name: 'Christopher Guillen-Chacon',
+        imageBase: 'Chris',
+        bio: "My name is Chris and I'm interested in drone design",
+        year: 'Sophomore',
+        major: 'Mechanical Engineering'
+      },
+      {
+        name: 'Alan Munschy',
+        imageBase: 'Alan',
+        bio: 'Hi, I like working on robot controls and I play chess',
+        year: 'Junior',
+        major: 'Robotics & Controls'
+      }
     ]
   },
   {
     title: 'Software',
     members: [
-      { name: 'Nick Lennon', imageBase: 'NickLen', year: 'Sophomore', bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!' },
-      { name: 'Ronan Alo', imageBase: 'Ronan', year: 'Sophomore', bio: 'I am a sophomore majoring in mechanical engineering and computer science, interested in drone pathing' }
+      {
+        name: 'Nick Lennon',
+        imageBase: 'NickLen',
+        bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
+        year: 'Junior',
+        major: 'Computer Science'
+      },
+      {
+        name: 'Ronan Alo',
+        imageBase: 'Ronan',
+        bio: 'I am a sophomore majoring in mechanical engineering and computer science, interested in drone pathing',
+        year: 'Sophomore',
+        major: 'Mechanical Engineering & Computer Science'
+      }
     ]
   },
   {
     title: 'Business',
     members: [
-      { name: 'Hamilton Jeong', imageBase: 'Hamilton', year: 'Sophomore', bio: "I'm a BioStats major, I like competing in Taekwondo and playing piano" },
-      { name: 'Anthony Parlatore', imageBase: 'Anthony', year: 'Senior', bio: "I'm Anthony, senior ChemE in masters of MechE interested in new technology (and I really like drones)" }
+      {
+        name: 'Hamilton Jeong',
+        imageBase: 'Hamilton',
+        bio: "I'm a BioStats major, I like competing in Taekwondo and playing piano",
+        year: 'Junior',
+        major: 'Biostatistics'
+      },
+      {
+        name: 'Anthony Parlatore',
+        imageBase: 'Anthony',
+        bio: "I'm Anthony, senior ChemE in masters of MechE interested in new technology (and I really like drones)",
+        year: 'Senior',
+        major: 'Chemical Engineering & M.Eng Mechanical Engineering'
+      }
     ]
   }
 ];
@@ -83,6 +192,7 @@ function App() {
   const [missionTilesPlayed, setMissionTilesPlayed] = useState(false);
   const [applyHovered, setApplyHovered] = useState(false);
   const [isApplyClickable, setIsApplyClickable] = useState(false);
+  const [expandedImage, setExpandedImage] = useState(null);
   const debugCollapseTriggeredRef = useRef(false);
   const scrollLockActiveRef = useRef(false);
   const debugHideTimeoutRef = useRef(null);
@@ -165,6 +275,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    // Only enable slow scroll effect on the home page
+    if (currentPage !== 'home') {
+      return;
+    }
+
     const MOBILE_BREAKPOINT = 640;
     const DEBUG_HIDE_DELAY = 500;
     const SLOW_SCROLL_DURATION = DEBUG_HIDE_DELAY + 600; // Duration of slow phase
@@ -340,7 +455,7 @@ function App() {
       }
       document.body.classList.remove('slow-scroll-active');
     };
-  }, []);
+  }, [currentPage]);
 
   const getMemberImage = (member) => {
     const base = member.imageBase;
@@ -362,7 +477,12 @@ function App() {
 
   const getMemberMeta = (member) => {
     if (member.role) return member.role;
-    return member.year || '';
+    const year = member.year && member.year !== 'TBD' ? member.year : null;
+    const major = member.major && member.major !== 'TBD' ? member.major : null;
+    if (year && major) return `${year} · ${major}`;
+    if (year) return year;
+    if (major) return major;
+    return 'Year / Major TBD';
   };
   const clearTeamCardTilt = (cardId) => {
     setTeamCardTilt((prev) => {
@@ -398,6 +518,7 @@ function App() {
       setFlipDirection({ quad: 'right', hexapod: 'right', swallow: 'right' });
     }
   }, [currentPage]);
+
 
   const handlePanelToggle = (panelKey) => {
     setFlippedPanels((prev) => ({
@@ -652,7 +773,63 @@ function App() {
               </figure>
             </div>
           </section>
+          <section className="gallery-section">
+            <div className="gallery-header">
+              <h2 className="gallery-title">Gallery</h2>
+            </div>
+            <div className="gallery-tapestry">
+              {GALLERY_IMAGES.map((image, index) => (
+                <div
+                  className="gallery-item"
+                  key={image.filename}
+                  onClick={() => setExpandedImage(image)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setExpandedImage(image);
+                    }
+                  }}
+                >
+                  <img
+                    src={assetPath(`img/Gallery/${image.filename}`)}
+                    alt={`Concept art ${index + 1}`}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="gallery-fade-end" />
+            <p className="gallery-more">(more to come)</p>
+          </section>
           <SiteFooter />
+          <AnimatePresence>
+            {expandedImage && (
+              <motion.div
+                className="gallery-lightbox"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setExpandedImage(null)}
+              >
+              <motion.div
+                className="gallery-lightbox__content"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <img
+                  src={assetPath(`img/Gallery/${expandedImage.filename}`)}
+                  alt="Expanded view"
+                />
+                <span className="gallery-lightbox__author">by {expandedImage.author}</span>
+              </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </main>
       );
     }
@@ -727,6 +904,10 @@ function App() {
                               </div>
                             </div>
                             <div className="team-card__face team-card__face--back">
+                              <div className="team-card__back-header">
+                                <p className="team-card__name team-card__name--back">{member.name}</p>
+                                <span className="team-card__meta team-card__meta--badge">{meta}</span>
+                              </div>
                               <p className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}>
                                 {bio}
                               </p>
@@ -787,6 +968,10 @@ function App() {
                             </div>
                           </div>
                           <div className="team-card__face team-card__face--back">
+                            <div className="team-card__back-header">
+                              <p className="team-card__name team-card__name--back">{prof.name}</p>
+                              <span className="team-card__meta team-card__meta--badge">{meta}</span>
+                            </div>
                             <p className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}>
                               {bio}
                             </p>
@@ -809,7 +994,7 @@ function App() {
 
   return (
     <div className="demo-container">
-      <GridBackground />
+      {currentPage === 'home' && <GridBackground />}
       <nav className="menu-bar">
         <GlassSurface
           width="auto"
