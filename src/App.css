@@ -721,7 +721,7 @@ body.slow-scroll-active {
   display: flex;
   gap: clamp(24px, 5vw, 48px);
   width: 100%;
-  margin-top: clamp(8px, 1.5vw, 14px);
+  margin-top: clamp(4px, 0.8vw, 8px);
   flex-wrap: wrap;
 }
 
