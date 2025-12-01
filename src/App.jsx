@@ -755,9 +755,6 @@ function App() {
             </div>
           </section>
           <section className="gallery-section">
-            <div className="gallery-header">
-              <h2 className="gallery-title">Gallery</h2>
-            </div>
             <div className="gallery-tapestry">
               {GALLERY_IMAGES.map((image, index) => (
                 <div
