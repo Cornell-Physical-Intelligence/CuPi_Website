@@ -18,124 +18,36 @@ const TEAM_SECTIONS = [
   {
     title: 'Design',
     members: [
-      {
-        name: 'Andre Boufama',
-        imageBase: 'Andre',
-        bio: "Hi I'm Andre. I like making websites and CAD and also eating",
-        major: 'Engineering',
-        year: 'Junior'
-      },
-      {
-        name: 'Ollie Aizer',
-        imageBase: 'Ollie',
-        bio: 'Hi, my name is Ollie and I like drone design and cooking.',
-        major: 'Aerospace Engineering',
-        year: 'Sophomore'
-      },
-      {
-        name: 'Daniel Sheth',
-        imageBase: 'Daniel',
-        bio: 'I am an aspiring mechanical engineer interested in aerodynamics and propulsion systems',
-        major: 'Mechanical Engineering',
-        year: 'Sophomore'
-      },
-      {
-        name: 'Josh Lennon',
-        bio: BIO_PLACEHOLDER,
-        year: 'TBD',
-        major: 'TBD'
-      },
-      {
-        name: 'Jonathan Song',
-        imageBase: 'Jon',
-        bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
-        major: 'Electrical & Computer Engineering',
-        year: 'Junior'
-      },
-      {
-        name: 'Yuki Wykoff',
-        bio: BIO_PLACEHOLDER,
-        year: 'TBD',
-        major: 'TBD'
-      }
+      { name: 'Andre Boufama', imageBase: 'Andre', year: 'Sophomore', bio: "Hi I'm Andre. I like making websites and CAD and also eating" },
+      { name: 'Ollie Aizer', imageBase: 'Ollie', year: 'Freshman', bio: 'Hi, my name is Ollie and I like drone design and cooking.' },
+      { name: 'Daniel Sheth', imageBase: 'Daniel', year: 'Freshman', bio: 'I am an aspiring mechanical engineer interested in aerodynamics and propulsion systems' },
+      { name: 'Josh Lennon', year: 'Sophomore' },
+      { name: 'Jonathan Song', imageBase: 'Jon', year: 'Freshman', bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar" },
+      { name: 'Yuki Wykoff', year: 'Sophomore' }
     ]
   },
   {
     title: 'Integration',
     members: [
-      {
-        name: 'Nicholas Letendre',
-        imageBase: 'NickLet',
-        bio: "I'm Nicholas, and I am sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
-        year: 'Sophomore',
-        major: 'Mechanical & Aerospace Engineering'
-      },
-      {
-        name: 'Mic Robbins',
-        imageBase: 'Mic',
-        bio: "I'm a sophmore eletrical engineer and like to play clash royale (15k)",
-        year: 'Sophomore',
-        major: 'Electrical Engineering'
-      },
-      {
-        name: 'Lindsay Kossoff',
-        imageBase: 'Lindsay',
-        bio: 'Hi, my name is Lindsay Kossoff. I am a freshman from Maryland studying mechanical engineering.',
-        year: 'Freshman',
-        major: 'Mechanical Engineering'
-      },
-      {
-        name: 'Christopher Guillen-Chacon',
-        imageBase: 'Chris',
-        bio: "My name is Chris and I'm interested in drone design",
-        year: 'Sophomore',
-        major: 'Mechanical Engineering'
-      },
-      {
-        name: 'Alan Munschy',
-        imageBase: 'Alan',
-        bio: 'Hi, I like working on robot controls and I play chess',
-        year: 'Junior',
-        major: 'Robotics & Controls'
-      }
+      { name: 'Nicholas Letendre', imageBase: 'NickLet', year: 'Sophomore', bio: "I'm Nicholas, and I am sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games." },
+      { name: 'Mic Robbins', imageBase: 'Mic', year: 'Sophomore', bio: "I'm a sophmore eletrical engineer and like to play clash royale (15k)" },
+      { name: 'Lindsay Kossoff', imageBase: 'Lindsay', year: 'Freshman', bio: 'Hi, my name is Lindsay Kossoff. I am a freshman from Maryland studying mechanical engineering.' },
+      { name: 'Christopher Guillen-Chacon', imageBase: 'Chris', year: 'Sophomore', bio: "My name is Chris and I'm interested in drone design" },
+      { name: 'Alan Munschy', imageBase: 'Alan', year: 'Junior', bio: 'Hi, I like working on robot controls and I play chess' }
     ]
   },
   {
     title: 'Software',
     members: [
-      {
-        name: 'Nick Lennon',
-        imageBase: 'NickLen',
-        bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
-        year: 'Junior',
-        major: 'Computer Science'
-      },
-      {
-        name: 'Ronan Alo',
-        imageBase: 'Ronan',
-        bio: 'I am a sophomore majoring in mechanical engineering and computer science, interested in drone pathing',
-        year: 'Sophomore',
-        major: 'Mechanical Engineering & Computer Science'
-      }
+      { name: 'Nick Lennon', imageBase: 'NickLen', year: 'Sophomore', bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!' },
+      { name: 'Ronan Alo', imageBase: 'Ronan', year: 'Sophomore', bio: 'I am a sophomore majoring in mechanical engineering and computer science, interested in drone pathing' }
     ]
   },
   {
     title: 'Business',
     members: [
-      {
-        name: 'Hamilton Jeong',
-        imageBase: 'Hamilton',
-        bio: "I'm a BioStats major, I like competing in Taekwondo and playing piano",
-        year: 'Junior',
-        major: 'Biostatistics'
-      },
-      {
-        name: 'Anthony Parlatore',
-        imageBase: 'Anthony',
-        bio: "I'm Anthony, senior ChemE in masters of MechE interested in new technology (and I really like drones)",
-        year: 'Senior',
-        major: 'Chemical Engineering & M.Eng Mechanical Engineering'
-      }
+      { name: 'Hamilton Jeong', imageBase: 'Hamilton', year: 'Sophomore', bio: "I'm a BioStats major, I like competing in Taekwondo and playing piano" },
+      { name: 'Anthony Parlatore', imageBase: 'Anthony', year: 'Senior', bio: "I'm Anthony, senior ChemE in masters of MechE interested in new technology (and I really like drones)" }
     ]
   }
 ];
@@ -450,12 +362,7 @@ function App() {
 
   const getMemberMeta = (member) => {
     if (member.role) return member.role;
-    const year = member.year && member.year !== 'TBD' ? member.year : null;
-    const major = member.major && member.major !== 'TBD' ? member.major : null;
-    if (year && major) return `${year} · ${major}`;
-    if (year) return year;
-    if (major) return major;
-    return 'Year / Major TBD';
+    return member.year || '';
   };
   const clearTeamCardTilt = (cardId) => {
     setTeamCardTilt((prev) => {
@@ -820,10 +727,6 @@ function App() {
                               </div>
                             </div>
                             <div className="team-card__face team-card__face--back">
-                              <div className="team-card__back-header">
-                                <p className="team-card__name team-card__name--back">{member.name}</p>
-                                <span className="team-card__meta team-card__meta--badge">{meta}</span>
-                              </div>
                               <p className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}>
                                 {bio}
                               </p>
@@ -884,10 +787,6 @@ function App() {
                             </div>
                           </div>
                           <div className="team-card__face team-card__face--back">
-                            <div className="team-card__back-header">
-                              <p className="team-card__name team-card__name--back">{prof.name}</p>
-                              <span className="team-card__meta team-card__meta--badge">{meta}</span>
-                            </div>
                             <p className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}>
                               {bio}
                             </p>

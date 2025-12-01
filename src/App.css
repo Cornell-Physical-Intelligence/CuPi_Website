@@ -121,6 +121,10 @@ body.slow-scroll-active {
 .ascii-text-container {
   position: absolute;
   inset: 0;
+  isolation: isolate;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .ascii-text-container canvas {
@@ -155,6 +159,17 @@ body.slow-scroll-active {
   z-index: 9;
   mix-blend-mode: difference;
   font-family: var(--ascii-font-family, 'IBM Plex Mono', 'Courier New', monospace);
+  will-change: contents, transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Firefox-specific fix for mix-blend-mode flickering */
+@-moz-document url-prefix() {
+  .ascii-text-container pre {
+    mix-blend-mode: normal;
+    opacity: 0.85;
+  }
 }
 
 .main-title {
@@ -1021,6 +1036,8 @@ body.slow-scroll-active {
   border-color: rgba(255, 255, 255, 0.9);
   padding: clamp(14px, 3vw, 22px);
   justify-content: center;
+  align-items: center;
+  text-align: center;
   transform: rotateY(180deg);
   border-radius: 0;
 }
@@ -1055,7 +1072,8 @@ body.slow-scroll-active {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
 }
 
 .team-card__name {
@@ -1110,10 +1128,11 @@ body.slow-scroll-active {
 
 .team-card__bio {
   margin: 0;
-  font-size: clamp(0.62rem, 1.7vw, 0.88rem);
-  line-height: 1.6;
-  letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(0.72rem, 1.8vw, 0.92rem);
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 100%;
 }
 
 .team-card__bio--placeholder {

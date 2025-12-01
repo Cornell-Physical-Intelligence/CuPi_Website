@@ -168,7 +168,12 @@ class AsciiFilter {
   hue() {
     const deg = (Math.atan2(this.dy, this.dx) * 180) / Math.PI;
     this.deg += (deg - this.deg) * 0.075;
-    this.domElement.style.filter = `hue-rotate(${this.deg.toFixed(1)}deg)`;
+    // Only update filter if change is significant (reduces Firefox flickering)
+    const newDeg = this.deg.toFixed(0);
+    if (this.lastDeg !== newDeg) {
+      this.lastDeg = newDeg;
+      this.domElement.style.filter = `hue-rotate(${newDeg}deg)`;
+    }
   }
 
   asciify(ctx, w, h) {
