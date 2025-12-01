@@ -1783,7 +1783,7 @@ body.debug-hidden .spacer::after {
   letter-spacing: 0.15em;
   color: rgba(255, 255, 255, 0.35);
   font-family: 'Courier New', Courier, monospace;
-  padding: clamp(8px, 2vw, 16px) 0;
+  padding: clamp(8px, 2vw, 16px) 0 clamp(48px, 8vw, 96px) 0;
   margin: 0;
   user-select: none;
 }
