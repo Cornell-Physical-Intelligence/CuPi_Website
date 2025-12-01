@@ -27,7 +27,7 @@ function SiteFooter() {
         </div>
 
         <div className="site-footer__copy">
-          <p>This organization is a registered student organization of Cornell University.</p>
+          <p>This organization is not yet a registered student organization of Cornell University.</p>
           <p>
             Equal Education and Employment:{' '}
             <a

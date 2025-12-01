@@ -69,8 +69,8 @@ const TEAM_SECTIONS = [
         year: 'Sophomore'
       },
       {
-        name: 'Sophie',
-        bio: BIO_PLACEHOLDER,
+        name: 'Sophie Di',
+        bio: "I'm a mechanical engineer and I love sketching, bouldering, and throwing paper airplanes",
         year: 'Freshman'
       }
     ]
