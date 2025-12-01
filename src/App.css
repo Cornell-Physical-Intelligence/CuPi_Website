@@ -1764,9 +1764,11 @@ body.debug-hidden .spacer::after {
   font-family: 'Courier New', Courier, monospace;
 }
 
-/* Disable menu interaction when lightbox is open (menu gets blurred by backdrop) */
+/* Blur and disable menu when lightbox is open */
 .demo-container:has(.gallery-lightbox) .menu-bar {
   pointer-events: none;
+  filter: blur(12px);
+  opacity: 0.5;
 }
 
 .gallery-item {
