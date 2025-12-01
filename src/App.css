@@ -1850,12 +1850,47 @@ body.debug-hidden .spacer::after {
   break-inside: avoid;
   margin-bottom: 2px;
   line-height: 0;
+  background: linear-gradient(135deg, rgba(30, 30, 30, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%);
+  min-height: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 100%
+  );
+  animation: gallery-shimmer 1.5s infinite;
+  z-index: 1;
+}
+
+@keyframes gallery-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.gallery-item:has(img.loaded)::before {
+  display: none;
 }
 
 .gallery-item img {
   width: 100%;
   height: auto;
   display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  position: relative;
+  z-index: 2;
+}
+
+.gallery-item img.loaded {
+  opacity: 1;
 }
 
 /* Responsive adjustments */

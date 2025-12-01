@@ -266,8 +266,8 @@ function App() {
 
     const MOBILE_BREAKPOINT = 640;
     const DEBUG_HIDE_DELAY = 500;
-    const SLOW_SCROLL_DURATION = DEBUG_HIDE_DELAY + 600; // Duration of slow phase
-    const EASE_OUT_DURATION = 1200; // Duration to ease back to normal speed
+    const SLOW_SCROLL_DURATION = DEBUG_HIDE_DELAY + 150; // Duration of slow phase
+    const EASE_OUT_DURATION = 400; // Duration to ease back to normal speed
     const INITIAL_DAMPING = 0.12; // Starting damping (lower = slower)
     const scrollKeys = new Set(['Space', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End', ' ']);
     let lastTouchY = 0;
@@ -775,7 +775,10 @@ function App() {
                   <img
                     src={assetPath(`img/Gallery/${image.filename}`)}
                     alt={`Concept art ${index + 1}`}
-                    loading="lazy"
+                    loading={index < 6 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    fetchPriority={index < 3 ? 'high' : 'auto'}
+                    onLoad={(e) => e.target.classList.add('loaded')}
                   />
                 </div>
               ))}
