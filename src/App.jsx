@@ -963,7 +963,7 @@ function App() {
   };
 
   return (
-    <div className="demo-container">
+    <div className={`demo-container ${expandedImage ? 'lightbox-open' : ''}`}>
       {currentPage === 'home' && <GridBackground />}
       <nav className="menu-bar">
         <GlassSurface

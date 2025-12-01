@@ -1765,7 +1765,7 @@ body.debug-hidden .spacer::after {
 }
 
 /* Blur and disable menu when lightbox is open */
-.demo-container:has(.gallery-lightbox) .menu-bar {
+.demo-container.lightbox-open .menu-bar {
   pointer-events: none;
   filter: blur(12px);
   opacity: 0.5;
