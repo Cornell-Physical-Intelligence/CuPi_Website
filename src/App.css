@@ -37,8 +37,32 @@ body.slow-scroll-active {
 
 .menu-content {
   display: flex;
-  gap: 48px;
+  gap: clamp(16px, 6vw, 48px);
   align-items: center;
+}
+
+@media (max-width: 420px) {
+  .menu-bar {
+    top: 16px;
+  }
+  
+  .menu-bar .glass-surface {
+    padding: 0 12px;
+  }
+  
+  .menu-content {
+    gap: 12px;
+  }
+  
+  .menu-item {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    min-width: 40px;
+  }
+  
+  .menu-item--apply {
+    min-width: 70px;
+  }
 }
 
 .menu-item {
@@ -1441,6 +1465,34 @@ body.slow-scroll-active {
   transform-origin: center center;
 }
 
+/* Hide debug scaffolding on mobile */
+@media (max-width: 640px) {
+  .content-section::before,
+  .content-section::after,
+  .title-wrapper::before,
+  .title-wrapper::after,
+  .ascii-logo::before,
+  .ascii-logo::after,
+  .ascii-logo__visual::before,
+  .ascii-logo__visual::after,
+  .ascii-text-container::before,
+  .ascii-text-container::after,
+  .main-title::before,
+  .main-title::after,
+  .main-subtitle::before,
+  .main-subtitle::after,
+  .mobile-hero::before,
+  .mobile-hero::after,
+  .mobile-hero__visual::before,
+  .mobile-hero__visual::after,
+  .mobile-hero__subtitle::before,
+  .mobile-hero__subtitle::after,
+  .spacer::before,
+  .spacer::after {
+    display: none !important;
+  }
+}
+
 /* Default state for debug labels */
 .content-section::before,
 .title-wrapper::before,
@@ -1799,5 +1851,16 @@ body.debug-hidden .spacer::after {
 @media (max-width: 480px) {
   .gallery-tapestry {
     column-count: 1;
+    padding: 0 2px;
+  }
+  
+  .gallery-item {
+    margin-bottom: 4px;
+  }
+  
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 }
