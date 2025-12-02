@@ -8,18 +8,15 @@ body.scroll-locked {
   overflow: hidden;
 }
 
-/* During slow scroll mode, show a subtle indicator and prevent native scroll */
-body.slow-scroll-active {
-  /* We handle scrolling manually via JS, but allow content to be scrollable */
-  overscroll-behavior: none;
-}
-
 .demo-container {
   min-height: 100vh;
+  min-height: 100dvh;
   background: transparent;
   position: relative;
   display: flex;
   flex-direction: column;
+  /* Ensure Safari allows scrolling */
+  -webkit-overflow-scrolling: touch;
 }
 
 .menu-bar {

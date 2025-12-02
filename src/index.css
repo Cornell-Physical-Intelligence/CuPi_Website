@@ -13,17 +13,24 @@
 
 html {
   background: transparent;
-  overscroll-behavior: none;
+  /* Use -webkit-overflow-scrolling for Safari compatibility */
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
   margin: 0;
+  /* Use min-height with dvh fallback for Safari mobile */
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
+  overflow-y: auto;
   background: transparent;
-  overscroll-behavior: none;
+  /* Ensure touch scrolling works on Safari */
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {
   background: transparent;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
