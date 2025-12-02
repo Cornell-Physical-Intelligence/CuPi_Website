@@ -13,18 +13,19 @@ const ASCIIText = lazy(() => import('./components/ASCIIText'));
 const APPLY_URL = 'https://forms.gle/c5MmMmwd77zbBtSr8';
 
 const GALLERY_IMAGES = [
-  { filename: 'DigitizedDragonFlyflat.png', author: 'Sophie', width: 1792, height: 2230 },
-  { filename: 'DragonFlyPerched.png', author: 'Sophie', width: 2367, height: 1364 },
-  { filename: 'GlitchDrone.png', author: 'Andre', width: 1024, height: 1024 },
-  { filename: 'HexapodLeg.jpeg', author: 'Hamilton', width: 4783, height: 2782 },
-  { filename: 'MetalPoster.png', author: 'Sophie', width: 1792, height: 2215 },
   { filename: 'PixelHands.png', author: 'Sophie', width: 750, height: 1128 },
-  { filename: 'PosterRed.png', author: 'Hamilton', width: 880, height: 1168 },
-  { filename: 'PosterSketch.png', author: 'Hamilton', width: 1792, height: 2400 },
+  { filename: 'HexapodLeg.jpeg', author: 'Hamilton', width: 4783, height: 2782 },
+  { filename: 'DragonFlyTop.png', author: 'Sophie', width: 850, height: 1000 },
   { filename: 'PosterSlide.png', author: 'Hamilton', width: 1346, height: 1440 },
+  { filename: 'PerchedDragonfly.png', author: 'Sophie', width: 1800, height: 1200 },
+  { filename: 'GlitchDrone.png', author: 'Andre', width: 1024, height: 1024 },
+  { filename: 'PosterSketch.png', author: 'Hamilton', width: 1792, height: 2400 },
+  { filename: 'VTOL.png', author: 'Andre', width: 2644, height: 1314 },
+  { filename: 'HandsSketch.png', author: 'Sophie', width: 1000, height: 1600 },
+  { filename: 'MetalPoster.png', author: 'Sophie', width: 1792, height: 2215 },
   { filename: 'Separated.png', author: 'Hamilton', width: 848, height: 721 },
-  { filename: 'SpiderSketchDigital.png', author: 'Sophie', width: 1696, height: 1906 },
-  { filename: 'VTOL.png', author: 'Andre', width: 2644, height: 1314 }
+  { filename: 'PosterRed.png', author: 'Hamilton', width: 880, height: 1168 },
+  { filename: 'Spider.png', author: 'Sophie', width: 1100, height: 1100 }
 ];
 
 const HERO_FONT_FAMILY = "'Times New Roman', Times, serif";
@@ -54,14 +55,8 @@ const TEAM_SECTIONS = [
       },
       {
         name: 'Josh Lennon',
-        bio: BIO_PLACEHOLDER,
+        bio: "I'm a ChemE code monkey with a passion for making homonculi",
         year: 'Sophomore'
-      },
-      {
-        name: 'Jonathan Song',
-        imageBase: 'Jon',
-        bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
-        year: 'Junior'
       },
       {
         name: 'Yuki Wykoff',
@@ -106,6 +101,12 @@ const TEAM_SECTIONS = [
         name: 'Alan Munschy',
         imageBase: 'Alan',
         bio: 'Hi, I like working on robot controls and I play chess',
+        year: 'Junior'
+      },
+      {
+        name: 'Jonathan Song',
+        imageBase: 'Jon',
+        bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
         year: 'Junior'
       }
     ]
