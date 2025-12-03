@@ -17,7 +17,6 @@ const GALLERY_IMAGES = [
   { filename: 'HexapodLeg.jpeg', author: 'Hamilton', width: 4783, height: 2782 },
   { filename: 'DragonFlyTop.png', author: 'Sophie', width: 850, height: 1000 },
   { filename: 'PosterSlide.png', author: 'Hamilton', width: 1346, height: 1440 },
-  { filename: 'PerchedDragonfly.png', author: 'Sophie', width: 1800, height: 1200 },
   { filename: 'GlitchDrone.png', author: 'Andre', width: 1024, height: 1024 },
   { filename: 'PosterSketch.png', author: 'Hamilton', width: 1792, height: 2400 },
   { filename: 'VTOL.png', author: 'Andre', width: 2644, height: 1314 },
@@ -55,8 +54,14 @@ const TEAM_SECTIONS = [
       },
       {
         name: 'Josh Lennon',
-        bio: "I'm a ChemE code monkey with a passion for making homonculi",
+        bio: BIO_PLACEHOLDER,
         year: 'Sophomore'
+      },
+      {
+        name: 'Jonathan Song',
+        imageBase: 'Jon',
+        bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
+        year: 'Junior'
       },
       {
         name: 'Yuki Wykoff',
@@ -101,12 +106,6 @@ const TEAM_SECTIONS = [
         name: 'Alan Munschy',
         imageBase: 'Alan',
         bio: 'Hi, I like working on robot controls and I play chess',
-        year: 'Junior'
-      },
-      {
-        name: 'Jonathan Song',
-        imageBase: 'Jon',
-        bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
         year: 'Junior'
       }
     ]
@@ -180,7 +179,9 @@ function App() {
   const [isApplyClickable, setIsApplyClickable] = useState(false);
   const [expandedImage, setExpandedImage] = useState(null);
   const debugCollapseTriggeredRef = useRef(false);
+  const scrollLockActiveRef = useRef(false);
   const debugHideTimeoutRef = useRef(null);
+  const scrollUnlockTimeoutRef = useRef(null);
   const heroFontFamily = HERO_FONT_FAMILY;
   const heroAsciiConfig = isCompactHero
     ? { asciiFontSize: 7.8, textFontSize: 736, planeBaseHeight: 24, scaleMultiplier: 1.05, verticalOffset: 0.02 }
@@ -325,25 +326,144 @@ function App() {
 
     const MOBILE_BREAKPOINT = 640;
     const DEBUG_HIDE_DELAY = 500;
+    const SLOW_SCROLL_DURATION = DEBUG_HIDE_DELAY + 150; // Duration of slow phase
+    const EASE_OUT_DURATION = 400; // Duration to ease back to normal speed
+    const INITIAL_DAMPING = 0.12; // Starting damping (lower = slower)
+    const scrollKeys = new Set(['Space', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End', ' ']);
+    let lastTouchY = 0;
+    let slowScrollStartTime = 0;
 
     // Check if we're on mobile (no debug animation on mobile)
     const isMobile = () => window.innerWidth < MOBILE_BREAKPOINT;
 
-    // Detect Safari - Safari has issues with scroll event prevention
-    const isSafari = () => {
-      const ua = navigator.userAgent.toLowerCase();
-      return ua.includes('safari') && !ua.includes('chrome') && !ua.includes('chromium');
+    // Ease-out cubic function for smooth transition
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    // Calculate current damping based on elapsed time
+    const getCurrentDamping = () => {
+      if (!slowScrollStartTime) return 1;
+      
+      const elapsed = Date.now() - slowScrollStartTime;
+      
+      // During initial slow phase, use constant damping
+      if (elapsed < SLOW_SCROLL_DURATION) {
+        return INITIAL_DAMPING;
+      }
+      
+      // During ease-out phase, gradually increase damping to 1
+      const easeElapsed = elapsed - SLOW_SCROLL_DURATION;
+      if (easeElapsed >= EASE_OUT_DURATION) {
+        return 1; // Full speed
+      }
+      
+      const progress = easeElapsed / EASE_OUT_DURATION;
+      const easedProgress = easeOutCubic(progress);
+      return INITIAL_DAMPING + (1 - INITIAL_DAMPING) * easedProgress;
+    };
+
+    const enableSlowScroll = () => {
+      if (scrollLockActiveRef.current) return;
+      scrollLockActiveRef.current = true;
+      slowScrollStartTime = Date.now();
+      document.body.classList.add('slow-scroll-active');
+    };
+
+    const disableSlowScroll = () => {
+      scrollLockActiveRef.current = false;
+      slowScrollStartTime = 0;
+      document.body.classList.remove('slow-scroll-active');
+      if ((window.scrollY || window.pageYOffset) === 0) {
+        document.body.classList.remove('scrolled');
+      }
     };
 
     const triggerDebugCollapse = () => {
       if (debugCollapseTriggeredRef.current) return;
       debugCollapseTriggeredRef.current = true;
       
+      // Only enable slow scroll on desktop where debug animation exists
+      if (!isMobile()) {
+        enableSlowScroll();
+      }
+      
       document.body.classList.add('scrolled-once');
 
       debugHideTimeoutRef.current = window.setTimeout(() => {
         document.body.classList.add('debug-hidden');
       }, DEBUG_HIDE_DELAY);
+
+      // Disable slow scroll after both slow phase and ease-out complete (only if not mobile)
+      if (!isMobile()) {
+        scrollUnlockTimeoutRef.current = window.setTimeout(() => {
+          disableSlowScroll();
+        }, SLOW_SCROLL_DURATION + EASE_OUT_DURATION);
+      }
+    };
+
+    const handleWheel = (event) => {
+      // Skip slow scroll handling on mobile
+      if (isMobile()) return;
+      
+      if (!debugCollapseTriggeredRef.current) {
+        event.preventDefault();
+        triggerDebugCollapse();
+        // Apply dampened scroll for this first event
+        const dampedDelta = event.deltaY * getCurrentDamping();
+        window.scrollBy({ top: dampedDelta, behavior: 'auto' });
+      } else if (scrollLockActiveRef.current) {
+        // During slow scroll mode, apply dynamic damping
+        event.preventDefault();
+        const dampedDelta = event.deltaY * getCurrentDamping();
+        window.scrollBy({ top: dampedDelta, behavior: 'auto' });
+      }
+    };
+
+    const handleTouchStart = (event) => {
+      // Only track touch on desktop (for trackpad simulation)
+      if (isMobile()) return;
+      if (event.touches.length > 0) {
+        lastTouchY = event.touches[0].clientY;
+      }
+    };
+
+    const handleTouchMove = (event) => {
+      // Skip slow scroll handling on mobile
+      if (isMobile()) return;
+      if (event.touches.length === 0) return;
+      
+      const currentY = event.touches[0].clientY;
+      const deltaY = lastTouchY - currentY; // Positive = scroll down
+      lastTouchY = currentY;
+
+      if (!debugCollapseTriggeredRef.current) {
+        event.preventDefault();
+        triggerDebugCollapse();
+        const dampedDelta = deltaY * getCurrentDamping();
+        window.scrollBy({ top: dampedDelta, behavior: 'auto' });
+      } else if (scrollLockActiveRef.current) {
+        event.preventDefault();
+        const dampedDelta = deltaY * getCurrentDamping();
+        window.scrollBy({ top: dampedDelta, behavior: 'auto' });
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      // Skip slow scroll handling on mobile
+      if (isMobile()) return;
+      
+      const pressedKey = event.code || event.key;
+      if (pressedKey && scrollKeys.has(pressedKey)) {
+        if (!debugCollapseTriggeredRef.current) {
+          event.preventDefault();
+          triggerDebugCollapse();
+        } else if (scrollLockActiveRef.current) {
+          event.preventDefault();
+          // Apply small scroll for key presses with current damping
+          const keyScrollAmount = 20 * getCurrentDamping();
+          const direction = ['ArrowUp', 'PageUp', 'Home'].includes(pressedKey) ? -1 : 1;
+          window.scrollBy({ top: keyScrollAmount * direction, behavior: 'auto' });
+        }
+      }
     };
 
     const handleScroll = () => {
@@ -353,41 +473,31 @@ function App() {
         if (!debugCollapseTriggeredRef.current) {
           triggerDebugCollapse();
         }
-      } else {
+      } else if (!scrollLockActiveRef.current) {
         document.body.classList.remove('scrolled');
       }
     };
 
-    const handleWheel = () => {
-      // Skip on mobile or Safari
-      if (isMobile() || isSafari()) return;
-      
-      if (!debugCollapseTriggeredRef.current) {
-        triggerDebugCollapse();
-      }
-    };
-
-    const handleTouchStart = () => {
-      // Skip on mobile
-      if (isMobile()) return;
-      
-      if (!debugCollapseTriggeredRef.current) {
-        triggerDebugCollapse();
-      }
-    };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('keydown', handleKeyDown);
     handleScroll(); // Check initial state
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('keydown', handleKeyDown);
       if (debugHideTimeoutRef.current) {
         clearTimeout(debugHideTimeoutRef.current);
       }
+      if (scrollUnlockTimeoutRef.current) {
+        clearTimeout(scrollUnlockTimeoutRef.current);
+      }
+      document.body.classList.remove('slow-scroll-active');
     };
   }, [currentPage]);
 
