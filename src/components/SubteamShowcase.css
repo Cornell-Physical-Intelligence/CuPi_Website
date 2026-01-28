@@ -1,0 +1,214 @@
+.subteam-showcase {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    background: transparent;
+    /* Extra space below to ensure plane can fly away into blackness before footer */
+    margin-bottom: 800vh;
+}
+
+.subteam-showcase__content {
+    position: relative;
+    width: min(90vw, 800px);
+    height: min(70vh, 600px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Plane assembly wrapper for unified scaling */
+.subteam-showcase__plane-assembly {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center center;
+    will-change: transform;
+    z-index: 4;
+}
+
+/* Plane images */
+.subteam-showcase__plane {
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    will-change: transform;
+}
+
+.subteam-showcase__plane--top {
+    /* Nose cone - renders below wings */
+    transform-origin: center bottom;
+    z-index: 1;
+}
+
+.subteam-showcase__plane--bottom {
+    /* Wings/body - renders above nose cone */
+    transform-origin: center top;
+    z-index: 2;
+}
+
+/* PCB reveal */
+.subteam-showcase__pcb {
+    position: absolute;
+    max-width: 40%;
+    max-height: 40%;
+    object-fit: contain;
+    opacity: 0;
+    transform: scale(0.8);
+    transform-origin: center center;
+    z-index: 1;
+    will-change: transform, opacity;
+}
+
+/* Pathfinding SVG */
+.subteam-showcase__pathfinding {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.subteam-showcase__path {
+    stroke-linecap: round;
+    opacity: 0.8;
+}
+
+.subteam-showcase__arrow {
+    opacity: 0.8;
+}
+
+/* Tooltips */
+.subteam-showcase__tooltip {
+    position: absolute;
+    padding: 12px 20px;
+    max-width: 280px;
+    background: #000;
+    border: 1px solid #fff;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(20px);
+    z-index: 100;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.subteam-showcase__tooltip-title {
+    font-family: 'Questrial', sans-serif;
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.subteam-showcase__tooltip-desc {
+    font-family: 'Questrial', sans-serif;
+    font-size: clamp(11px, 1.4vw, 14px);
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+}
+
+/* Tooltip positions */
+.subteam-showcase__tooltip--design {
+    top: 15%;
+    left: 15px;
+}
+
+.subteam-showcase__tooltip--electronics {
+    top: 40%;
+    left: 15px;
+}
+
+.subteam-showcase__tooltip--software {
+    top: 10%;
+    left: 15px;
+}
+
+/* Scroll hint */
+.subteam-showcase__scroll-hint {
+    position: absolute;
+    bottom: clamp(24px, 5vh, 48px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Questrial', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.subteam-showcase__scroll-arrow {
+    width: 24px;
+    height: 24px;
+    border-right: 2px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+    transform: rotate(45deg);
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: rotate(45deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(45deg) translateY(6px);
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .subteam-showcase__content {
+        width: 95vw;
+        height: 60vh;
+    }
+
+    .subteam-showcase__tooltip {
+        padding: 12px 16px;
+        max-width: 180px;
+    }
+
+    .subteam-showcase__tooltip--design {
+        top: 5%;
+        right: 2%;
+    }
+
+    .subteam-showcase__tooltip--electronics {
+        bottom: 15%;
+        left: 2%;
+    }
+
+    .subteam-showcase__tooltip--software {
+        top: 10%;
+        left: 2%;
+    }
+}

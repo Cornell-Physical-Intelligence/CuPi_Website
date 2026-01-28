@@ -21,13 +21,13 @@ function SiteFooter() {
           >
             <img src={assetPath('icons/instagram.svg')} alt="Instagram" />
           </a>
-          <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/company/cu-physical-intelligence/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
             <img src={assetPath('icons/linkedin.png')} alt="LinkedIn" />
           </a>
         </div>
 
         <div className="site-footer__copy">
-          <p>This organization is not yet a registered student organization of Cornell University.</p>
+          <p>CUPI is a registered student organization of Cornell University.</p>
           <p>
             Equal Education and Employment:{' '}
             <a

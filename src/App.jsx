@@ -81,13 +81,13 @@ const TEAM_SECTIONS = [
       {
         name: 'Nicholas Letendre',
         imageBase: 'NickLet',
-        bio: "I'm Nicholas, and I am sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
+        bio: "I'm Nicholas, and I am a sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
         year: 'Sophomore'
       },
       {
         name: 'Mic Robbins',
         imageBase: 'Mic',
-        bio: "I'm a sophmore eletrical engineer and like to play clash royale (15k)",
+        bio: "I'm a sophomore electrical engineer and like to play clash royale (15k)",
         year: 'Sophomore'
       },
       {
@@ -281,7 +281,7 @@ function App() {
       setApplyHovered(true);
       return;
     }
-    window.open(APPLY_URL, '_blank', 'noopener,noreferrer');
+    handleNavClick('apply');
   };
 
   const handleNavClick = (page) => {
@@ -342,20 +342,20 @@ function App() {
     // Calculate current damping based on elapsed time
     const getCurrentDamping = () => {
       if (!slowScrollStartTime) return 1;
-      
+
       const elapsed = Date.now() - slowScrollStartTime;
-      
+
       // During initial slow phase, use constant damping
       if (elapsed < SLOW_SCROLL_DURATION) {
         return INITIAL_DAMPING;
       }
-      
+
       // During ease-out phase, gradually increase damping to 1
       const easeElapsed = elapsed - SLOW_SCROLL_DURATION;
       if (easeElapsed >= EASE_OUT_DURATION) {
         return 1; // Full speed
       }
-      
+
       const progress = easeElapsed / EASE_OUT_DURATION;
       const easedProgress = easeOutCubic(progress);
       return INITIAL_DAMPING + (1 - INITIAL_DAMPING) * easedProgress;
@@ -380,12 +380,12 @@ function App() {
     const triggerDebugCollapse = () => {
       if (debugCollapseTriggeredRef.current) return;
       debugCollapseTriggeredRef.current = true;
-      
+
       // Only enable slow scroll on desktop where debug animation exists
       if (!isMobile()) {
         enableSlowScroll();
       }
-      
+
       document.body.classList.add('scrolled-once');
 
       debugHideTimeoutRef.current = window.setTimeout(() => {
@@ -403,7 +403,7 @@ function App() {
     const handleWheel = (event) => {
       // Skip slow scroll handling on mobile
       if (isMobile()) return;
-      
+
       if (!debugCollapseTriggeredRef.current) {
         event.preventDefault();
         triggerDebugCollapse();
@@ -430,7 +430,7 @@ function App() {
       // Skip slow scroll handling on mobile
       if (isMobile()) return;
       if (event.touches.length === 0) return;
-      
+
       const currentY = event.touches[0].clientY;
       const deltaY = lastTouchY - currentY; // Positive = scroll down
       lastTouchY = currentY;
@@ -450,7 +450,7 @@ function App() {
     const handleKeyDown = (event) => {
       // Skip slow scroll handling on mobile
       if (isMobile()) return;
-      
+
       const pressedKey = event.code || event.key;
       if (pressedKey && scrollKeys.has(pressedKey)) {
         if (!debugCollapseTriggeredRef.current) {
@@ -864,19 +864,19 @@ function App() {
                 transition={{ duration: 0.2 }}
                 onClick={() => setExpandedImage(null)}
               >
-              <motion.div
-                className="gallery-lightbox__content"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <img
-                  src={assetPath(`img/Gallery/${expandedImage.filename}`)}
-                  alt="Expanded view"
-                />
-                <span className="gallery-lightbox__author">by {expandedImage.author}</span>
-              </motion.div>
+                <motion.div
+                  className="gallery-lightbox__content"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.9, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <img
+                    src={assetPath(`img/Gallery/${expandedImage.filename}`)}
+                    alt="Expanded view"
+                  />
+                  <span className="gallery-lightbox__author">by {expandedImage.author}</span>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -1023,6 +1023,32 @@ function App() {
                     );
                   })}
                 </div>
+              </div>
+            </div>
+          </section>
+          <SiteFooter />
+        </main>
+      );
+    }
+
+    if (currentPage === 'apply') {
+      return (
+        <main className="alt-page">
+          <section className="alt-section alt-section--apply">
+            <h2 className="section-label">Apply to CUPI</h2>
+            <div className="apply-page">
+              <p className="apply-page__intro">
+                We are always looking for motivated Cornell students who want to push the
+                boundaries of robotics. Fill out the form below to apply.
+              </p>
+              <div className="apply-page__form-wrapper">
+                <iframe
+                  src={APPLY_URL}
+                  title="CUPI Application Form"
+                  className="apply-page__iframe"
+                >
+                  Loading...
+                </iframe>
               </div>
             </div>
           </section>

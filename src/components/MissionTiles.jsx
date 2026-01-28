@@ -17,7 +17,6 @@ function MissionTiles({ played, onPlay }) {
 
   useEffect(() => {
     if (played) {
-      // If already played, ensure elements are visible immediately
       statRefs.current.forEach(el => {
         if (el) {
           gsap.set(el, { opacity: 1, y: 0 });
@@ -64,6 +63,18 @@ function MissionTiles({ played, onPlay }) {
         />
       </div>
       <div className="mission-tiles__content">
+        <div className="mission-tiles__blurb-wrapper">
+          <p className="mission-tiles__blurb">
+            At CUPI, we believe advanced engineering solutions already exist in nature. Through
+            millions of years of evolution, natural systems have mastered adaptability and
+            efficiency. These are the very same principles that guide our design process. By
+            analyzing biological structures and systems, we can create new mechanical systems
+            that combine convention with innovation. Our team is made up of students from various
+            disciplines at Cornell, united by a common vision: to engineer with inspiration and
+            creativity, building machines that can function autonomously and meet ever-advancing
+            goals.
+          </p>
+        </div>
         <div className="mission-tiles__stats" aria-label="Team scale insights">
           {stats.map((stat, index) => (
             <div
@@ -74,12 +85,11 @@ function MissionTiles({ played, onPlay }) {
               }}
             >
               <CountUp
-                from={played ? stat.value : 0}
+                from={0}
                 to={stat.value}
                 separator=","
                 direction="up"
-                duration={played ? 0 : 1}
-                startWhen={!played}
+                duration={1.5}
                 className="mission-stat__value"
               />
               <span className="mission-stat__label">{stat.label}</span>
