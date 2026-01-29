@@ -32,20 +32,58 @@ const BIO_PLACEHOLDER = '[coming soon]';
 
 const TEAM_SECTIONS = [
   {
-    title: 'Design',
+    title: 'Team Lead',
     members: [
       {
         name: 'Andre Boufama',
         imageBase: 'Andre',
         bio: "Hi I'm Andre. I like making websites and CAD and also eating",
-        year: 'Junior'
+        role: 'Team Lead'
+      }
+    ]
+  },
+  {
+    title: 'Leads',
+    members: [
+      {
+        name: 'Jonathan Song',
+        imageBase: 'Jon',
+        bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
+        role: 'Electrical Co-Lead'
+      },
+      {
+        name: 'Mic Robbins',
+        imageBase: 'Mic',
+        bio: "I'm a sophomore electrical engineer and like to play clash royale (15k)",
+        role: 'Electrical Co-Lead'
+      },
+      {
+        name: 'Alan Munschy',
+        imageBase: 'Alan',
+        bio: 'Hi, I like working on robot controls and I play chess',
+        role: 'Mech Co-Lead'
       },
       {
         name: 'Ollie Aizer',
         imageBase: 'Ollie',
         bio: 'Hi, my name is Ollie and I like drone design and cooking.',
-        year: 'Sophomore'
+        role: 'Mech Co-Lead'
       },
+      {
+        name: 'James Cenawood',
+        bio: BIO_PLACEHOLDER,
+        role: 'Computer Science Lead'
+      },
+      {
+        name: 'Max Lee',
+        bio: BIO_PLACEHOLDER,
+        role: 'Operations Lead'
+      }
+    ]
+  },
+  {
+    title: 'Members',
+    members: [
       {
         name: 'Daniel Sheth',
         imageBase: 'Daniel',
@@ -58,12 +96,6 @@ const TEAM_SECTIONS = [
         year: 'Sophomore'
       },
       {
-        name: 'Jonathan Song',
-        imageBase: 'Jon',
-        bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
-        year: 'Junior'
-      },
-      {
         name: 'Yuki Wykoff',
         bio: "I'm a mechanical engineer fueled by caffeine and the belief that duct tape counts as a legitimate solution",
         year: 'Sophomore'
@@ -74,29 +106,9 @@ const TEAM_SECTIONS = [
         year: 'Freshman'
       },
       {
-        name: 'Max Lee',
-        bio: BIO_PLACEHOLDER,
-        year: 'Freshman'
-      },
-      {
-        name: 'James Cenawood',
-        bio: BIO_PLACEHOLDER
-      }
-    ]
-  },
-  {
-    title: 'Integration',
-    members: [
-      {
         name: 'Nicholas Letendre',
         imageBase: 'NickLet',
         bio: "I'm Nicholas, and I am a sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
-        year: 'Sophomore'
-      },
-      {
-        name: 'Mic Robbins',
-        imageBase: 'Mic',
-        bio: "I'm a sophomore electrical engineer and like to play clash royale (15k)",
         year: 'Sophomore'
       },
       {
@@ -112,17 +124,6 @@ const TEAM_SECTIONS = [
         year: 'Sophomore'
       },
       {
-        name: 'Alan Munschy',
-        imageBase: 'Alan',
-        bio: 'Hi, I like working on robot controls and I play chess',
-        year: 'Junior'
-      }
-    ]
-  },
-  {
-    title: 'Software',
-    members: [
-      {
         name: 'Nick Lennon',
         imageBase: 'NickLen',
         bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
@@ -133,12 +134,7 @@ const TEAM_SECTIONS = [
         imageBase: 'Ronan',
         bio: 'I am a sophomore majoring in mechanical engineering and computer science, interested in drone pathing',
         year: 'Sophomore'
-      }
-    ]
-  },
-  {
-    title: 'Business',
-    members: [
+      },
       {
         name: 'Hamilton Jeong',
         imageBase: 'Hamilton',
@@ -173,7 +169,12 @@ const PROFESSORS = [
 ];
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const validPages = ['home', 'work', 'about', 'apply'];
+  const getPageFromHash = () => {
+    const hash = window.location.hash.replace('#', '');
+    return validPages.includes(hash) ? hash : 'home';
+  };
+  const [currentPage, setCurrentPage] = useState(getPageFromHash);
   const [formalMode, setFormalMode] = useState(false);
   const [flippedPanels, setFlippedPanels] = useState({ quad: false, hexapod: false, swallow: false });
   const [panelHoverSide, setPanelHoverSide] = useState({ quad: null, hexapod: null, swallow: null });
@@ -271,8 +272,17 @@ function App() {
   }, [currentPage, aboutImagePaths, galleryImagePaths, projectImagePaths]);
 
   const handleNavClick = (page) => {
+    window.location.hash = page === 'home' ? '' : page;
     setCurrentPage(page);
   };
+
+  useEffect(() => {
+    const onHashChange = () => {
+      setCurrentPage(getPageFromHash());
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
