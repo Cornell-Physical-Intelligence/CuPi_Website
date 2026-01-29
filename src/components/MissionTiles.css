@@ -9,7 +9,7 @@
   padding: clamp(40px, 7vw, 96px) clamp(40px, 7vw, 96px) clamp(300px, 40vw, 600px);
   background: transparent;
   box-shadow: 0 28px 68px rgba(0, 0, 0, 0.5);
-  min-height: clamp(720px, 135vh, 1800px);
+  min-height: clamp(720px, 145vh, 2000px);
 }
 
 .mission-tiles__background {
@@ -30,7 +30,7 @@
   height: auto;
   opacity: 1;
   filter: none;
-  transform: translate(0, 26%);
+  transform: translate(0, 20%);
   background: transparent;
 }
 
@@ -130,7 +130,7 @@
 @media (max-width: 768px) {
   .mission-tiles__background-img {
     width: clamp(960px, 200vw, 2400px);
-    transform: translate(0, 30%);
+    transform: translate(0, 24%);
   }
 }
 
@@ -168,6 +168,6 @@
   }
 
   .mission-tiles__background-img {
-    transform: translate(0, 36%);
+    transform: translate(0, 30%);
   }
 }

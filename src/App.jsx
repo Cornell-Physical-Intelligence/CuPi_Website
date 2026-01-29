@@ -788,31 +788,6 @@ function App() {
                         <span className="project-panel__heading-lead">Lead: TBA</span>
                       </p>
                       <div className="project-panel__details project-panel__details--icon-only">
-                        <pre className="project-panel__ascii-art">{`
-         _______________
-        /               \\
-       /   ___________   \\
-      /   /           \\   \\
-     |   |    (  ))    |   |
-     |   |   (  )))    |   |
-     |   |    (  ))    |   |
-      \\   \\___________/   /
-       \\                 /
-        \\_______________/
-              |   |
-              |   |
-         _____|   |_____
-        |               |
-        |   |=======|   |
-        |   |       |   |
-        |   |=======|   |
-        |_______________|
-              |   |
-              |   |
-              \\   /
-               \\ /
-                V
-`}</pre>
                       </div>
                     </div>
                   </div>

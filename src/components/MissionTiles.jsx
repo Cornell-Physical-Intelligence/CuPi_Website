@@ -67,8 +67,9 @@ function MissionTiles({ played, onPlay }) {
           <p className="mission-tiles__blurb">
             At CUPI, we believe advanced engineering solutions already exist in nature. Through
             millions of years of evolution, natural systems have mastered adaptability and
-            efficiency. These are the very same principles that guide our design process. By
-            analyzing biological structures and systems, we can create new mechanical systems
+            efficiency. These are the very same principles that guide our design process.
+            <br /><br />
+            By analyzing biological structures and systems, we can create new mechanical systems
             that combine convention with innovation. Our team is made up of students from various
             disciplines at Cornell, united by a common vision: to engineer with inspiration and
             creativity, building machines that can function autonomously and meet ever-advancing
