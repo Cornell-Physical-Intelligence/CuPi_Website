@@ -1163,8 +1163,6 @@ body.scroll-locked {
   position: absolute;
   top: -18px;
   left: 8px;
-  right: auto;
-  bottom: auto;
   background: rgba(0, 0, 0, 0.75);
   color: #f5f5f5;
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -1178,20 +1176,11 @@ body.scroll-locked {
   opacity: 0;
   transition: opacity 0.15s ease;
   white-space: nowrap;
-  transform: none;
-  transform-origin: top left;
 }
 
 .team-card[data-project]:hover::after,
 .team-card[data-project]:hover::before {
   opacity: 1;
-}
-
-/* Desktop: first row gets bottom tag to avoid clipping above grid */
-.team-grid > .team-card[data-project]:nth-child(-n+4)::before {
-  top: auto;
-  bottom: -18px;
-  left: 8px;
 }
 
 .team-card__flipper {
@@ -1388,43 +1377,16 @@ body.scroll-locked {
     font-size: 0.8rem;
   }
 
-  /* Mobile: left-column cards (odd) — tag on right side, rotated 90deg */
-  .team-card[data-project]:nth-child(odd)::before {
-    top: 8px;
-    bottom: auto;
+  /* Mobile: vertical tag along right edge of card */
+  .team-card[data-project]::before {
+    writing-mode: vertical-rl;
+    top: 50%;
     left: auto;
-    right: -18px;
-    transform: rotate(90deg);
-    transform-origin: top right;
-  }
-
-  /* Mobile: right-column cards (even) — tag on left side, rotated -90deg */
-  .team-card[data-project]:nth-child(even)::before {
-    top: 8px;
+    right: 12px;
     bottom: auto;
-    left: -18px;
-    right: auto;
-    transform: rotate(-90deg);
-    transform-origin: top left;
-  }
-
-  /* Mobile: override the desktop first-row rule */
-  .team-grid > .team-card[data-project]:nth-child(-n+4)::before {
-    bottom: auto;
-  }
-  .team-grid > .team-card[data-project]:nth-child(-n+4):nth-child(odd)::before {
-    top: 8px;
-    left: auto;
-    right: -18px;
-    transform: rotate(90deg);
-    transform-origin: top right;
-  }
-  .team-grid > .team-card[data-project]:nth-child(-n+4):nth-child(even)::before {
-    top: 8px;
-    left: -18px;
-    right: auto;
-    transform: rotate(-90deg);
-    transform-origin: top left;
+    transform: translateY(-50%);
+    transform-origin: center center;
+    white-space: nowrap;
   }
 }
 
