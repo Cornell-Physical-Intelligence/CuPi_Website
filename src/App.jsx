@@ -38,7 +38,8 @@ const TEAM_SECTIONS = [
         name: 'Andre Boufama',
         imageBase: 'Andre',
         bio: "Hi I'm Andre. I like making websites and CAD and also eating",
-        role: 'Team Lead'
+        role: 'Team Lead',
+        project: 'Quad'
       }
     ]
   },
@@ -49,35 +50,41 @@ const TEAM_SECTIONS = [
         name: 'Jonathan Song',
         imageBase: 'Jon',
         bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
-        role: 'Electrical Co-Lead'
+        role: 'Electrical Co-Lead',
+        project: 'Hexapod'
       },
       {
         name: 'Mic Robbins',
         imageBase: 'Mic',
         bio: "I'm a sophomore electrical engineer and like to play clash royale (15k)",
-        role: 'Electrical Co-Lead'
+        role: 'Electrical Co-Lead',
+        project: 'Quad'
       },
       {
         name: 'Alan Munschy',
         imageBase: 'Alan',
         bio: 'Hi, I like working on robot controls and I play chess',
-        role: 'Mech Co-Lead'
+        role: 'Mech Co-Lead',
+        project: 'Hexapod'
       },
       {
         name: 'Ollie Aizer',
         imageBase: 'Ollie',
         bio: 'Hi, my name is Ollie and I like drone design and cooking.',
-        role: 'Mech Co-Lead'
+        role: 'Mech Co-Lead',
+        project: 'Quad'
       },
       {
         name: 'James Cenawood',
         bio: BIO_PLACEHOLDER,
-        role: 'Computer Science Lead'
+        role: 'Computer Science Lead',
+        project: 'Quad'
       },
       {
         name: 'Max Lee',
         bio: BIO_PLACEHOLDER,
-        role: 'Operations Lead'
+        role: 'Operations Lead',
+        project: 'Quad'
       }
     ]
   },
@@ -88,64 +95,75 @@ const TEAM_SECTIONS = [
         name: 'Daniel Sheth',
         imageBase: 'Daniel',
         bio: 'I am an aspiring mechanical engineer interested in aerodynamics and propulsion systems',
-        year: 'Sophomore'
+        year: 'Sophomore',
+        project: 'Quad'
       },
       {
         name: 'Josh Lennon',
         bio: BIO_PLACEHOLDER,
-        year: 'Sophomore'
+        year: 'Sophomore',
+        project: 'Quad'
       },
       {
         name: 'Yuki Wykoff',
         bio: "I'm a mechanical engineer fueled by caffeine and the belief that duct tape counts as a legitimate solution",
-        year: 'Sophomore'
+        year: 'Sophomore',
+        project: 'Hexapod'
       },
       {
         name: 'Sophie Di',
         bio: "I'm a mechanical engineer and I love sketching, bouldering, and throwing paper airplanes",
-        year: 'Freshman'
+        year: 'Freshman',
+        project: 'Quad'
       },
       {
         name: 'Nicholas Letendre',
         imageBase: 'NickLet',
         bio: "I'm Nicholas, and I am a sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
-        year: 'Sophomore'
+        year: 'Sophomore',
+        project: 'Hexapod'
       },
       {
         name: 'Lindsay Kossoff',
         imageBase: 'Lindsay',
         bio: 'Hi, my name is Lindsay Kossoff. I am a freshman from Maryland studying mechanical engineering.',
-        year: 'Freshman'
+        year: 'Freshman',
+        project: 'Quad'
       },
       {
         name: 'Christopher Guillen-Chacon',
         imageBase: 'Chris',
         bio: "My name is Chris and I'm interested in drone design",
-        year: 'Sophomore'
+        year: 'Sophomore',
+        project: 'Quad'
       },
       {
         name: 'Nick Lennon',
         imageBase: 'NickLen',
         bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
-        year: 'Junior'
+        year: 'Junior',
+        project: 'Quad'
       },
       {
         name: 'Ronan Alo',
         imageBase: 'Ronan',
         bio: 'I am a sophomore majoring in mechanical engineering and computer science, interested in drone pathing',
-        year: 'Sophomore'
+        year: 'Sophomore',
+        project: 'Quad'
       },
       {
         name: 'Hamilton Jeong',
         imageBase: 'Hamilton',
         bio: "I'm a BioStats major, I like competing in Taekwondo and playing piano",
-        year: 'Junior'
+        year: 'Junior',
+        project: 'Quad'
       },
       {
         name: 'Anthony Parlatore',
         imageBase: 'Anthony',
         bio: "I'm Anthony, senior ChemE in masters of MechE interested in new technology (and I really like drones)",
-        year: 'Senior'
+        year: 'Senior',
+        project: 'Quad'
       }
     ]
   }
@@ -175,7 +193,7 @@ function App() {
     return validPages.includes(hash) ? hash : 'home';
   };
   const [currentPage, setCurrentPage] = useState(getPageFromHash);
-  const [formalMode, setFormalMode] = useState(false);
+  const [formalMode, setFormalMode] = useState(true);
   const [flippedPanels, setFlippedPanels] = useState({ quad: false, hexapod: false, swallow: false });
   const [panelHoverSide, setPanelHoverSide] = useState({ quad: null, hexapod: null, swallow: null });
   const [hoverEnabled, setHoverEnabled] = useState({ quad: true, hexapod: true, swallow: true });
@@ -913,6 +931,7 @@ function App() {
                           className={`team-card ${isFlipped ? 'is-flipped' : ''} ${teamCardTilt[cardId] ? `tilt-${teamCardTilt[cardId]}` : ''
                             }`}
                           key={member.name}
+                          data-project={member.project ? `currently working on: ${member.project}` : undefined}
                           tabIndex={0}
                           onClick={() => toggleBioCard(cardId)}
                           onKeyDown={(event) => {
