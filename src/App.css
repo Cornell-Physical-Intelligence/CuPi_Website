@@ -315,49 +315,7 @@ body.scroll-locked {
   }
 
   .team-grid {
-    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
-  }
-
-  .team-card {
-    min-height: 200px;
-  }
-
-  .team-card__flipper {
-    padding: 4px;
-  }
-
-  .team-card__face {
-    inset: 4px;
-  }
-
-  .team-card__photo {
-    height: 110px;
-  }
-
-  .team-card__face--front {
-    gap: 6px;
-    padding-bottom: 8px;
-  }
-
-  .team-card__name {
-    font-size: 0.58rem;
-    padding: 4px 8px;
-    min-height: 26px;
-    letter-spacing: 0.1em;
-  }
-
-  .team-card__meta {
-    font-size: 0.5rem;
-  }
-
-  .team-card__face--back {
-    padding: 8px;
-  }
-
-  .team-card__bio {
-    font-size: 0.58rem;
-    line-height: 1.5;
   }
 
   .alt-section--team .alt-section__title-row {
@@ -1229,7 +1187,7 @@ body.scroll-locked {
 .team-card__face--front {
   gap: 12px;
   padding-bottom: 12px;
-  border-radius: 0;
+  border-radius: 4px;
 }
 
 .team-card__face--back {
@@ -1240,7 +1198,7 @@ body.scroll-locked {
   align-items: center;
   text-align: center;
   transform: rotateY(180deg);
-  border-radius: 0;
+  border-radius: 4px;
 }
 
 .team-card__photo {
@@ -1347,6 +1305,58 @@ body.scroll-locked {
   margin: 0;
 }
 
+@media (max-width: 640px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .team-card {
+    min-height: 190px !important;
+  }
+
+  .team-card__flipper {
+    padding: 4px;
+  }
+
+  .team-card__face {
+    inset: 4px;
+  }
+
+  .team-card__photo {
+    height: 100px;
+  }
+
+  .team-card__face--front {
+    gap: 6px;
+    padding-bottom: 6px;
+  }
+
+  .team-card__name {
+    font-size: 0.55rem;
+    padding: 3px 6px;
+    min-height: 22px;
+    letter-spacing: 0.08em;
+    border-radius: 10px;
+  }
+
+  .team-card__meta {
+    font-size: 0.48rem;
+  }
+
+  .team-card__face--back {
+    padding: 8px;
+  }
+
+  .team-card__bio {
+    font-size: 0.55rem;
+    line-height: 1.4;
+  }
+
+  .team-card__photo-placeholder {
+    font-size: 0.8rem;
+  }
+}
 
 .project-panel__face--placeholder {
   display: flex;
