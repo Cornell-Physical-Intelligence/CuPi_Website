@@ -779,7 +779,7 @@ function App() {
                 >
                   <div className="project-panel__face project-panel__face--front project-panel__face--placeholder">
                     <span className="project-panel__placeholder">[?]</span>
-                    <figcaption className="project-panel__label">Project 003 — Swallow</figcaption>
+                    <figcaption className="project-panel__label">Project 003 — Tunnel</figcaption>
                   </div>
                   <div className="project-panel__face project-panel__face--back">
                     <div className="project-panel__back-content">
@@ -788,12 +788,31 @@ function App() {
                         <span className="project-panel__heading-lead">Lead: TBA</span>
                       </p>
                       <div className="project-panel__details project-panel__details--icon-only">
-                        <img
-                          src={assetPath('img/SwallowProject.png')}
-                          alt="Swallow research teaser"
-                          className="project-panel__back-image project-panel__back-image--swallow"
-                          loading="lazy"
-                        />
+                        <pre className="project-panel__ascii-art">{`
+         _______________
+        /               \\
+       /   ___________   \\
+      /   /           \\   \\
+     |   |    (  ))    |   |
+     |   |   (  )))    |   |
+     |   |    (  ))    |   |
+      \\   \\___________/   /
+       \\                 /
+        \\_______________/
+              |   |
+              |   |
+         _____|   |_____
+        |               |
+        |   |=======|   |
+        |   |       |   |
+        |   |=======|   |
+        |_______________|
+              |   |
+              |   |
+              \\   /
+               \\ /
+                V
+`}</pre>
                       </div>
                     </div>
                   </div>
