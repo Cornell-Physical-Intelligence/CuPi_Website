@@ -314,10 +314,6 @@ body.scroll-locked {
     min-height: auto;
   }
 
-  .team-grid {
-    gap: 8px;
-  }
-
   .alt-section--team .alt-section__title-row {
     flex-wrap: nowrap;
     justify-content: space-between;
@@ -1126,10 +1122,9 @@ body.scroll-locked {
 }
 
 .team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 230px);
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  justify-items: center;
   gap: clamp(16px, 3vw, 28px);
 }
 
@@ -1140,7 +1135,7 @@ body.scroll-locked {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 100%;
+  width: 230px;
   height: auto;
   position: relative;
   overflow: visible;
@@ -1301,15 +1296,12 @@ body.scroll-locked {
 
 @media (max-width: 640px) {
   .team-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    justify-content: center !important;
-    justify-items: center !important;
-    gap: 8px !important;
+    gap: 8px;
   }
 
   .team-card {
-    min-height: 220px !important;
-    width: 100% !important;
+    width: calc(50% - 4px);
+    min-height: 200px;
   }
 
   .team-card__flipper {
