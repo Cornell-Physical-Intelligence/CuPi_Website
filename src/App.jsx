@@ -105,12 +105,6 @@ const TEAM_SECTIONS = [
         project: 'Quad'
       },
       {
-        name: 'Yuki Wykoff',
-        bio: "I'm a mechanical engineer fueled by caffeine and the belief that duct tape counts as a legitimate solution",
-        year: 'Sophomore',
-        project: 'Hexapod'
-      },
-      {
         name: 'Sophie Di',
         bio: "I'm a mechanical engineer and I love sketching, bouldering, and throwing paper airplanes",
         year: 'Freshman',
