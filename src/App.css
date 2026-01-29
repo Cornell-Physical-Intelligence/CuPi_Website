@@ -1377,15 +1377,25 @@ body.scroll-locked {
     font-size: 0.8rem;
   }
 
-  /* Mobile: vertical tag along right edge of card */
-  .team-card[data-project]::before {
+  /* Mobile: vertical tag outside left edge for left-column cards */
+  .team-card[data-project]:nth-child(odd)::before {
+    writing-mode: vertical-rl;
+    top: 50%;
+    right: auto;
+    left: -14px;
+    bottom: auto;
+    transform: translateY(-50%);
+    white-space: nowrap;
+  }
+
+  /* Mobile: vertical tag outside right edge for right-column cards */
+  .team-card[data-project]:nth-child(even)::before {
     writing-mode: vertical-rl;
     top: 50%;
     left: auto;
-    right: 12px;
+    right: -14px;
     bottom: auto;
     transform: translateY(-50%);
-    transform-origin: center center;
     white-space: nowrap;
   }
 }
