@@ -315,7 +315,32 @@ body.scroll-locked {
   }
 
   .team-grid {
-    gap: clamp(10px, 4vw, 18px);
+    gap: clamp(6px, 2vw, 12px);
+  }
+
+  .team-card {
+    width: calc(50% - 8px);
+    min-height: 180px;
+  }
+
+  .team-card__photo {
+    height: 120px;
+  }
+
+  .team-card__name {
+    font-size: 0.65rem;
+  }
+
+  .team-card__meta {
+    font-size: 0.55rem;
+  }
+
+  .team-card__face--back {
+    padding: 10px;
+  }
+
+  .team-card__bio {
+    font-size: 0.6rem;
   }
 
   .alt-section--team .alt-section__title-row {
