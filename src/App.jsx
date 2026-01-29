@@ -72,6 +72,15 @@ const TEAM_SECTIONS = [
         name: 'Sophie Di',
         bio: "I'm a mechanical engineer and I love sketching, bouldering, and throwing paper airplanes",
         year: 'Freshman'
+      },
+      {
+        name: 'Max Lee',
+        bio: BIO_PLACEHOLDER,
+        year: 'Freshman'
+      },
+      {
+        name: 'James Cenawood',
+        bio: BIO_PLACEHOLDER
       }
     ]
   },
@@ -175,8 +184,6 @@ function App() {
   const [showAsciiText, setShowAsciiText] = useState(false);
   const [isCompactHero, setIsCompactHero] = useState(false);
   const [missionTilesPlayed, setMissionTilesPlayed] = useState(false);
-  const [applyHovered, setApplyHovered] = useState(false);
-  const [isApplyClickable, setIsApplyClickable] = useState(false);
   const [expandedImage, setExpandedImage] = useState(null);
   const debugCollapseTriggeredRef = useRef(false);
   const scrollLockActiveRef = useRef(false);
@@ -240,19 +247,6 @@ function App() {
   );
 
   useEffect(() => {
-    let timeout;
-    if (applyHovered) {
-      // Animation is 0.2s, so we wait 0.5s total for a 0.3s buffer
-      timeout = setTimeout(() => {
-        setIsApplyClickable(true);
-      }, 500);
-    } else {
-      setIsApplyClickable(false);
-    }
-    return () => clearTimeout(timeout);
-  }, [applyHovered]);
-
-  useEffect(() => {
     const cancelGallery = preloadImages(galleryImagePaths, { priority: 'low' });
     const cancelProjects = preloadImages(projectImagePaths, { priority: 'low' });
     return () => {
@@ -275,14 +269,6 @@ function App() {
       preloadImages([...galleryImagePaths, ...projectImagePaths], { priority: 'high' });
     }
   }, [currentPage, aboutImagePaths, galleryImagePaths, projectImagePaths]);
-
-  const handleApplyClick = () => {
-    if (!isApplyClickable) {
-      setApplyHovered(true);
-      return;
-    }
-    handleNavClick('apply');
-  };
 
   const handleNavClick = (page) => {
     setCurrentPage(page);
@@ -1031,24 +1017,32 @@ function App() {
       );
     }
 
+    // Apply page content
     if (currentPage === 'apply') {
       return (
         <main className="alt-page">
           <section className="alt-section alt-section--apply">
-            <h2 className="section-label">Apply to CUPI</h2>
             <div className="apply-page">
-              <p className="apply-page__intro">
-                We are always looking for motivated Cornell students who want to push the
-                boundaries of robotics. Fill out the form below to apply.
-              </p>
-              <div className="apply-page__form-wrapper">
-                <iframe
-                  src={APPLY_URL}
-                  title="CUPI Application Form"
-                  className="apply-page__iframe"
-                >
-                  Loading...
-                </iframe>
+              <img src={assetPath('icons/Crab.png')} alt="CUPI Crab" className="apply-page__logo" />
+              <p className="apply-page__thank-you">Thanks for your interest in CUPI! We'd love to get to know you. Fill out the interest form and grab a coffee chat with one of our members.</p>
+              <div className="apply-timeline">
+                <div className="apply-timeline__node">
+                  <div className="apply-timeline__content">
+                    <a href={APPLY_URL} target="_blank" rel="noopener noreferrer" className="apply-timeline__link">
+                      Interest Form
+                    </a>
+                    <p className="apply-timeline__desc">Indicate your interest in the club by filling out this brief form.</p>
+                  </div>
+                </div>
+                <div className="apply-timeline__connector"></div>
+                <div className="apply-timeline__node">
+                  <div className="apply-timeline__content">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeAoHRH3jaqJc02cI7wYN-ZaQOSK6Ygou9UtXYAYbXwWh0rRQ/viewform" target="_blank" rel="noopener noreferrer" className="apply-timeline__link">
+                      Schedule a Coffee Chat
+                    </a>
+                    <p className="apply-timeline__desc">Talk one-on-one with a member to learn more about our projects and culture.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -1089,35 +1083,11 @@ function App() {
               ABOUT
             </button>
             <button
-              onClick={handleApplyClick}
-              className={`menu-item menu-item--apply ${isApplyClickable ? 'is-clickable' : ''}`}
+              onClick={() => handleNavClick('apply')}
+              className={`menu-item ${currentPage === 'apply' ? 'active' : ''}`}
               type="button"
-              onMouseEnter={() => setApplyHovered(true)}
-              onMouseLeave={() => setApplyHovered(false)}
             >
-              <AnimatePresence mode="wait" initial={false}>
-                {applyHovered ? (
-                  <motion.span
-                    key="goto"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    GO TO FORM
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    key="apply"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    APPLY
-                  </motion.span>
-                )}
-              </AnimatePresence>
+              APPLY
             </button>
           </div>
         </GlassSurface>
