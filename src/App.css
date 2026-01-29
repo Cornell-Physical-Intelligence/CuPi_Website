@@ -1377,26 +1377,9 @@ body.scroll-locked {
     font-size: 0.8rem;
   }
 
-  /* Mobile: vertical tag outside left edge for left-column cards */
-  .team-card[data-project]:nth-child(odd)::before {
-    writing-mode: vertical-rl;
-    top: 50%;
-    right: auto;
-    left: -14px;
-    bottom: auto;
-    transform: translateY(-50%);
-    white-space: nowrap;
-  }
-
-  /* Mobile: vertical tag outside right edge for right-column cards */
-  .team-card[data-project]:nth-child(even)::before {
-    writing-mode: vertical-rl;
-    top: 50%;
-    left: auto;
-    right: -14px;
-    bottom: auto;
-    transform: translateY(-50%);
-    white-space: nowrap;
+  /* Mobile: hide tag label, keep dotted border only */
+  .team-card[data-project]::before {
+    display: none;
   }
 }
 
