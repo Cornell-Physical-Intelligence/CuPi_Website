@@ -300,7 +300,6 @@ function App() {
       assetPath('img/Hexapod.png'),
       assetPath('img/LegFlipped.png'),
       assetPath('img/SwallowProject.png'),
-      assetPath('img/LegRender.png'),
     ],
     []
   );
@@ -717,6 +716,70 @@ function App() {
             <div className="spacer" />
           </div>
           <MissionTiles played={missionTilesPlayed} onPlay={() => setMissionTilesPlayed(true)} />
+          <section className="gallery-section">
+            <h2 className="section-label">Gallery</h2>
+            <div className="gallery-tapestry">
+              {GALLERY_IMAGES.map((image, index) => {
+                const aspectRatio = image.width && image.height ? `${image.width}/${image.height}` : undefined;
+
+                return (
+                  <div
+                    className="gallery-item"
+                    key={image.filename}
+                    onClick={() => setExpandedImage(image)}
+                    role="button"
+                    tabIndex={0}
+                    style={aspectRatio ? { aspectRatio } : undefined}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setExpandedImage(image);
+                      }
+                    }}
+                  >
+                    <img
+                      src={assetPath(`img/Gallery/${image.filename}`)}
+                      alt={`Concept art ${index + 1}`}
+                      loading={index < 6 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      fetchPriority={index < 3 ? 'high' : 'auto'}
+                      width={image.width}
+                      height={image.height}
+                      onLoad={(e) => e.target.classList.add('loaded')}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="gallery-fade-end" />
+            <p className="gallery-more">(more to come)</p>
+          </section>
+          <AnimatePresence>
+            {expandedImage && (
+              <motion.div
+                className="gallery-lightbox"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setExpandedImage(null)}
+              >
+                <motion.div
+                  className="gallery-lightbox__content"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.9, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <img
+                    src={assetPath(`img/Gallery/${expandedImage.filename}`)}
+                    alt="Expanded view"
+                  />
+                  <span className="gallery-lightbox__author">by {expandedImage.author}</span>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
           <SiteFooter />
         </>
       );
@@ -863,71 +926,7 @@ function App() {
               </figure>
             </div>
           </section>
-          <section className="gallery-section">
-            <h2 className="section-label">Gallery</h2>
-            <div className="gallery-tapestry">
-              {GALLERY_IMAGES.map((image, index) => {
-                const aspectRatio = image.width && image.height ? `${image.width}/${image.height}` : undefined;
-
-                return (
-                  <div
-                    className="gallery-item"
-                    key={image.filename}
-                    onClick={() => setExpandedImage(image)}
-                    role="button"
-                    tabIndex={0}
-                    style={aspectRatio ? { aspectRatio } : undefined}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        setExpandedImage(image);
-                      }
-                    }}
-                  >
-                    <img
-                      src={assetPath(`img/Gallery/${image.filename}`)}
-                      alt={`Concept art ${index + 1}`}
-                      loading={index < 6 ? 'eager' : 'lazy'}
-                      decoding="async"
-                      fetchPriority={index < 3 ? 'high' : 'auto'}
-                      width={image.width}
-                      height={image.height}
-                      onLoad={(e) => e.target.classList.add('loaded')}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-            <div className="gallery-fade-end" />
-            <p className="gallery-more">(more to come)</p>
-          </section>
           <SiteFooter />
-          <AnimatePresence>
-            {expandedImage && (
-              <motion.div
-                className="gallery-lightbox"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => setExpandedImage(null)}
-              >
-                <motion.div
-                  className="gallery-lightbox__content"
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.9, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <img
-                    src={assetPath(`img/Gallery/${expandedImage.filename}`)}
-                    alt="Expanded view"
-                  />
-                  <span className="gallery-lightbox__author">by {expandedImage.author}</span>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </main>
       );
     }

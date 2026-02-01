@@ -3,7 +3,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CountUp from './CountUp';
 import './MissionTiles.css';
-import { assetPath } from '../utils/assetPath';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,14 +53,6 @@ function MissionTiles({ played, onPlay }) {
 
   return (
     <section className="mission-tiles">
-      <div className="mission-tiles__background" aria-hidden="true">
-        <img
-          src={assetPath('img/LegRender.png')}
-          alt=""
-          loading="lazy"
-          className="mission-tiles__background-img"
-        />
-      </div>
       <div className="mission-tiles__content">
         <div className="mission-tiles__blurb-wrapper">
           <p className="mission-tiles__blurb">

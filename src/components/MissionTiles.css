@@ -6,10 +6,9 @@
   z-index: 2;
   overflow: hidden;
   border-radius: 32px;
-  padding: clamp(40px, 7vw, 96px) clamp(40px, 7vw, 96px) clamp(300px, 40vw, 600px);
+  padding: clamp(40px, 7vw, 96px);
   background: transparent;
   box-shadow: 0 28px 68px rgba(0, 0, 0, 0.5);
-  min-height: clamp(720px, 145vh, 2000px);
 }
 
 .mission-tiles__background {
