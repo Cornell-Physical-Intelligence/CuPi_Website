@@ -180,6 +180,52 @@ const PROFESSORS = [
   }
 ];
 
+const CRAB_FRAMES = [
+  'icons/logo-1.svg',
+  'icons/logo-2.svg',
+  'icons/logo-3.svg',
+];
+
+const CRAB_WIGGLE = [0, 4, -4, 3, -3, 0];
+
+function CrabAnimation() {
+  const [frame, setFrame] = useState(0);
+  const [rotation, setRotation] = useState(0);
+  const playingRef = useRef(false);
+
+  const playAnimation = () => {
+    if (playingRef.current) return;
+    playingRef.current = true;
+    const sequence = [1, 2, 1, 0];
+    let i = 0;
+    const id = setInterval(() => {
+      setFrame(sequence[i]);
+      setRotation(CRAB_WIGGLE[i] || 0);
+      i++;
+      if (i >= sequence.length) {
+        clearInterval(id);
+        setRotation(0);
+        playingRef.current = false;
+      }
+    }, 120);
+  };
+
+  useEffect(() => {
+    playAnimation();
+  }, []);
+
+  return (
+    <img
+      src={assetPath(CRAB_FRAMES[frame])}
+      alt="CUPI Crab"
+      className="apply-page__logo"
+      style={{ transform: `rotate(${rotation}deg)` }}
+      onMouseEnter={playAnimation}
+      onTouchStart={playAnimation}
+    />
+  );
+}
+
 function App() {
   const validPages = ['home', 'work', 'about', 'apply'];
   const getPageFromHash = () => {
@@ -1040,7 +1086,7 @@ function App() {
         <main className="alt-page">
           <section className="alt-section alt-section--apply">
             <div className="apply-page">
-              <img src={assetPath('icons/Crab.png')} alt="CUPI Crab" className="apply-page__logo" />
+              <CrabAnimation />
               <p className="apply-page__thank-you">Thanks for your interest in CUPI! We'd love to get to know you. Fill out the interest form and grab a coffee chat with one of our members.</p>
               <div className="apply-timeline">
                 <div className="apply-timeline__node">
