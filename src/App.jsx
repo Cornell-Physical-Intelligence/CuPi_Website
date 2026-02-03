@@ -11,6 +11,74 @@ import { preloadImages } from './utils/preloadImages';
 const ASCIIText = lazy(() => import('./components/ASCIIText'));
 
 const APPLY_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSePAs7xr7J6OrCI2z-gBEo6HAQ4Aip6ps0nbR93yQYDhYqlbQ/viewform';
+const PROJECT_PARTNERS = {
+  quad: [
+    {
+      href: 'https://theaigrandprix.com/',
+      src: 'icons/ai-gp-logo-orange.svg',
+      alt: 'AI Grand Prix'
+    },
+    {
+      href: 'https://modovolo.com/',
+      src: 'icons/Modovolo_Logo.png',
+      alt: 'Modovolo'
+    }
+  ],
+  hexapod: [
+    {
+      href: 'https://www.touchtronix.io/',
+      src: 'icons/TouchTronix_Logo.png',
+      alt: 'TouchTronix'
+    }
+  ],
+  swallow: []
+};
+
+const stopCardFlip = (event) => {
+  event.stopPropagation();
+};
+
+const stopCardFlipOnKey = (event) => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.stopPropagation();
+  }
+};
+
+const ProjectPartnerLinks = ({ partners }) => {
+  if (!partners || partners.length === 0) {
+    return null;
+  }
+
+  const isMulti = partners.length > 1;
+
+  return (
+    <div
+      className={`project-panel__partners${isMulti ? ' project-panel__partners--multi' : ''}`}
+      onClick={stopCardFlip}
+      onKeyDown={stopCardFlipOnKey}
+    >
+      {partners.map((partner) => (
+        <a
+          key={partner.href}
+          href={partner.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="project-panel__partner-link"
+          aria-label={partner.alt}
+          onClick={stopCardFlip}
+          onKeyDown={stopCardFlipOnKey}
+        >
+          <img
+            src={assetPath(partner.src)}
+            alt={partner.alt}
+            className="project-panel__partner-logo"
+            loading="lazy"
+          />
+        </a>
+      ))}
+    </div>
+  );
+};
 
 const GALLERY_IMAGES = [
   { filename: 'PixelHands.png', author: 'Sophie', width: 750, height: 1128 },
@@ -227,7 +295,7 @@ function CrabAnimation() {
 }
 
 function App() {
-  const validPages = ['home', 'work', 'about', 'apply'];
+  const validPages = ['home', 'work', 'subteams', 'about', 'apply'];
   const getPageFromHash = () => {
     const hash = window.location.hash.replace('#', '');
     return validPages.includes(hash) ? hash : 'home';
@@ -812,6 +880,7 @@ function App() {
                   <div className="project-panel__face project-panel__face--front" data-zoom="in">
                     <img src={assetPath('img/Quad.png')} alt="Project 001 Quad" loading="lazy" />
                     <figcaption className="project-panel__label">Project 001 — Quad</figcaption>
+                    <ProjectPartnerLinks partners={PROJECT_PARTNERS.quad} />
                   </div>
                   <div className="project-panel__face project-panel__face--back">
                     <div className="project-panel__back-content">
@@ -862,6 +931,7 @@ function App() {
                   <div className="project-panel__face project-panel__face--front" data-zoom="bird">
                     <img src={assetPath('img/Hexapod.png')} alt="Project 002 Hexapod" loading="lazy" />
                     <figcaption className="project-panel__label">Project 002 — Hexapod</figcaption>
+                    <ProjectPartnerLinks partners={PROJECT_PARTNERS.hexapod} />
                   </div>
                   <div className="project-panel__face project-panel__face--back">
                     <div className="project-panel__back-content">
@@ -911,6 +981,7 @@ function App() {
                   <div className="project-panel__face project-panel__face--front project-panel__face--placeholder">
                     <span className="project-panel__placeholder">[?]</span>
                     <figcaption className="project-panel__label">Project 003 — Tunnel</figcaption>
+                    <ProjectPartnerLinks partners={PROJECT_PARTNERS.swallow} />
                   </div>
                   <div className="project-panel__face project-panel__face--back">
                     <div className="project-panel__back-content">
@@ -925,6 +996,18 @@ function App() {
                 </div>
               </figure>
             </div>
+          </section>
+          <SiteFooter />
+        </main>
+      );
+    }
+
+    if (currentPage === 'subteams') {
+      return (
+        <main className="alt-page">
+          <section className="alt-section">
+            <h2 className="section-label">Subteams</h2>
+            <p className="apply-page__thank-you">Coming soon.</p>
           </section>
           <SiteFooter />
         </main>
@@ -1137,6 +1220,12 @@ function App() {
               className={`menu-item ${currentPage === 'work' ? 'active' : ''}`}
             >
               WORK
+            </button>
+            <button
+              onClick={() => handleNavClick('subteams')}
+              className={`menu-item ${currentPage === 'subteams' ? 'active' : ''}`}
+            >
+              SUBTEAMS
             </button>
             <button
               onClick={() => handleNavClick('about')}

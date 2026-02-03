@@ -1,4 +1,4 @@
-import{r as vi,j as lo}from"./index-BIDE4-ZQ.js";/**
+import{r as vi,j as lo}from"./index-DLsWhsgr.js";/**
  * @license
  * Copyright 2010-2023 Three.js Authors
  * SPDX-License-Identifier: MIT

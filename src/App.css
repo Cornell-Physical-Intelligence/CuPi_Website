@@ -943,6 +943,69 @@ body.scroll-locked {
   user-select: none;
   background: rgba(0, 0, 0, 0.35);
   padding: 2px 8px;
+  z-index: 2;
+}
+
+.project-panel__partners {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--partner-gap, clamp(8px, 1.1vw, 14px));
+  padding: clamp(6px, 0.9vw, 10px) clamp(8px, 1.1vw, 14px);
+  z-index: 2;
+  pointer-events: auto;
+  flex-wrap: nowrap;
+}
+
+.project-panel__partners--multi {
+  --partner-gap: clamp(22px, 2.6vw, 32px);
+}
+
+.project-panel__partners::before,
+.project-panel__partners::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.project-panel__partners::before {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.project-panel__partners::after {
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+}
+
+.project-panel__partner-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-panel__face--front .project-panel__partner-logo {
+  height: clamp(20px, 2.6vw, 28px);
+  width: auto;
+  max-width: 200px;
+  display: block;
+  object-fit: contain;
+  transform: none;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.project-panel__partner-link:hover .project-panel__partner-logo,
+.project-panel__partner-link:focus-visible .project-panel__partner-logo {
+  opacity: 1;
+  filter: brightness(2.1) contrast(1.12) saturate(1.55)
+    drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
 }
 
 .project-panel__face--back {
