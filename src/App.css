@@ -713,13 +713,40 @@ body.scroll-locked {
   margin-bottom: clamp(80px, 12vh, 200px);
 }
 
-.apply-page__logo {
+.apply-page__logo-wrap {
   width: clamp(140px, 25vw, 280px);
-  height: auto;
+  height: clamp(140px, 25vw, 280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 0;
+  position: relative;
+}
+
+.apply-page__logo {
+  width: 100%;
+  height: 100%;
   opacity: 0.9;
   display: block;
   cursor: pointer;
+  object-fit: contain;
+}
+
+.apply-page__logo-loading {
+  position: absolute;
+  bottom: clamp(6px, 1vw, 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.apply-page__logo-wrap.is-loaded .apply-page__logo-loading {
+  opacity: 0;
 }
 
 .apply-page__thank-you {

@@ -259,6 +259,7 @@ const CRAB_WIGGLE = [0, 4, -4, 3, -3, 0];
 function CrabAnimation() {
   const [frame, setFrame] = useState(0);
   const [rotation, setRotation] = useState(0);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const playingRef = useRef(false);
 
   const playAnimation = () => {
@@ -282,15 +283,29 @@ function CrabAnimation() {
     playAnimation();
   }, []);
 
+  useEffect(() => {
+    CRAB_FRAMES.forEach((src) => {
+      const img = new Image();
+      img.src = assetPath(src);
+    });
+  }, []);
+
   return (
-    <img
-      src={assetPath(CRAB_FRAMES[frame])}
-      alt="CUPI Crab"
-      className="apply-page__logo"
-      style={{ transform: `rotate(${rotation}deg)` }}
-      onMouseEnter={playAnimation}
-      onTouchStart={playAnimation}
-    />
+    <div className={`apply-page__logo-wrap ${hasLoaded ? 'is-loaded' : 'is-loading'}`}>
+      {!hasLoaded && <span className="apply-page__logo-loading">Crab Loading...</span>}
+      <img
+        src={assetPath(CRAB_FRAMES[frame])}
+        alt="CUPI Crab"
+        className="apply-page__logo"
+        style={{ transform: `rotate(${rotation}deg)` }}
+        onMouseEnter={playAnimation}
+        onTouchStart={playAnimation}
+        onLoad={() => setHasLoaded(true)}
+        onError={() => setHasLoaded(true)}
+        fetchPriority="high"
+        decoding="async"
+      />
+    </div>
   );
 }
 
