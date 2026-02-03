@@ -260,6 +260,7 @@ function CrabAnimation() {
   const [frame, setFrame] = useState(0);
   const [rotation, setRotation] = useState(0);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const playingRef = useRef(false);
 
   const playAnimation = () => {
@@ -290,9 +291,20 @@ function CrabAnimation() {
     });
   }, []);
 
+  useEffect(() => {
+    if (hasLoaded) {
+      setShowLoading(false);
+      return undefined;
+    }
+    const timeoutId = window.setTimeout(() => {
+      setShowLoading(true);
+    }, 500);
+    return () => window.clearTimeout(timeoutId);
+  }, [hasLoaded]);
+
   return (
     <div className={`apply-page__logo-wrap ${hasLoaded ? 'is-loaded' : 'is-loading'}`}>
-      {!hasLoaded && <span className="apply-page__logo-loading">Crab Loading...</span>}
+      {!hasLoaded && showLoading && <span className="apply-page__logo-loading">Crab Loading...</span>}
       <img
         src={assetPath(CRAB_FRAMES[frame])}
         alt="CUPI Crab"
@@ -300,8 +312,14 @@ function CrabAnimation() {
         style={{ transform: `rotate(${rotation}deg)` }}
         onMouseEnter={playAnimation}
         onTouchStart={playAnimation}
-        onLoad={() => setHasLoaded(true)}
-        onError={() => setHasLoaded(true)}
+        onLoad={() => {
+          setHasLoaded(true);
+          setShowLoading(false);
+        }}
+        onError={() => {
+          setHasLoaded(true);
+          setShowLoading(false);
+        }}
         fetchPriority="high"
         decoding="async"
       />

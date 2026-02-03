@@ -734,9 +734,9 @@ body.scroll-locked {
 
 .apply-page__logo-loading {
   position: absolute;
-  bottom: clamp(6px, 1vw, 12px);
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -60%);
   font-size: clamp(0.6rem, 1.2vw, 0.75rem);
   letter-spacing: 0.18em;
   text-transform: uppercase;
