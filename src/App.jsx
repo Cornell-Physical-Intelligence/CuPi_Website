@@ -10,7 +10,7 @@ import { preloadImages } from './utils/preloadImages';
 
 const ASCIIText = lazy(() => import('./components/ASCIIText'));
 
-const APPLY_URL = 'https://forms.gle/c5MmMmwd77zbBtSr8';
+const APPLY_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSePAs7xr7J6OrCI2z-gBEo6HAQ4Aip6ps0nbR93yQYDhYqlbQ/viewform';
 
 const GALLERY_IMAGES = [
   { filename: 'PixelHands.png', author: 'Sophie', width: 750, height: 1128 },
