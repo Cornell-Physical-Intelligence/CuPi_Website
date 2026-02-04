@@ -97,6 +97,43 @@ const GALLERY_IMAGES = [
 
 const HERO_FONT_FAMILY = "'Times New Roman', Times, serif";
 const BIO_PLACEHOLDER = '[coming soon]';
+const SUBTEAMS = [
+  {
+    title: 'Mechanical',
+    description:
+      'Mechanical members at CuPI design the structures that enable sensing, motion, and autonomy. From drone frames to walking robots, MechEs turn requirements from CS and ECE into lightweight, robust, and modular hardware.',
+    label: 'Current Mechanical projects include:',
+    items: [
+      'Scout Quadcopter Structure: Continuing drone bring-up, designing modular mounts for LiDAR and cameras, and optimizing prop guards and weight',
+      'Hexapod Mechanical Design: Designing a protective exoskeleton, 3-DOF leg geometry, and the main body for a walking robot',
+      'Modovolo Sensor Housing: Fabricating a modular perception payload to integrate LiDAR and sensors onto Modovolo’s drone platform',
+      'Autonomy Test Platforms: Designing mounts and fixtures for sensors used in autonomy testing on ground vehicles (hexapod), and airborne drones (modovolo)'
+    ]
+  },
+  {
+    title: 'Electrical',
+    description:
+      'ECE members at CuPI design the electronics and embedded systems that power our robots—from custom PCBs to firmware and communication stacks. Each project is tightly coupled to a physical platform, with boards designed, assembled, and tested by the team.',
+    label: 'Current ECE projects include:',
+    items: [
+      'Scout Quadcopter Electronics: Designing sensor boards, ESP-32 communication, and power distribution for a downward-facing camera and LiDAR testing',
+      'Hexapod Sensor & Power Stack: Building a custom sensor board, improving the PDB, integrating servo drivers, and enabling ESP-NOW communication with the quadcopter',
+      'Modovolo Perception Hub: Testing sensor boards and PDBs, integrating LiDAR, Jetson Nano Orin, and low-level STM32 firmware'
+    ]
+  },
+  {
+    title: 'Software',
+    description:
+      'CS members at CuPI build the autonomy and perception software that runs on our robots in the real world. Our work spans aerial and ground platforms, with projects tied directly to physical hardware and live sensor data—not just simulation.',
+    label: 'Current CS projects include:',
+    items: [
+      'Anduril AI Grand Prix: Building perception and navigation software for autonomous vehicles, focusing on real-time decision-making and sensor processing',
+      'Modovolo Perception Stack: Developing a ROS 2-based perception stack using 3D LiDAR and cameras on Jetson Nano / Orin for autonomous flight and safety',
+      'Hexapod Autonomy: Implementing control loops, mapping, and navigation logic for a walking robot with onboard perception',
+      'Scout Quadcopter: Processing downward-facing camera data and coordinating with the hexapod to map environments collaboratively'
+    ]
+  }
+];
 
 const TEAM_SECTIONS = [
   {
@@ -345,6 +382,7 @@ function App() {
   const [isCompactHero, setIsCompactHero] = useState(false);
   const [missionTilesPlayed, setMissionTilesPlayed] = useState(false);
   const [expandedImage, setExpandedImage] = useState(null);
+  const [openSubteams, setOpenSubteams] = useState({});
   const debugCollapseTriggeredRef = useRef(false);
   const scrollLockActiveRef = useRef(false);
   const debugHideTimeoutRef = useRef(null);
@@ -1038,9 +1076,47 @@ function App() {
     if (currentPage === 'subteams') {
       return (
         <main className="alt-page">
-          <section className="alt-section">
+          <section className="alt-section alt-section--subteams">
             <h2 className="section-label">Subteams</h2>
-            <p className="apply-page__thank-you">Coming soon.</p>
+            <div className="subteam-grid">
+              {SUBTEAMS.map((team) => {
+                const isOpen = openSubteams[team.title];
+                return (
+                  <article className="subteam-panel" key={team.title}>
+                    <div className="subteam-panel__inner">
+                      <div className="subteam-panel__header">
+                        <h3 className="subteam-panel__title">{team.title}</h3>
+                        <p className="subteam-panel__desc">{team.description}</p>
+                        <button
+                          type="button"
+                          className="subteam-panel__toggle"
+                          aria-expanded={isOpen}
+                          onClick={() =>
+                            setOpenSubteams((prev) => ({
+                              ...prev,
+                              [team.title]: !prev[team.title],
+                            }))
+                          }
+                        >
+                          {isOpen ? 'Hide projects' : 'View projects'}
+                          <span className={`subteam-panel__chevron ${isOpen ? 'is-open' : ''}`}>V</span>
+                        </button>
+                      </div>
+                      <div className={`subteam-panel__details ${isOpen ? 'is-open' : ''}`}>
+                        <div className="subteam-panel__details-inner">
+                          <p className="subteam-panel__label">{team.label}</p>
+                          <ul className="subteam-panel__list">
+                            {team.items.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           </section>
           <SiteFooter />
         </main>
