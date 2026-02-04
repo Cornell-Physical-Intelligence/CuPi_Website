@@ -13,23 +13,22 @@ const detectSvgFilterSupport = () => {
     return cachedSvgFilterSupport;
   }
 
-  const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : '';
-  const isMobile =
-    /Android|iPhone|iPad|iPod|Mobile/i.test(userAgent) ||
-    (typeof window !== 'undefined' && typeof window.matchMedia === 'function'
-      ? window.matchMedia('(max-width: 768px)').matches
-      : false);
-  const isWebkit = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
-  const isFirefox = /Firefox/.test(userAgent);
-
-  if (isMobile || isWebkit || isFirefox) {
+  // Disable on touch-primary devices (mobile, tablets)
+  if (window.matchMedia?.('(pointer: coarse)')?.matches) {
     cachedSvgFilterSupport = false;
-    return cachedSvgFilterSupport;
+    return false;
   }
 
-  const div = document.createElement('div');
-  div.style.backdropFilter = 'url(#test)';
-  cachedSvgFilterSupport = div.style.backdropFilter !== '';
+  // Must support backdrop-filter
+  if (!CSS?.supports?.('backdrop-filter', 'blur(1px)')) {
+    cachedSvgFilterSupport = false;
+    return false;
+  }
+
+  // SVG filter displacement via backdrop-filter only renders correctly in
+  // Chromium-based browsers. Detect via the chrome global, which is present
+  // in Chrome, Edge, Brave, Opera, etc.
+  cachedSvgFilterSupport = 'chrome' in window;
   return cachedSvgFilterSupport;
 };
 

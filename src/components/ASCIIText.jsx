@@ -83,9 +83,6 @@ class AsciiFilter {
       charset ??
       " .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
 
-    this.context.webkitImageSmoothingEnabled = false;
-    this.context.mozImageSmoothingEnabled = false;
-    this.context.msImageSmoothingEnabled = false;
     this.context.imageSmoothingEnabled = false;
 
     this.onMouseMove = this.onMouseMove.bind(this);
@@ -197,7 +194,7 @@ class AsciiFilter {
         }
         str += '\n';
       }
-      this.pre.innerHTML = str;
+      this.pre.textContent = str;
     }
   }
 

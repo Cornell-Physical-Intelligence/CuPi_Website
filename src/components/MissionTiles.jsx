@@ -13,6 +13,7 @@ const stats = [
 
 function MissionTiles({ played, onPlay }) {
   const statRefs = useRef([]);
+  const blurbRef = useRef(null);
 
   useEffect(() => {
     if (played) {
@@ -51,10 +52,30 @@ function MissionTiles({ played, onPlay }) {
     };
   }, [played, onPlay]);
 
+  // Finalize blurb box on scroll (dotted → solid, tag flash out)
+  useEffect(() => {
+    const el = blurbRef.current;
+    if (!el) return;
+    let timer;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timer = setTimeout(() => {
+            el.classList.add('is-finalized');
+          }, 800);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => { observer.disconnect(); clearTimeout(timer); };
+  }, []);
+
   return (
     <section className="mission-tiles">
       <div className="mission-tiles__content">
-        <div className="mission-tiles__blurb-wrapper">
+        <div className="mission-tiles__blurb-wrapper" ref={blurbRef}>
           <p className="mission-tiles__blurb">
             At CUPI, we believe advanced engineering solutions already exist in nature. Through
             millions of years of evolution, natural systems have mastered adaptability and

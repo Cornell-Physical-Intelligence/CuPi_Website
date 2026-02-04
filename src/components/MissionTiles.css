@@ -48,6 +48,8 @@
   max-width: 960px;
   width: 100%;
   margin: 0 auto clamp(80px, 12vw, 180px);
+  box-shadow: inset 0 0 0 2px transparent;
+  transition: box-shadow 0.17s ease;
 }
 
 /* Debug-style label */
@@ -76,6 +78,20 @@
   border: 2px dotted #ffffff;
   z-index: -1;
   pointer-events: none;
+  transition: opacity 0.17s ease;
+}
+
+/* Finalized state — dots fade out, solid fades in, tag flashes out */
+.mission-tiles__blurb-wrapper.is-finalized {
+  box-shadow: inset 0 0 0 2px #ffffff;
+}
+
+.mission-tiles__blurb-wrapper.is-finalized::after {
+  opacity: 0;
+}
+
+.mission-tiles__blurb-wrapper.is-finalized::before {
+  animation: tag-flash-out 0.17s ease-out forwards;
 }
 
 .mission-tiles__blurb {
