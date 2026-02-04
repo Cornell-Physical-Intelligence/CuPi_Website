@@ -706,14 +706,6 @@ body.scroll-locked {
   margin-bottom: clamp(18px, 3vw, 32px);
 }
 
-.subteam-grid {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(24px, 5vw, 48px);
-  width: 100%;
-  margin-top: clamp(12px, 2vw, 20px);
-}
-
 .subteam-panel {
   flex: 0 0 auto;
   display: block;
@@ -735,19 +727,13 @@ body.scroll-locked {
   text-align: left;
 }
 
-.subteam-panel__header {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(8px, 1.4vw, 12px);
-  width: 100%;
-}
-
 .subteam-panel__title {
   margin: 0;
-  font-size: clamp(1rem, 2.2vw, 1.35rem);
-  letter-spacing: 0.18em;
+  font-size: clamp(0.78rem, 1.3vw, 0.95rem);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
 }
 
 .subteam-panel__desc {
@@ -757,77 +743,27 @@ body.scroll-locked {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.subteam-panel__toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: rgba(255, 255, 255, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: clamp(0.6rem, 1.1vw, 0.72rem);
-  padding: 6px 12px;
-  cursor: pointer;
-}
-
-.subteam-panel__toggle:hover,
-.subteam-panel__toggle:focus-visible {
-  color: rgba(255, 255, 255, 1);
-  border-color: rgba(255, 255, 255, 0.7);
-}
-
-.subteam-panel__chevron {
-  display: inline-block;
-  font-size: 0.75em;
-  transform: translateY(-1px);
-  transition: transform 0.3s ease;
-}
-
-.subteam-panel__chevron.is-open {
-  transform: rotate(180deg) translateY(1px);
-}
-
-.subteam-panel__details {
-  width: 100%;
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-8px);
-  overflow: hidden;
-  transition: max-height 0.5s ease, opacity 0.35s ease, transform 0.35s ease;
-}
-
-.subteam-panel__details.is-open {
-  max-height: 700px;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.subteam-panel__details-inner {
-  padding-top: clamp(4px, 0.9vw, 10px);
-}
-
-.subteam-panel__label {
-  margin: clamp(4px, 1vw, 8px) 0 0;
-  font-size: clamp(0.7rem, 1.2vw, 0.8rem);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.subteam-panel__list {
-  margin: 0;
-  padding-left: clamp(14px, 2vw, 24px);
+.subteam-panel__blurb {
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.4vw, 14px);
-  font-size: clamp(0.72rem, 1.35vw, 0.88rem);
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.72);
+  gap: clamp(6px, 1.2vw, 10px);
+  padding: clamp(8px, 1.6vw, 14px) 0;
+  width: 100%;
+  position: relative;
 }
 
-.subteam-panel__list li {
-  margin: 0;
+.subteam-panel__blurb + .subteam-panel__blurb {
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.subteam-panel__blurb + .subteam-panel__blurb::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: calc(-1 * clamp(12px, 2.2vw, 20px));
+  right: calc(-1 * clamp(12px, 2.2vw, 20px));
+  height: 1px;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 /* Apply Page */

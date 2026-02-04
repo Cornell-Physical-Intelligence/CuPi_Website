@@ -148,7 +148,7 @@ const TEAM_SECTIONS = [
         imageBase: 'Andre',
         bio: "Hi I'm Andre. I like making websites and CAD and also eating",
         role: 'Team Lead',
-        project: 'Quad'
+        project: 'Everything'
       }
     ]
   },
@@ -206,6 +206,10 @@ const TEAM_SECTIONS = [
         bio: 'I am an aspiring mechanical engineer interested in aerodynamics and propulsion systems',
         year: 'Sophomore',
         project: 'Quad'
+      },
+      {
+        name: 'Nathan Cunningham',
+        bio: BIO_PLACEHOLDER
       },
       {
         name: 'Josh Lennon',
@@ -369,7 +373,7 @@ function CrabAnimation() {
 }
 
 function App() {
-  const validPages = ['home', 'work', 'subteams', 'about', 'apply'];
+  const validPages = ['home', 'work', 'about', 'apply'];
   const getPageFromHash = () => {
     const hash = window.location.hash.replace('#', '');
     return validPages.includes(hash) ? hash : 'home';
@@ -388,7 +392,6 @@ function App() {
   const [isCompactHero, setIsCompactHero] = useState(false);
   const [missionTilesPlayed, setMissionTilesPlayed] = useState(false);
   const [expandedImage, setExpandedImage] = useState(null);
-  const [openSubteams, setOpenSubteams] = useState({});
   const overlayTimeoutsRef = useRef({});
   const debugCollapseTriggeredRef = useRef(false);
   const scrollLockActiveRef = useRef(false);
@@ -1149,55 +1152,18 @@ function App() {
               </figure>
             </div>
           </section>
-          <SiteFooter />
-        </main>
-      );
-    }
-
-    if (currentPage === 'subteams') {
-      return (
-        <main className="alt-page">
           <section className="alt-section alt-section--subteams">
             <h2 className="section-label">Subteams</h2>
-            <div className="subteam-grid">
-              {SUBTEAMS.map((team) => {
-                const isOpen = openSubteams[team.title];
-                return (
-                  <article className="subteam-panel" key={team.title}>
-                    <div className="subteam-panel__inner">
-                      <div className="subteam-panel__header">
-                        <h3 className="subteam-panel__title">{team.title}</h3>
-                        <p className="subteam-panel__desc">{team.description}</p>
-                        <button
-                          type="button"
-                          className="subteam-panel__toggle"
-                          aria-expanded={isOpen}
-                          onClick={() =>
-                            setOpenSubteams((prev) => ({
-                              ...prev,
-                              [team.title]: !prev[team.title],
-                            }))
-                          }
-                        >
-                          {isOpen ? 'Hide projects' : 'View projects'}
-                          <span className={`subteam-panel__chevron ${isOpen ? 'is-open' : ''}`}>V</span>
-                        </button>
-                      </div>
-                      <div className={`subteam-panel__details ${isOpen ? 'is-open' : ''}`}>
-                        <div className="subteam-panel__details-inner">
-                          <p className="subteam-panel__label">{team.label}</p>
-                          <ul className="subteam-panel__list">
-                            {team.items.map((item) => (
-                              <li key={item}>{item}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
+            <article className="subteam-panel subteam-panel--stacked">
+              <div className="subteam-panel__inner">
+                {SUBTEAMS.map((team) => (
+                  <div className="subteam-panel__blurb" key={team.title}>
+                    <h3 className="subteam-panel__title">{team.title}</h3>
+                    <p className="subteam-panel__desc">{team.description}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
           </section>
           <SiteFooter />
         </main>
@@ -1410,12 +1376,6 @@ function App() {
               className={`menu-item ${currentPage === 'work' ? 'active' : ''}`}
             >
               WORK
-            </button>
-            <button
-              onClick={() => handleNavClick('subteams')}
-              className={`menu-item ${currentPage === 'subteams' ? 'active' : ''}`}
-            >
-              SUBTEAMS
             </button>
             <button
               onClick={() => handleNavClick('about')}
