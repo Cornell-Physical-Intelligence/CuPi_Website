@@ -631,6 +631,8 @@ body.scroll-locked {
 
 .alt-section--team {
   gap: clamp(8px, 1.8vw, 18px);
+  content-visibility: auto;
+  contain-intrinsic-size: 800px 1800px;
 }
 
 .alt-section--team .alt-section__title-row {
@@ -657,6 +659,11 @@ body.scroll-locked {
   background: rgba(255, 255, 255, 0.85);
   top: calc(100% + clamp(2px, 0.8vw, 10px));
   pointer-events: none;
+}
+
+.alt-section--subteams {
+  content-visibility: auto;
+  contain-intrinsic-size: 600px 1000px;
 }
 
 .alt-section__title-row {
@@ -2107,6 +2114,8 @@ body.debug-hidden .spacer::after {
   margin-top: clamp(24px, 4vw, 48px);
   padding: 0;
   position: relative;
+  content-visibility: auto;
+  contain-intrinsic-size: 800px 2000px;
 }
 
 .gallery-section .section-label {
@@ -2251,7 +2260,7 @@ body.debug-hidden .spacer::after {
   }
 }
 
-.gallery-item:has(img.loaded)::before {
+.gallery-item.is-loaded::before {
   display: none;
 }
 

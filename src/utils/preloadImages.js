@@ -10,11 +10,13 @@ const scheduleIdle = (task) => {
   return () => window.clearTimeout(timeoutId);
 };
 
-export const preloadImages = (sources = [], { priority = 'auto' } = {}) => {
+export const preloadImages = (sources = [], { priority = 'auto', decode } = {}) => {
   if (typeof window === 'undefined') return () => {};
 
   const uniqueSources = Array.from(new Set(sources.filter(Boolean)));
   if (uniqueSources.length === 0) return () => {};
+
+  const shouldDecode = typeof decode === 'boolean' ? decode : priority === 'high';
 
   const startLoading = () => {
     uniqueSources.forEach((src) => {
@@ -37,7 +39,7 @@ export const preloadImages = (sources = [], { priority = 'auto' } = {}) => {
       img.onerror = finalize;
       img.src = src;
 
-      if (typeof img.decode === 'function') {
+      if (shouldDecode && typeof img.decode === 'function') {
         img.decode().catch(() => {}).finally(finalize);
       }
     });

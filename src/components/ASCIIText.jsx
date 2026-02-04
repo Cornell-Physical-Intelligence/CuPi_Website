@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 const vertexShader = `
@@ -282,6 +282,7 @@ class CanvAscii {
       lineSpacing,
       scaleMultiplier,
       verticalOffset,
+      targetFps,
     },
     containerElem,
     width,
@@ -300,6 +301,10 @@ class CanvAscii {
     this.lineSpacing = lineSpacing ?? 1;
     this.scaleMultiplier = scaleMultiplier ?? 1;
     this.verticalOffset = verticalOffset ?? 0;
+    this.targetFps = typeof targetFps === 'number' ? targetFps : 30;
+    this.frameInterval = this.targetFps > 0 ? 1000 / this.targetFps : 0;
+    this.lastFrameTime = 0;
+    this.isRunning = false;
 
     this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 1, 1000);
     this.camera.position.z = 30;
@@ -380,6 +385,18 @@ class CanvAscii {
     this.filter.setFontSize(normalized);
   }
 
+  setTargetFps(fps) {
+    if (typeof fps !== 'number' || Number.isNaN(fps)) {
+      return;
+    }
+    const nextFps = Math.max(0, fps);
+    if (Math.abs(nextFps - this.targetFps) < 0.1) {
+      return;
+    }
+    this.targetFps = nextFps;
+    this.frameInterval = this.targetFps > 0 ? 1000 / this.targetFps : 0;
+  }
+
   setSize(w, h) {
     this.width = w;
     this.height = h;
@@ -411,7 +428,22 @@ class CanvAscii {
   }
 
   load() {
+    this.start();
+  }
+
+  start() {
+    if (this.isRunning) return;
+    this.isRunning = true;
+    this.lastFrameTime = 0;
     this.animate();
+  }
+
+  stop() {
+    this.isRunning = false;
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
   }
 
   onMouseMove(evt) {
@@ -423,15 +455,22 @@ class CanvAscii {
   }
 
   animate() {
-    const animateFrame = () => {
+    const animateFrame = (now) => {
+      if (!this.isRunning) return;
       this.animationFrameId = requestAnimationFrame(animateFrame);
-      this.render();
+      if (this.frameInterval > 0) {
+        if (now - this.lastFrameTime < this.frameInterval) {
+          return;
+        }
+        this.lastFrameTime = now;
+      }
+      this.render(now);
     };
-    animateFrame();
+    this.animationFrameId = requestAnimationFrame(animateFrame);
   }
 
-  render() {
-    const time = new Date().getTime() * 0.001;
+  render(now = performance.now()) {
+    const time = now * 0.001;
 
     this.textCanvas.render();
     this.texture.needsUpdate = true;
@@ -465,7 +504,7 @@ class CanvAscii {
   }
 
   dispose() {
-    cancelAnimationFrame(this.animationFrameId);
+    this.stop();
     this.filter.dispose();
     this.container.removeChild(this.filter.domElement);
     this.container.removeEventListener('mousemove', this.onMouseMove);
@@ -486,11 +525,15 @@ export default function ASCIIText({
   lineSpacing = 1,
   scaleMultiplier = 1,
   verticalOffset = 0,
+  targetFps = 30,
   className = '',
   style = {},
 }) {
   const containerRef = useRef(null);
   const asciiRef = useRef(null);
+  const [isInView, setIsInView] = useState(true);
+  const [isDocumentHidden, setIsDocumentHidden] = useState(false);
+  const [effectiveFps, setEffectiveFps] = useState(targetFps);
   const containerStyles = useMemo(
     () => ({
       position: 'absolute',
@@ -500,6 +543,42 @@ export default function ASCIIText({
     }),
     [style, textFontFamily],
   );
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const updateVisibility = () => {
+      setIsDocumentHidden(document.hidden);
+    };
+    updateVisibility();
+    document.addEventListener('visibilitychange', updateVisibility);
+    return () => document.removeEventListener('visibilitychange', updateVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (typeof navigator === 'undefined') return;
+    const connection = navigator.connection;
+    const updateFps = () => {
+      const saveData = connection?.saveData ?? false;
+      setEffectiveFps(saveData ? Math.min(targetFps, 18) : targetFps);
+    };
+    updateFps();
+    connection?.addEventListener?.('change', updateFps);
+    return () => {
+      connection?.removeEventListener?.('change', updateFps);
+    };
+  }, [targetFps]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -518,12 +597,18 @@ export default function ASCIIText({
           lineSpacing,
           scaleMultiplier,
           verticalOffset,
+          targetFps: effectiveFps,
         },
         containerRef.current,
         width,
         height
       );
-      asciiRef.current.load();
+      const shouldAnimate = isInView && !isDocumentHidden;
+      if (shouldAnimate) {
+        asciiRef.current.start();
+      } else {
+        asciiRef.current.stop();
+      }
     };
 
     const setupWithDimensions = () => {
@@ -568,6 +653,21 @@ export default function ASCIIText({
       if (asciiRef.current) asciiRef.current.dispose();
     };
   }, [text, asciiFontSize, textFontSize, textColor, planeBaseHeight, enableWaves, textFontFamily, lineSpacing, scaleMultiplier, verticalOffset]);
+
+  useEffect(() => {
+    if (!asciiRef.current) return;
+    asciiRef.current.setTargetFps(effectiveFps);
+  }, [effectiveFps]);
+
+  useEffect(() => {
+    if (!asciiRef.current) return;
+    const shouldAnimate = isInView && !isDocumentHidden;
+    if (shouldAnimate) {
+      asciiRef.current.start();
+    } else {
+      asciiRef.current.stop();
+    }
+  }, [isInView, isDocumentHidden]);
 
   return (
     <div

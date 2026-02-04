@@ -12,6 +12,11 @@ const GridBackground = () => {
     const gridSize = 10;
     const cellSize = gridSize * 0.4;
     const cornerRadius = 1.5;
+    const prefersReducedMotion = typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
+    const saveData = typeof navigator !== 'undefined' && navigator.connection?.saveData;
+    const shouldReduceMotion = prefersReducedMotion || saveData;
 
     let cols = 0;
     let rows = 0;
@@ -61,6 +66,9 @@ const GridBackground = () => {
       resizeFrame = requestAnimationFrame(() => {
         resizeFrame = null;
         resize();
+        if (rows > 0 && cols > 0) {
+          draw();
+        }
       });
     };
 
@@ -143,34 +151,49 @@ const GridBackground = () => {
       }
     };
 
-    let frameCount = 0;
-    let animationFrameId;
-    const animate = () => {
-      frameCount++;
+    const UPDATE_INTERVAL = 1200;
+    let updateIntervalId;
 
-      // Update grid every 150 frames (~20% speed)
-      if (frameCount % 150 === 0 && rows > 0 && cols > 0) {
-        updateGrid();
-      }
-
-      if (rows > 0 && cols > 0) {
-        draw();
-      }
-
-      animationFrameId = requestAnimationFrame(animate);
+    const startAnimation = () => {
+      if (shouldReduceMotion || updateIntervalId) return;
+      updateIntervalId = window.setInterval(() => {
+        if (document.hidden) return;
+        if (rows > 0 && cols > 0) {
+          updateGrid();
+          draw();
+        }
+      }, UPDATE_INTERVAL);
     };
 
-    animate();
+    const stopAnimation = () => {
+      if (updateIntervalId) {
+        window.clearInterval(updateIntervalId);
+        updateIntervalId = null;
+      }
+    };
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        stopAnimation();
+        return;
+      }
+      startAnimation();
+    };
+
+    if (rows > 0 && cols > 0) {
+      draw();
+    }
+    startAnimation();
+    document.addEventListener('visibilitychange', handleVisibility);
 
     return () => {
       if (resizeFrame !== null) {
         cancelAnimationFrame(resizeFrame);
       }
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
+      stopAnimation();
       window.removeEventListener('resize', scheduleResize);
       sizeObserver.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
 

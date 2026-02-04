@@ -99,6 +99,12 @@ const GALLERY_IMAGES = [
   { filename: 'Spider.png', author: 'Sophie', width: 1100, height: 1100 }
 ];
 
+const GALLERY_THUMB_WIDTHS = [640, 1280];
+const getGalleryThumbName = (filename, width) =>
+  `${filename.replace(/\.[^.]+$/, '')}-${width}.webp`;
+const getGalleryThumbPath = (filename, width) =>
+  assetPath(`img/Gallery/thumbs/${getGalleryThumbName(filename, width)}`);
+
 const HERO_FONT_FAMILY = "'Times New Roman', Times, serif";
 const BIO_PLACEHOLDER = '[coming soon]';
 const SUBTEAMS = [
@@ -401,6 +407,7 @@ function App() {
   const heroAsciiConfig = isCompactHero
     ? { asciiFontSize: 7.8, textFontSize: 736, planeBaseHeight: 24, scaleMultiplier: 1.05, verticalOffset: 0.02 }
     : { asciiFontSize: 10.8, textFontSize: 384, planeBaseHeight: 12, scaleMultiplier: 1, verticalOffset: 0 };
+  const heroAsciiFps = isCompactHero ? 18 : 24;
   const heroAsciiText = isCompactHero ? 'C\nU\nP\nI' : 'CUPI';
   const heroAsciiLineSpacing = isCompactHero ? 1.08 : 1;
   const heroSubtitleText = '(Cornell University Physical Intelligence)';
@@ -437,10 +444,7 @@ function App() {
     return Array.from(paths);
   }, []);
 
-  const galleryImagePaths = useMemo(
-    () => GALLERY_IMAGES.map((image) => assetPath(`img/Gallery/${image.filename}`)),
-    []
-  );
+  const aboutPreviewPaths = useMemo(() => aboutImagePaths.slice(0, 6), [aboutImagePaths]);
 
   const projectImagePaths = useMemo(
     () => [
@@ -454,28 +458,19 @@ function App() {
   );
 
   useEffect(() => {
-    const cancelGallery = preloadImages(galleryImagePaths, { priority: 'low' });
-    const cancelProjects = preloadImages(projectImagePaths, { priority: 'low' });
-    return () => {
-      if (typeof cancelGallery === 'function') cancelGallery();
-      if (typeof cancelProjects === 'function') cancelProjects();
-    };
-  }, [galleryImagePaths, projectImagePaths]);
-
-  useEffect(() => {
-    if (!aboutImagePaths.length) return undefined;
-    const cancel = preloadImages(aboutImagePaths, { priority: 'low' });
-    return typeof cancel === 'function' ? cancel : undefined;
-  }, [aboutImagePaths]);
-
-  useEffect(() => {
-    if (currentPage === 'about' && aboutImagePaths.length) {
-      preloadImages(aboutImagePaths, { priority: 'high' });
-    }
     if (currentPage === 'work') {
-      preloadImages([...galleryImagePaths, ...projectImagePaths], { priority: 'high' });
+      preloadImages(projectImagePaths, { priority: 'high', decode: true });
     }
-  }, [currentPage, aboutImagePaths, galleryImagePaths, projectImagePaths]);
+  }, [currentPage, projectImagePaths]);
+
+  const prefetchPageAssets = (page) => {
+    if (page === 'work') {
+      preloadImages(projectImagePaths, { priority: 'low' });
+    }
+    if (page === 'about' && aboutPreviewPaths.length) {
+      preloadImages(aboutPreviewPaths, { priority: 'low' });
+    }
+  };
 
   const handleNavClick = (page) => {
     window.location.hash = page === 'home' ? '' : page;
@@ -877,6 +872,7 @@ function App() {
             lineSpacing={heroAsciiLineSpacing}
             scaleMultiplier={heroAsciiConfig.scaleMultiplier}
             verticalOffset={heroAsciiConfig.verticalOffset}
+            targetFps={heroAsciiFps}
           />
         </Suspense>
       )}
@@ -924,6 +920,9 @@ function App() {
             <div className="gallery-tapestry">
               {GALLERY_IMAGES.map((image, index) => {
                 const aspectRatio = image.width && image.height ? `${image.width}/${image.height}` : undefined;
+                const fullSrc = assetPath(`img/Gallery/${image.filename}`);
+                const thumbSrc = getGalleryThumbPath(image.filename, GALLERY_THUMB_WIDTHS[0]);
+                const thumbSrcSet = `${getGalleryThumbPath(image.filename, GALLERY_THUMB_WIDTHS[0])} ${GALLERY_THUMB_WIDTHS[0]}w, ${getGalleryThumbPath(image.filename, GALLERY_THUMB_WIDTHS[1])} ${GALLERY_THUMB_WIDTHS[1]}w`;
 
                 return (
                   <div
@@ -933,6 +932,8 @@ function App() {
                     role="button"
                     tabIndex={0}
                     style={aspectRatio ? { aspectRatio } : undefined}
+                    onMouseEnter={() => preloadImages([fullSrc], { priority: 'low' })}
+                    onFocus={() => preloadImages([fullSrc], { priority: 'low' })}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
@@ -941,14 +942,23 @@ function App() {
                     }}
                   >
                     <img
-                      src={assetPath(`img/Gallery/${image.filename}`)}
+                      src={thumbSrc}
+                      srcSet={thumbSrcSet}
+                      sizes="(min-width: 1600px) 25vw, (min-width: 900px) 33vw, (min-width: 480px) 50vw, 100vw"
                       alt={`Concept art ${index + 1}`}
                       loading={index < 6 ? 'eager' : 'lazy'}
                       decoding="async"
                       fetchPriority={index < 3 ? 'high' : 'auto'}
                       width={image.width}
                       height={image.height}
-                      onLoad={(e) => e.target.classList.add('loaded')}
+                      onLoad={(e) => {
+                        e.currentTarget.classList.add('loaded');
+                        e.currentTarget.parentElement?.classList.add('is-loaded');
+                      }}
+                      onError={(e) => {
+                        e.currentTarget.classList.add('loaded');
+                        e.currentTarget.parentElement?.classList.add('is-loaded');
+                      }}
                     />
                   </div>
                 );
@@ -1373,12 +1383,16 @@ function App() {
             </button>
             <button
               onClick={() => handleNavClick('work')}
+              onMouseEnter={() => prefetchPageAssets('work')}
+              onFocus={() => prefetchPageAssets('work')}
               className={`menu-item ${currentPage === 'work' ? 'active' : ''}`}
             >
               WORK
             </button>
             <button
               onClick={() => handleNavClick('about')}
+              onMouseEnter={() => prefetchPageAssets('about')}
+              onFocus={() => prefetchPageAssets('about')}
               className={`menu-item ${currentPage === 'about' ? 'active' : ''}`}
             >
               ABOUT
