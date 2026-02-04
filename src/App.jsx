@@ -41,12 +41,6 @@ function App() {
   };
 
   useEffect(() => {
-    // Force scroll to top on load/reload (override browser scroll restoration)
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
-    }
-    window.scrollTo(0, 0);
-
     const onHashChange = () => setCurrentPage(getPageFromHash());
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
