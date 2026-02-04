@@ -932,9 +932,11 @@ body.scroll-locked {
   background: #000000;
 }
 
-.project-panel__flipper.is-flipped .project-panel__face--front {
+.project-panel__flipper.is-flipped .project-panel__label,
+.project-panel__flipper.is-flipped .project-panel__partners {
   opacity: 0;
   pointer-events: none;
+  transition-delay: 0.35s;
 }
 
 .project-panel__face--front img {
@@ -977,6 +979,8 @@ body.scroll-locked {
   background: rgba(0, 0, 0, 0.35);
   padding: 2px 8px;
   z-index: 2;
+  transition: opacity 0.2s ease;
+  transition-delay: 0s;
 }
 
 .project-panel__partners {
@@ -990,6 +994,8 @@ body.scroll-locked {
   z-index: 2;
   pointer-events: auto;
   flex-wrap: nowrap;
+  transition: opacity 0.2s ease;
+  transition-delay: 0s;
 }
 
 .project-panel__partners--multi {

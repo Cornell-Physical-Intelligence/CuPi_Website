@@ -1,4 +1,4 @@
-import{r as vi,j as lo}from"./index-CO8W3hC8.js";/**
+import{r as vi,j as lo}from"./index-B07YSw0c.js";/**
  * @license
  * Copyright 2010-2023 Three.js Authors
  * SPDX-License-Identifier: MIT
