@@ -44,7 +44,7 @@ const stopCardFlipOnKey = (event) => {
   }
 };
 
-const ProjectPartnerLinks = ({ partners }) => {
+const ProjectPartnerLinks = ({ partners, panelKey, onHoverChange }) => {
   if (!partners || partners.length === 0) {
     return null;
   }
@@ -56,6 +56,10 @@ const ProjectPartnerLinks = ({ partners }) => {
       className={`project-panel__partners${isMulti ? ' project-panel__partners--multi' : ''}`}
       onClick={stopCardFlip}
       onKeyDown={stopCardFlipOnKey}
+      onMouseEnter={() => onHoverChange?.(panelKey, true)}
+      onMouseLeave={() => onHoverChange?.(panelKey, false)}
+      onFocus={() => onHoverChange?.(panelKey, true)}
+      onBlur={() => onHoverChange?.(panelKey, false)}
     >
       {partners.map((partner) => (
         <a
@@ -376,6 +380,8 @@ function App() {
   const [panelHoverSide, setPanelHoverSide] = useState({ quad: null, hexapod: null, swallow: null });
   const [hoverEnabled, setHoverEnabled] = useState({ quad: true, hexapod: true, swallow: true });
   const [flipDirection, setFlipDirection] = useState({ quad: 'right', hexapod: 'right', swallow: 'right' });
+  const [panelOverlayHidden, setPanelOverlayHidden] = useState({ quad: false, hexapod: false, swallow: false });
+  const [panelLeveled, setPanelLeveled] = useState({ quad: false, hexapod: false, swallow: false });
   const [activeBioCard, setActiveBioCard] = useState(null);
   const [teamCardTilt, setTeamCardTilt] = useState({});
   const [showAsciiText, setShowAsciiText] = useState(false);
@@ -383,6 +389,7 @@ function App() {
   const [missionTilesPlayed, setMissionTilesPlayed] = useState(false);
   const [expandedImage, setExpandedImage] = useState(null);
   const [openSubteams, setOpenSubteams] = useState({});
+  const overlayTimeoutsRef = useRef({});
   const debugCollapseTriggeredRef = useRef(false);
   const scrollLockActiveRef = useRef(false);
   const debugHideTimeoutRef = useRef(null);
@@ -745,15 +752,41 @@ function App() {
 
   useEffect(() => {
     if (currentPage !== 'work') {
+      Object.values(overlayTimeoutsRef.current).forEach((timeoutId) => {
+        if (timeoutId) {
+          window.clearTimeout(timeoutId);
+        }
+      });
+      overlayTimeoutsRef.current = {};
       setFlippedPanels({ quad: false, hexapod: false, swallow: false });
       setPanelHoverSide({ quad: null, hexapod: null, swallow: null });
       setHoverEnabled({ quad: true, hexapod: true, swallow: true });
       setFlipDirection({ quad: 'right', hexapod: 'right', swallow: 'right' });
+      setPanelOverlayHidden({ quad: false, hexapod: false, swallow: false });
+      setPanelLeveled({ quad: false, hexapod: false, swallow: false });
     }
   }, [currentPage]);
 
 
   const handlePanelToggle = (panelKey) => {
+    const isCurrentlyFlipped = flippedPanels[panelKey];
+    const existingTimeout = overlayTimeoutsRef.current[panelKey];
+    if (existingTimeout) {
+      window.clearTimeout(existingTimeout);
+    }
+    if (!isCurrentlyFlipped) {
+      overlayTimeoutsRef.current[panelKey] = window.setTimeout(() => {
+        setPanelOverlayHidden((prev) => ({
+          ...prev,
+          [panelKey]: true
+        }));
+      }, 50);
+    } else {
+      setPanelOverlayHidden((prev) => ({
+        ...prev,
+        [panelKey]: false
+      }));
+    }
     setFlippedPanels((prev) => ({
       ...prev,
       [panelKey]: !prev[panelKey]
@@ -769,6 +802,34 @@ function App() {
     setPanelHoverSide((prev) => ({
       ...prev,
       [panelKey]: null
+    }));
+  };
+
+  const handlePartnerHover = (panelKey, isHovering) => {
+    if (isHovering) {
+      setPanelHoverSide((prev) => ({
+        ...prev,
+        [panelKey]: null
+      }));
+      setHoverEnabled((prev) => ({
+        ...prev,
+        [panelKey]: false
+      }));
+      setPanelLeveled((prev) => ({
+        ...prev,
+        [panelKey]: true
+      }));
+      return;
+    }
+
+    if (flippedPanels[panelKey]) return;
+    setHoverEnabled((prev) => ({
+      ...prev,
+      [panelKey]: true
+    }));
+    setPanelLeveled((prev) => ({
+      ...prev,
+      [panelKey]: false
     }));
   };
 
@@ -945,13 +1006,20 @@ function App() {
               >
                 <div
                   className={`project-panel__flipper ${flipDirection.quad === 'left' ? 'flip-left' : 'flip-right'} ${flippedPanels.quad ? 'is-flipped' : ''
-                    } ${panelHoverSide.quad ? `tilt-${panelHoverSide.quad}` : ''}`}
+                    } ${panelHoverSide.quad ? `tilt-${panelHoverSide.quad}` : ''} ${panelLeveled.quad ? 'is-leveled' : ''}`}
                   data-panel="quad"
                 >
-                  <div className="project-panel__face project-panel__face--front" data-zoom="in">
+                  <div
+                    className={`project-panel__face project-panel__face--front ${panelOverlayHidden.quad ? 'is-overlay-hidden' : ''}`}
+                    data-zoom="in"
+                  >
                     <img src={assetPath('img/Quad.png')} alt="Project 001 Quad" loading="lazy" />
                     <figcaption className="project-panel__label">Project 001 — Quad</figcaption>
-                    <ProjectPartnerLinks partners={PROJECT_PARTNERS.quad} />
+                    <ProjectPartnerLinks
+                      partners={PROJECT_PARTNERS.quad}
+                      panelKey="quad"
+                      onHoverChange={handlePartnerHover}
+                    />
                   </div>
                   <div className="project-panel__face project-panel__face--back">
                     <div className="project-panel__back-content">
@@ -996,13 +1064,20 @@ function App() {
               >
                 <div
                   className={`project-panel__flipper ${flipDirection.hexapod === 'left' ? 'flip-left' : 'flip-right'} ${flippedPanels.hexapod ? 'is-flipped' : ''
-                    } ${panelHoverSide.hexapod ? `tilt-${panelHoverSide.hexapod}` : ''}`}
+                    } ${panelHoverSide.hexapod ? `tilt-${panelHoverSide.hexapod}` : ''} ${panelLeveled.hexapod ? 'is-leveled' : ''}`}
                   data-panel="hexapod"
                 >
-                  <div className="project-panel__face project-panel__face--front" data-zoom="bird">
+                  <div
+                    className={`project-panel__face project-panel__face--front ${panelOverlayHidden.hexapod ? 'is-overlay-hidden' : ''}`}
+                    data-zoom="bird"
+                  >
                     <img src={assetPath('img/Hexapod.png')} alt="Project 002 Hexapod" loading="lazy" />
                     <figcaption className="project-panel__label">Project 002 — Hexapod</figcaption>
-                    <ProjectPartnerLinks partners={PROJECT_PARTNERS.hexapod} />
+                    <ProjectPartnerLinks
+                      partners={PROJECT_PARTNERS.hexapod}
+                      panelKey="hexapod"
+                      onHoverChange={handlePartnerHover}
+                    />
                   </div>
                   <div className="project-panel__face project-panel__face--back">
                     <div className="project-panel__back-content">
@@ -1046,13 +1121,19 @@ function App() {
               >
                 <div
                   className={`project-panel__flipper ${flipDirection.swallow === 'left' ? 'flip-left' : 'flip-right'} ${flippedPanels.swallow ? 'is-flipped' : ''
-                    } ${panelHoverSide.swallow ? `tilt-${panelHoverSide.swallow}` : ''}`}
+                    } ${panelHoverSide.swallow ? `tilt-${panelHoverSide.swallow}` : ''} ${panelLeveled.swallow ? 'is-leveled' : ''}`}
                   data-panel="swallow"
                 >
-                  <div className="project-panel__face project-panel__face--front project-panel__face--placeholder">
+                  <div
+                    className={`project-panel__face project-panel__face--front project-panel__face--placeholder ${panelOverlayHidden.swallow ? 'is-overlay-hidden' : ''}`}
+                  >
                     <span className="project-panel__placeholder">[?]</span>
                     <figcaption className="project-panel__label">Project 003 — Tunnel</figcaption>
-                    <ProjectPartnerLinks partners={PROJECT_PARTNERS.swallow} />
+                    <ProjectPartnerLinks
+                      partners={PROJECT_PARTNERS.swallow}
+                      panelKey="swallow"
+                      onHoverChange={handlePartnerHover}
+                    />
                   </div>
                   <div className="project-panel__face project-panel__face--back">
                     <div className="project-panel__back-content">

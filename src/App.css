@@ -1045,6 +1045,10 @@ body.scroll-locked {
   --tilt: 3deg;
 }
 
+.project-panel__flipper.is-leveled {
+  --tilt: 0deg;
+}
+
 .project-panel__face {
   position: relative;
   width: 100%;
@@ -1060,11 +1064,10 @@ body.scroll-locked {
   background: #000000;
 }
 
-.project-panel__flipper.is-flipped .project-panel__label,
-.project-panel__flipper.is-flipped .project-panel__partners {
+.project-panel__face--front.is-overlay-hidden .project-panel__label,
+.project-panel__face--front.is-overlay-hidden .project-panel__partners {
   opacity: 0;
   pointer-events: none;
-  transition-delay: 0.35s;
 }
 
 .project-panel__face--front img {
