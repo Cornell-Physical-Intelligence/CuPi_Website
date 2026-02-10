@@ -8,10 +8,7 @@ import { PROJECTS } from '../data/projects';
 function WorkPage() {
   const projectImagePaths = useMemo(
     () => [
-      assetPath('img/Quad.png'),
-      assetPath('img/DroneFlipped.png'),
-      assetPath('img/Hexapod.png'),
-      assetPath('img/LegFlipped.png'),
+      assetPath('img/WorkPage/SymbioteOrtho.png'),
       assetPath('img/SwallowProject.png'),
     ],
     []

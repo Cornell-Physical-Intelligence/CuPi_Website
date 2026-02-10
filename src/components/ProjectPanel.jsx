@@ -128,6 +128,11 @@ function ProjectPanel({ project }) {
         >
           {project.placeholder ? (
             <span className="project-panel__placeholder">[?]</span>
+          ) : project.frontImageMobile ? (
+            <picture>
+              <source media="(max-width: 640px)" srcSet={assetPath(project.frontImageMobile)} />
+              <img src={assetPath(project.frontImage)} alt={project.frontAlt} loading="lazy" />
+            </picture>
           ) : (
             <img src={assetPath(project.frontImage)} alt={project.frontAlt} loading="lazy" />
           )}
