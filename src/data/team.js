@@ -56,7 +56,7 @@ export const TEAM_SECTIONS = [
         name: 'Max Lee',
         bio: BIO_PLACEHOLDER,
         role: 'Operations Lead',
-        project: 'Quad'
+        project: 'Business'
       }
     ]
   },
@@ -64,15 +64,22 @@ export const TEAM_SECTIONS = [
     title: 'Members',
     members: [
       {
-        name: 'Daniel Sheth',
-        imageBase: 'Daniel',
-        bio: 'I am an aspiring mechanical engineer interested in aerodynamics and propulsion systems',
-        year: 'Sophomore',
-        project: 'Quad'
+        name: 'Nathan Cunningham',
+        imageBase: 'Nathan',
+        formalSuffix: 'Suit',
+        bio: "I'm interested in developing embedded systems. I enjoy running and eating",
+        project: 'Hexapod'
       },
       {
-        name: 'Nathan Cunningham',
+        name: 'Sophie',
+        imageBase: 'Sophie',
+        formalSuffix: 'Suit',
         bio: BIO_PLACEHOLDER
+      },
+      {
+        name: 'Aidan Moran',
+        bio: BIO_PLACEHOLDER,
+        project: 'Business'
       },
       {
         name: 'Josh Lennon',
@@ -128,13 +135,6 @@ export const TEAM_SECTIONS = [
         year: 'Junior',
         project: 'Quad'
       },
-      {
-        name: 'Anthony Parlatore',
-        imageBase: 'Anthony',
-        bio: "I'm Anthony, senior ChemE in masters of MechE interested in new technology (and I really like drones)",
-        year: 'Senior',
-        project: 'Quad'
-      }
     ]
   }
 ];
