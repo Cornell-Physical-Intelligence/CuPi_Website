@@ -321,6 +321,17 @@ body.scroll-locked {
     min-height: auto;
   }
 
+  .project-panel__label {
+    left: clamp(6px, 2vw, 12px);
+    top: clamp(6px, 2vw, 12px);
+    bottom: auto;
+  }
+
+  .project-panel__back-image,
+  .project-panel__back-image-split {
+    display: none;
+  }
+
   .alt-section--team .alt-section__title-row {
     flex-wrap: nowrap;
     justify-content: space-between;
@@ -1200,8 +1211,8 @@ body.scroll-locked {
   bottom: 0;
   display: flex;
   align-items: center;
-  gap: var(--partner-gap, clamp(8px, 1.1vw, 14px));
-  padding: clamp(6px, 0.9vw, 10px) clamp(8px, 1.1vw, 14px);
+  gap: var(--partner-gap, clamp(6px, 0.9vw, 10px));
+  padding: clamp(4px, 0.7vw, 8px) clamp(6px, 0.9vw, 10px);
   z-index: 2;
   pointer-events: auto;
   flex-wrap: nowrap;
@@ -1210,7 +1221,7 @@ body.scroll-locked {
 }
 
 .project-panel__partners--multi {
-  --partner-gap: clamp(22px, 2.6vw, 32px);
+  --partner-gap: clamp(14px, 1.8vw, 24px);
 }
 
 .project-panel__partners::before,
@@ -1241,9 +1252,9 @@ body.scroll-locked {
 }
 
 .project-panel__face--front .project-panel__partner-logo {
-  height: clamp(20px, 2.6vw, 28px);
+  height: clamp(14px, 1.8vw, 22px);
   width: auto;
-  max-width: 200px;
+  max-width: 160px;
   display: block;
   object-fit: contain;
   transform: none;
@@ -1308,6 +1319,43 @@ body.scroll-locked {
   transform: translateY(-34px);
 }
 
+.project-panel__back-image--bottom-full {
+  width: 100%;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.project-panel__back-image-split {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.project-panel__back-image-half {
+  width: 42%;
+  overflow: hidden;
+}
+
+.project-panel__back-image-half img {
+  width: 120%;
+  max-width: none;
+  height: auto;
+  display: block;
+}
+
+.project-panel__back-image-half--left img {
+  transform: translateX(0);
+}
+
+.project-panel__back-image-half--right img {
+  transform: translateX(-17%);
+}
+
 
 .project-panel__details--icon-only {
   display: flex;
@@ -1369,6 +1417,28 @@ body.scroll-locked {
 
 .project-panel__details p:last-child {
   margin-bottom: 0;
+}
+
+.project-panel__details ul {
+  margin: 0;
+  padding: 0 0 0 2.4em;
+  list-style: disc;
+  line-height: 1.6;
+}
+
+.project-panel__details li {
+  margin-bottom: 10px;
+}
+
+.project-panel__details li:last-child {
+  margin-bottom: 0;
+}
+
+.project-panel__details mark {
+  background: rgba(255, 255, 255, 0.92);
+  color: #000;
+  padding: 1px 5px;
+  border-radius: 2px;
 }
 
 .project-panel__details--soon {

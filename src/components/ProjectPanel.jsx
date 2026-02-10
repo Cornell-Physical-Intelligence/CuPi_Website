@@ -152,14 +152,23 @@ function ProjectPanel({ project }) {
               {project.backDetails}
             </div>
           </div>
-          {project.backImage && (
+          {project.backImageSplit ? (
+            <div className="project-panel__back-image-split" aria-hidden="true">
+              <div className="project-panel__back-image-half project-panel__back-image-half--left">
+                <img src={assetPath(project.backImage)} alt="" loading="lazy" />
+              </div>
+              <div className="project-panel__back-image-half project-panel__back-image-half--right">
+                <img src={assetPath(project.backImage)} alt="" loading="lazy" />
+              </div>
+            </div>
+          ) : project.backImage ? (
             <img
               src={assetPath(project.backImage)}
               alt={project.backImageAlt}
               className={`project-panel__back-image ${project.backImageClass || ''}`}
               loading="lazy"
             />
-          )}
+          ) : null}
         </div>
       </div>
     </figure>

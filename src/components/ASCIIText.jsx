@@ -48,7 +48,7 @@ const mapRange = (n, start, stop, start2, stop2) => {
 
 const PX_RATIO = typeof window !== 'undefined' ? window.devicePixelRatio : 1;
 const RESPONSIVE_ASCII_REF_WIDTH = 900;
-const RESPONSIVE_ASCII_MIN_RATIO = 0.25;
+const RESPONSIVE_ASCII_MIN_RATIO = 0.7;
 
 const getResponsiveAsciiFontSize = (baseFontSize, width) => {
   if (!width || !baseFontSize) {

@@ -9,6 +9,7 @@ function WorkPage() {
   const projectImagePaths = useMemo(
     () => [
       assetPath('img/WorkPage/SymbioteOrtho.png'),
+      assetPath('img/WorkPage/SymbioteOrthoMobile.png'),
       assetPath('img/SwallowProject.png'),
     ],
     []
