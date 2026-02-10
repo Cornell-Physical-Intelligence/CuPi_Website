@@ -8,7 +8,8 @@ import { preloadImages } from '../utils/preloadImages';
 import { GALLERY_IMAGES, GALLERY_THUMB_WIDTHS, getGalleryThumbPath } from '../data/gallery';
 import { SUBTEAMS } from '../data/subteams';
 
-const ASCIIText = lazy(() => import('../components/ASCIIText'));
+const asciiImport = import('../components/ASCIIText');
+const ASCIIText = lazy(() => asciiImport);
 
 const HERO_FONT_FAMILY = "'Times New Roman', Times, serif";
 

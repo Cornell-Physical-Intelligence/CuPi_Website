@@ -70,7 +70,9 @@ function ProjectPanel({ project }) {
         setOverlayHidden(true);
       }, 50);
     } else {
-      setOverlayHidden(false);
+      overlayTimeoutRef.current = window.setTimeout(() => {
+        setOverlayHidden(false);
+      }, 600);
     }
     setIsFlipped((prev) => !prev);
     setFlipDir(hoverSide ?? flipDir ?? 'right');
