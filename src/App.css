@@ -609,6 +609,12 @@ body.scroll-locked {
   padding-bottom: clamp(12px, 1.8vw, 18px);
 }
 
+.alt-page--apply {
+  height: 100vh;
+  min-height: unset;
+  overflow: hidden;
+}
+
 .alt-hero {
   display: flex;
   flex-direction: column;
@@ -916,14 +922,21 @@ body.scroll-locked {
 }
 
 /* Apply Page */
+.alt-section--apply {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .apply-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
   width: 100%;
-  margin-top: clamp(8px, 2vw, 16px);
-  margin-bottom: clamp(80px, 12vh, 200px);
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .apply-page__logo-wrap {
@@ -968,9 +981,15 @@ body.scroll-locked {
   font-size: clamp(0.75rem, 1.4vw, 0.85rem);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.6);
-  margin: clamp(4px, 1vw, 10px) 0 clamp(20px, 4vw, 36px);
+  margin: clamp(4px, 1vw, 10px) 0 0;
   font-weight: 300;
   padding: 0 20px;
+}
+
+.apply-page__email {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* Apply Timeline */

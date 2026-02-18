@@ -84,30 +84,11 @@ function CrabAnimation() {
 
 function ApplyPage() {
   return (
-    <main className="alt-page">
+    <main className="alt-page alt-page--apply">
       <section className="alt-section alt-section--apply">
         <div className="apply-page">
           <CrabAnimation />
-          <p className="apply-page__thank-you">Thanks for your interest in CUPI! We'd love to get to know you. Grab a coffee chat with one of our members and complete the application form.</p>
-          <div className="apply-timeline">
-            <div className="apply-timeline__node">
-              <div className="apply-timeline__content">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeAoHRH3jaqJc02cI7wYN-ZaQOSK6Ygou9UtXYAYbXwWh0rRQ/viewform" target="_blank" rel="noopener noreferrer" className="apply-timeline__link">
-                  Schedule a Coffee Chat
-                </a>
-                <p className="apply-timeline__desc">Talk one-on-one with a member to learn more about our projects and culture.</p>
-              </div>
-            </div>
-            <div className="apply-timeline__connector"></div>
-            <div className="apply-timeline__node">
-              <div className="apply-timeline__content">
-                <a href={APPLY_URL} target="_blank" rel="noopener noreferrer" className="apply-timeline__link">
-                  Application Form
-                </a>
-                <p className="apply-timeline__desc">Share your background and interests so we can match you with the right projects.</p>
-              </div>
-            </div>
-          </div>
+          <p className="apply-page__thank-you">Applications are currently closed. If you really want to be considered, email <a className="apply-page__email" href="mailto:ab3233@cornell.edu">ab3233@cornell.edu</a>.</p>
         </div>
       </section>
       <SiteFooter />
