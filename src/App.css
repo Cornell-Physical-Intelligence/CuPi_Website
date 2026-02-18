@@ -986,10 +986,35 @@ body.scroll-locked {
   padding: 0 20px;
 }
 
+.apply-page__email-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: bottom;
+}
+
 .apply-page__email {
   color: #fff;
   text-decoration: underline;
   text-underline-offset: 2px;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.apply-page__copied {
+  font-size: 0.7em;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  line-height: 1.2;
+}
+
+.apply-page__copied.is-visible {
+  opacity: 1;
 }
 
 /* Apply Timeline */
