@@ -49,8 +49,15 @@ export const TEAM_SECTIONS = [
       {
         name: 'James Cenawood',
         bio: BIO_PLACEHOLDER,
-        role: 'Computer Science Lead',
+        role: 'Computer Science Co-Lead',
         project: 'Quad'
+      },
+      {
+        name: 'Nicholas Letendre',
+        imageBase: 'NickLet',
+        bio: "I'm Nicholas, and I study mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
+        role: 'Computer Science Co-Lead',
+        project: 'Hexapod'
       },
       {
         name: 'Max Lee',
@@ -94,13 +101,6 @@ export const TEAM_SECTIONS = [
         bio: "I'm a mechanical engineer and I love sketching, bouldering, and throwing paper airplanes",
         year: 'Sophomore',
         project: 'Quad'
-      },
-      {
-        name: 'Nicholas Letendre',
-        imageBase: 'NickLet',
-        bio: "I'm Nicholas, and I study mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
-        year: 'Junior',
-        project: 'Hexapod'
       },
       {
         name: 'Lindsay Kossoff',
