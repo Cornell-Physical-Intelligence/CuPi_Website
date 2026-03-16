@@ -33,7 +33,7 @@ const getMemberMeta = (member) => {
   return 'Year TBD';
 };
 
-function TeamCard({ member, formalMode, isFlipped, onToggle, onClear }) {
+function TeamCard({ member, formalMode, isExpanded, onToggle, onClear }) {
   const [tiltSide, setTiltSide] = useState(null);
   const photoSrc = getMemberImage(member, formalMode);
   const bio = member.bio ?? BIO_PLACEHOLDER;
@@ -41,7 +41,7 @@ function TeamCard({ member, formalMode, isFlipped, onToggle, onClear }) {
   const meta = getMemberMeta(member);
 
   const handleMouseMove = (event) => {
-    if (isFlipped) return;
+    if (isExpanded) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const side = event.clientX - rect.left < rect.width / 2 ? 'left' : 'right';
     setTiltSide((prev) => (prev === side ? prev : side));
@@ -68,7 +68,7 @@ function TeamCard({ member, formalMode, isFlipped, onToggle, onClear }) {
 
   return (
     <article
-      className={`team-card ${isFlipped ? 'is-flipped' : ''} ${tiltSide ? `tilt-${tiltSide}` : ''}`}
+      className={`team-card ${isExpanded ? 'is-expanded' : ''} ${tiltSide ? `tilt-${tiltSide}` : ''}`}
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
@@ -76,24 +76,24 @@ function TeamCard({ member, formalMode, isFlipped, onToggle, onClear }) {
       onMouseLeave={() => setTiltSide(null)}
       onBlur={handleBlur}
     >
-      <div className="team-card__flipper">
-        <div className="team-card__face team-card__face--front">
-          <div className="team-card__photo">
-            {photoSrc ? (
-              <img src={photoSrc} alt={member.name} loading="lazy" />
-            ) : (
-              <span className="team-card__photo-placeholder">{getInitials(member.name)}</span>
-            )}
-          </div>
+      <div className="team-card__frame">
+        <div className="team-card__photo">
+          {photoSrc ? (
+            <img src={photoSrc} alt={member.name} loading="lazy" />
+          ) : (
+            <span className="team-card__photo-placeholder">{getInitials(member.name)}</span>
+          )}
+        </div>
+        <div className="team-card__drawer">
           <div className="team-card__body">
             <p className="team-card__name">{member.name}</p>
             <p className="team-card__meta">{meta}</p>
           </div>
-        </div>
-        <div className="team-card__face team-card__face--back">
-          <p className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}>
-            {bio}
-          </p>
+          <div className="team-card__drawer-content">
+            <p className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}>
+              {bio}
+            </p>
+          </div>
         </div>
       </div>
     </article>

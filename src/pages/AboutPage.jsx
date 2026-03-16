@@ -22,7 +22,7 @@ function AboutPage() {
           key={member.name}
           member={member}
           formalMode={formalMode}
-          isFlipped={activeBioCard === cardId}
+          isExpanded={activeBioCard === cardId}
           onToggle={() => setActiveBioCard((prev) => (prev === cardId ? null : cardId))}
           onClear={() => setActiveBioCard((prev) => (prev === cardId ? null : prev))}
         />
