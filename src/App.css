@@ -975,24 +975,6 @@ body.scroll-locked {
   opacity: 0;
 }
 
-.apply-page__eyebrow {
-  margin: clamp(8px, 1.4vw, 12px) 0 0;
-  font-size: clamp(0.65rem, 1vw, 0.72rem);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-.apply-page__title {
-  margin: 0;
-  font-size: clamp(1.6rem, 4vw, 3rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  color: #fff;
-  font-family: 'Questrial', sans-serif;
-  text-align: center;
-}
-
 .apply-page__thank-you {
   max-width: 520px;
   text-align: center;
@@ -1004,10 +986,34 @@ body.scroll-locked {
   padding: 0 20px;
 }
 
+.apply-page__email-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: bottom;
+}
+
 .apply-page__email {
   color: #fff;
   text-decoration: underline;
   text-underline-offset: 3px;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.apply-page__copied {
+  font-size: 0.7em;
+  color: rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  line-height: 1.2;
+}
+
+.apply-page__copied.is-visible {
+  opacity: 1;
 }
 
 /* Apply Timeline */

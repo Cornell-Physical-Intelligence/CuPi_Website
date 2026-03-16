@@ -82,18 +82,54 @@ function CrabAnimation() {
 }
 
 function ApplyPage() {
+  const [copied, setCopied] = useState(false);
+  const timeoutRef = useRef(null);
+
+  useEffect(() => () => {
+    window.clearTimeout(timeoutRef.current);
+  }, []);
+
+  const copyEmail = async () => {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText('ab3233@cornell.edu');
+      return;
+    }
+
+    const input = document.createElement('textarea');
+    input.value = 'ab3233@cornell.edu';
+    input.setAttribute('readonly', '');
+    input.style.position = 'absolute';
+    input.style.left = '-9999px';
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+  };
+
+  const handleEmailClick = async () => {
+    try {
+      await copyEmail();
+      setCopied(true);
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = window.setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      setCopied(false);
+    }
+  };
+
   return (
     <main className="alt-page alt-page--apply">
       <section className="alt-section alt-section--apply">
         <div className="apply-page">
           <CrabAnimation />
-          <p className="apply-page__eyebrow">CUPI Applications</p>
-          <h1 className="apply-page__title">Applications are closed.</h1>
           <p className="apply-page__thank-you">
             Unfortunately, applications are closed right now. If you&apos;re really curious, email{' '}
-            <a className="apply-page__email" href="mailto:ab3233@cornell.edu">
-              ab3233@cornell.edu
-            </a>
+            <span className="apply-page__email-wrap">
+              <button className="apply-page__email" onClick={handleEmailClick} type="button">
+                ab3233@cornell.edu
+              </button>
+              <span className={`apply-page__copied ${copied ? 'is-visible' : ''}`}>copied!</span>
+            </span>
             .
           </p>
         </div>
