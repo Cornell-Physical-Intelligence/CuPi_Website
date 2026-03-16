@@ -1571,7 +1571,7 @@ body.scroll-locked {
 }
 
 .team-card {
-  border-radius: 0;
+  border-radius: 8px;
   padding: 0;
   background: transparent;
   display: flex;
@@ -1585,44 +1585,6 @@ body.scroll-locked {
   perspective: 1200px;
   cursor: pointer;
   touch-action: manipulation;
-}
-
-/* Debug-style hover: dotted border */
-.team-card[data-project]::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 2px dotted #ffffff;
-  pointer-events: none;
-  z-index: 100;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-/* Debug-style hover: label tag — default: top-left */
-.team-card[data-project]::before {
-  content: attr(data-project);
-  position: absolute;
-  top: -18px;
-  left: 8px;
-  background: rgba(0, 0, 0, 0.75);
-  color: #f5f5f5;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  font-size: 9px;
-  font-family: monospace;
-  padding: 1px 5px;
-  line-height: 1.2;
-  border-radius: 2px;
-  z-index: 101;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-  white-space: nowrap;
-}
-
-.team-card[data-project]:hover::after,
-.team-card[data-project]:hover::before {
-  opacity: 1;
 }
 
 .team-card__flipper {
@@ -1652,6 +1614,7 @@ body.scroll-locked {
   position: absolute;
   inset: 10px;
   border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 8px;
   backface-visibility: hidden;
   display: flex;
   flex-direction: column;
@@ -1662,7 +1625,6 @@ body.scroll-locked {
 .team-card__face--front {
   gap: 12px;
   padding-bottom: 12px;
-  border-radius: 0;
 }
 
 .team-card__face--back {
@@ -1673,7 +1635,6 @@ body.scroll-locked {
   align-items: center;
   text-align: center;
   transform: rotateY(180deg);
-  border-radius: 0;
 }
 
 .team-card__photo {
@@ -1682,6 +1643,7 @@ body.scroll-locked {
   min-height: 0;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 6px;
   background: #101010;
   display: flex;
   align-items: center;
@@ -1695,6 +1657,7 @@ body.scroll-locked {
   object-fit: cover;
   filter: brightness(0.92);
   display: block;
+  border-radius: inherit;
 }
 
 .team-card__photo-placeholder {
@@ -1817,11 +1780,6 @@ body.scroll-locked {
 
   .team-card__photo-placeholder {
     font-size: 0.8rem;
-  }
-
-  /* Mobile: hide tag label, keep dotted border only */
-  .team-card[data-project]::before {
-    display: none;
   }
 }
 

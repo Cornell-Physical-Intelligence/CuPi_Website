@@ -23,7 +23,12 @@ const getInitials = (name) =>
 const getMemberMeta = (member) => {
   if (member.role) return member.role;
   if (member.meta) return member.meta;
-  const year = member.year && member.year !== 'TBD' ? member.year : null;
+  const year =
+    member.year && member.year !== 'TBD'
+      ? member.year === 'First Year'
+        ? 'Freshman'
+        : member.year
+      : null;
   if (year) return year;
   return 'Year TBD';
 };
@@ -64,7 +69,6 @@ function TeamCard({ member, formalMode, isFlipped, onToggle, onClear }) {
   return (
     <article
       className={`team-card ${isFlipped ? 'is-flipped' : ''} ${tiltSide ? `tilt-${tiltSide}` : ''}`}
-      data-project={member.project ? `currently working on: ${member.project}` : undefined}
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={handleKeyDown}

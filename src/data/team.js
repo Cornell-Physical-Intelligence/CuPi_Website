@@ -140,17 +140,17 @@ export const TEAM_SECTIONS = [
       {
         name: 'Amanuel Adane',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
       {
         name: 'Raymond Sheng',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
       {
         name: 'Pratyush Saxena',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
       {
         name: 'Shaurya Sen',
@@ -160,12 +160,12 @@ export const TEAM_SECTIONS = [
       {
         name: 'Jonathan Bael',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
       {
         name: 'Ty Yue',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
       {
         name: 'Youhanna Meleka',
@@ -185,12 +185,12 @@ export const TEAM_SECTIONS = [
       {
         name: 'Alicia He',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
       {
         name: 'Mina Yeh',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
       {
         name: 'Vincent Yi',
@@ -205,12 +205,12 @@ export const TEAM_SECTIONS = [
       {
         name: 'Suphia Zhang',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
       {
         name: 'Claire Shi',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
       {
         name: 'Cam Hogan',
@@ -225,12 +225,12 @@ export const TEAM_SECTIONS = [
       {
         name: 'Josh Baik',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
       {
         name: 'Anant Gupta',
         bio: BIO_PLACEHOLDER,
-        year: 'First Year'
+        year: 'Freshman'
       },
     ]
   }
