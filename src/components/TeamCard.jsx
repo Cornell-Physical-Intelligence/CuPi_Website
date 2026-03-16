@@ -37,15 +37,18 @@ function TeamCard({ member, formalMode, isExpanded, onToggle, onClear }) {
   const [tiltSide, setTiltSide] = useState(null);
   const bioRef = useRef(null);
   const drawerContentRef = useRef(null);
+  const drawerMetaRef = useRef(null);
   const photoSrc = getMemberImage(member, formalMode);
   const bio = member.bio ?? BIO_PLACEHOLDER;
   const isPlaceholderBio = bio === BIO_PLACEHOLDER;
   const meta = getMemberMeta(member);
+  const isLead = Boolean(member.role);
 
   useEffect(() => {
     const fitBio = () => {
       const bioEl = bioRef.current;
       const contentEl = drawerContentRef.current;
+      const drawerMetaEl = drawerMetaRef.current;
 
       if (!bioEl || !contentEl) return;
 
@@ -55,6 +58,9 @@ function TeamCard({ member, formalMode, isExpanded, onToggle, onClear }) {
       const maxLineHeight = isPlaceholderBio ? 1.15 : (isMobile ? 1.24 : 1.44);
       const minLineHeight = isPlaceholderBio ? 1.02 : 1.12;
 
+      const reservedHeight = drawerMetaEl ? drawerMetaEl.offsetHeight + 6 : 0;
+      const availableHeight = Math.max(0, contentEl.clientHeight - reservedHeight);
+
       let fontSize = maxFontSize;
       let lineHeight = maxLineHeight;
       let guard = 0;
@@ -62,7 +68,7 @@ function TeamCard({ member, formalMode, isExpanded, onToggle, onClear }) {
       bioEl.style.fontSize = `${fontSize}px`;
       bioEl.style.lineHeight = `${lineHeight}`;
 
-      while (bioEl.scrollHeight > contentEl.clientHeight + 1 && fontSize > minFontSize && guard < 40) {
+      while (bioEl.scrollHeight > availableHeight + 1 && fontSize > minFontSize && guard < 40) {
         fontSize -= 0.25;
         lineHeight = Math.max(minLineHeight, lineHeight - 0.015);
         bioEl.style.fontSize = `${fontSize}px`;
@@ -127,9 +133,14 @@ function TeamCard({ member, formalMode, isExpanded, onToggle, onClear }) {
         <div className="team-card__drawer">
           <div className="team-card__body">
             <p className="team-card__name">{member.name}</p>
-            <p className="team-card__meta">{meta}</p>
+            {isLead ? <p className="team-card__meta">{meta}</p> : null}
           </div>
           <div className="team-card__drawer-content" ref={drawerContentRef}>
+            {!isLead ? (
+              <p className="team-card__drawer-meta" ref={drawerMetaRef}>
+                {meta}
+              </p>
+            ) : null}
             <p
               className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}
               ref={bioRef}

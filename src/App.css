@@ -1666,7 +1666,8 @@ body.scroll-locked {
   min-height: 0;
   display: flex;
   align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.28s ease, transform 0.42s ease;
@@ -1699,6 +1700,14 @@ body.scroll-locked {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.72);
+}
+
+.team-card__drawer-meta {
+  margin: 0 0 6px;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .team-card__meta--badge {
@@ -1773,6 +1782,11 @@ body.scroll-locked {
 
   .team-card__meta {
     font-size: 0.48rem;
+  }
+
+  .team-card__drawer-meta {
+    margin-bottom: 4px;
+    font-size: 0.42rem;
   }
 
   .team-card__drawer-content {
