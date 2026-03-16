@@ -22,6 +22,7 @@ const getInitials = (name) =>
 
 const getMemberMeta = (member) => {
   if (member.role) return member.role;
+  if (member.meta) return member.meta;
   const year = member.year && member.year !== 'TBD' ? member.year : null;
   if (year) return year;
   return 'Year TBD';

@@ -987,20 +987,18 @@ body.scroll-locked {
 }
 
 .apply-page__email-wrap {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  vertical-align: bottom;
+  display: inline-block;
+  position: relative;
 }
 
 .apply-page__email {
   color: #fff;
-  text-decoration: underline;
-  text-underline-offset: 3px;
   background: none;
   border: none;
   padding: 0;
   font: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
   cursor: pointer;
 }
 
@@ -1010,6 +1008,12 @@ body.scroll-locked {
   opacity: 0;
   transition: opacity 0.2s ease;
   line-height: 1.2;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .apply-page__copied.is-visible {

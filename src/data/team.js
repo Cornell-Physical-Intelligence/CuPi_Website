@@ -28,7 +28,7 @@ export const TEAM_SECTIONS = [
       {
         name: 'Mic Robbins',
         imageBase: 'Mic',
-        bio: "I'm a sophomore electrical engineer and like to play clash royale (15k)",
+        bio: "I'm an electrical engineer and like to play clash royale (15k)",
         role: 'Electrical Co-Lead',
         project: 'Quad'
       },
@@ -57,6 +57,13 @@ export const TEAM_SECTIONS = [
         bio: BIO_PLACEHOLDER,
         role: 'Operations Lead',
         project: 'Business'
+      },
+      {
+        name: 'Sophie',
+        imageBase: 'Sophie',
+        formalSuffix: 'Suit',
+        bio: BIO_PLACEHOLDER,
+        role: 'Creative Lead'
       }
     ]
   },
@@ -71,69 +78,159 @@ export const TEAM_SECTIONS = [
         project: 'Hexapod'
       },
       {
-        name: 'Sophie',
-        imageBase: 'Sophie',
-        formalSuffix: 'Suit',
-        bio: BIO_PLACEHOLDER
-      },
-      {
         name: 'Aidan Moran',
         bio: BIO_PLACEHOLDER,
+        meta: 'Undergraduate',
         project: 'Business'
       },
       {
         name: 'Josh Lennon',
         bio: BIO_PLACEHOLDER,
-        year: 'Sophomore',
+        year: 'Junior',
         project: 'Quad'
       },
       {
         name: 'Sophie Di',
         bio: "I'm a mechanical engineer and I love sketching, bouldering, and throwing paper airplanes",
-        year: 'Freshman',
+        year: 'Sophomore',
         project: 'Quad'
       },
       {
         name: 'Nicholas Letendre',
         imageBase: 'NickLet',
-        bio: "I'm Nicholas, and I am a sophomore studying mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
-        year: 'Sophomore',
+        bio: "I'm Nicholas, and I study mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
+        year: 'Junior',
         project: 'Hexapod'
       },
       {
         name: 'Lindsay Kossoff',
         imageBase: 'Lindsay',
-        bio: 'Hi, my name is Lindsay Kossoff. I am a freshman from Maryland studying mechanical engineering.',
-        year: 'Freshman',
+        bio: 'Hi, my name is Lindsay Kossoff. I am from Maryland and study mechanical engineering.',
+        year: 'Sophomore',
         project: 'Quad'
       },
       {
         name: 'Christopher Guillen-Chacon',
         imageBase: 'Chris',
         bio: "My name is Chris and I'm interested in drone design",
-        year: 'Sophomore',
+        year: 'Junior',
         project: 'Quad'
       },
       {
         name: 'Nick Lennon',
         imageBase: 'NickLen',
         bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
-        year: 'Junior',
+        year: 'Senior',
         project: 'Quad'
       },
       {
         name: 'Ronan Alo',
         imageBase: 'Ronan',
-        bio: 'I am a sophomore majoring in mechanical engineering and computer science, interested in drone pathing',
-        year: 'Sophomore',
+        bio: 'I am majoring in mechanical engineering and computer science, interested in drone pathing',
+        year: 'Junior',
         project: 'Quad'
       },
       {
         name: 'Hamilton Jeong',
         imageBase: 'Hamilton',
         bio: "I'm a BioStats major, I like competing in Taekwondo and playing piano",
-        year: 'Junior',
+        year: 'Senior',
         project: 'Quad'
+      },
+      {
+        name: 'Amanuel Adane',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
+      },
+      {
+        name: 'Raymond Sheng',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
+      },
+      {
+        name: 'Pratyush Saxena',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
+      },
+      {
+        name: 'Shaurya Sen',
+        bio: BIO_PLACEHOLDER,
+        meta: 'Undergraduate'
+      },
+      {
+        name: 'Jonathan Bael',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
+      },
+      {
+        name: 'Ty Yue',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
+      },
+      {
+        name: 'Youhanna Meleka',
+        bio: BIO_PLACEHOLDER,
+        meta: 'Graduate Student'
+      },
+      {
+        name: 'Mouhammad Dia',
+        bio: BIO_PLACEHOLDER,
+        meta: 'Undergraduate'
+      },
+      {
+        name: 'Ruichen Bao',
+        bio: BIO_PLACEHOLDER,
+        meta: 'Graduate Student'
+      },
+      {
+        name: 'Alicia He',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
+      },
+      {
+        name: 'Mina Yeh',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
+      },
+      {
+        name: 'Vincent Yi',
+        bio: BIO_PLACEHOLDER,
+        meta: 'Undergraduate'
+      },
+      {
+        name: 'Calvin Pang',
+        bio: BIO_PLACEHOLDER,
+        meta: 'Undergraduate'
+      },
+      {
+        name: 'Suphia Zhang',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
+      },
+      {
+        name: 'Claire Shi',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
+      },
+      {
+        name: 'Cam Hogan',
+        bio: BIO_PLACEHOLDER,
+        meta: 'Graduate Student'
+      },
+      {
+        name: 'Julian Gasharov',
+        bio: BIO_PLACEHOLDER,
+        meta: 'Undergraduate'
+      },
+      {
+        name: 'Josh Baik',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
+      },
+      {
+        name: 'Anant Gupta',
+        bio: BIO_PLACEHOLDER,
+        year: 'First Year'
       },
     ]
   }
