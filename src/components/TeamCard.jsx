@@ -138,7 +138,7 @@ function TeamCard({ member, formalMode, isExpanded, onToggle, onClear }) {
           <div className="team-card__drawer-content" ref={drawerContentRef}>
             {!isLead ? (
               <p className="team-card__drawer-meta" ref={drawerMetaRef}>
-                {meta}
+                ({meta})
               </p>
             ) : null}
             <p
