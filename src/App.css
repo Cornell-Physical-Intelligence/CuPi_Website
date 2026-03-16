@@ -1571,7 +1571,7 @@ body.scroll-locked {
 }
 
 .team-card {
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 0;
   background: transparent;
   display: flex;
@@ -1614,7 +1614,7 @@ body.scroll-locked {
   position: absolute;
   inset: 10px;
   border: 1px solid rgba(255, 255, 255, 0.85);
-  border-radius: 8px;
+  border-radius: 4px;
   backface-visibility: hidden;
   display: flex;
   flex-direction: column;
@@ -1643,7 +1643,6 @@ body.scroll-locked {
   min-height: 0;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 6px;
   background: #101010;
   display: flex;
   align-items: center;
@@ -1657,7 +1656,6 @@ body.scroll-locked {
   object-fit: cover;
   filter: brightness(0.92);
   display: block;
-  border-radius: inherit;
 }
 
 .team-card__photo-placeholder {
