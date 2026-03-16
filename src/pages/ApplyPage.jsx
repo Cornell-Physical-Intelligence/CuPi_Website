@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import SiteFooter from '../components/SiteFooter';
 import { assetPath } from '../utils/assetPath';
-import { APPLY_URL } from '../data/projects';
 
 const CRAB_FRAMES = [
   'icons/logo-1.svg',
@@ -83,27 +82,19 @@ function CrabAnimation() {
 }
 
 function ApplyPage() {
-  const [copied, setCopied] = useState(false);
-  const timeoutRef = useRef(null);
-
-  const handleEmailClick = (e) => {
-    e.preventDefault();
-    navigator.clipboard.writeText('ab3233@cornell.edu');
-    setCopied(true);
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <main className="alt-page alt-page--apply">
       <section className="alt-section alt-section--apply">
         <div className="apply-page">
           <CrabAnimation />
-          <p className="apply-page__thank-you">Applications are currently closed. If you really want to be considered, email{' '}
-            <span className="apply-page__email-wrap">
-              <button className="apply-page__email" onClick={handleEmailClick}>ab3233@cornell.edu</button>
-              <span className={`apply-page__copied ${copied ? 'is-visible' : ''}`}>copied!</span>
-            </span>.
+          <p className="apply-page__eyebrow">CUPI Applications</p>
+          <h1 className="apply-page__title">Applications are closed.</h1>
+          <p className="apply-page__thank-you">
+            Unfortunately, applications are closed right now. If you&apos;re really curious, email{' '}
+            <a className="apply-page__email" href="mailto:ab3233@cornell.edu">
+              ab3233@cornell.edu
+            </a>
+            .
           </p>
         </div>
       </section>
