@@ -57,6 +57,7 @@ export const TEAM_SECTIONS = [
         imageBase: 'NickLet',
         bio: "I'm Nicholas, and I study mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
         role: 'Computer Science Co-Lead',
+        year: 'Junior',
         project: 'Hexapod'
       },
       {
@@ -70,7 +71,8 @@ export const TEAM_SECTIONS = [
         imageBase: 'Sophie',
         formalSuffix: 'Suit',
         bio: BIO_PLACEHOLDER,
-        role: 'Creative Lead'
+        role: 'Creative Lead',
+        year: 'Freshman'
       }
     ]
   },
@@ -82,12 +84,13 @@ export const TEAM_SECTIONS = [
         imageBase: 'Nathan',
         formalSuffix: 'Suit',
         bio: "I'm interested in developing embedded systems. I enjoy running and eating",
+        year: 'Freshman',
         project: 'Hexapod'
       },
       {
         name: 'Aidan Moran',
         bio: BIO_PLACEHOLDER,
-        meta: 'Undergraduate',
+        year: 'Sophomore',
         project: 'Business'
       },
       {
@@ -110,17 +113,10 @@ export const TEAM_SECTIONS = [
         project: 'Quad'
       },
       {
-        name: 'Christopher Guillen-Chacon',
-        imageBase: 'Chris',
-        bio: "My name is Chris and I'm interested in drone design",
-        year: 'Junior',
-        project: 'Quad'
-      },
-      {
         name: 'Nick Lennon',
         imageBase: 'NickLen',
         bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
-        year: 'Senior',
+        year: 'Sophomore',
         project: 'Quad'
       },
       {
@@ -128,13 +124,6 @@ export const TEAM_SECTIONS = [
         imageBase: 'Ronan',
         bio: 'I am majoring in mechanical engineering and computer science, interested in drone pathing',
         year: 'Junior',
-        project: 'Quad'
-      },
-      {
-        name: 'Hamilton Jeong',
-        imageBase: 'Hamilton',
-        bio: "I'm a BioStats major, I like competing in Taekwondo and playing piano",
-        year: 'Senior',
         project: 'Quad'
       },
       {
@@ -155,7 +144,7 @@ export const TEAM_SECTIONS = [
       {
         name: 'Shaurya Sen',
         bio: BIO_PLACEHOLDER,
-        meta: 'Undergraduate'
+        year: 'Sophomore'
       },
       {
         name: 'Jonathan Bael',
@@ -175,7 +164,7 @@ export const TEAM_SECTIONS = [
       {
         name: 'Mouhammad Dia',
         bio: BIO_PLACEHOLDER,
-        meta: 'Undergraduate'
+        year: 'Sophomore'
       },
       {
         name: 'Ruichen Bao',
@@ -195,12 +184,12 @@ export const TEAM_SECTIONS = [
       {
         name: 'Vincent Yi',
         bio: BIO_PLACEHOLDER,
-        meta: 'Undergraduate'
+        year: 'Sophomore'
       },
       {
         name: 'Calvin Pang',
         bio: BIO_PLACEHOLDER,
-        meta: 'Undergraduate'
+        year: 'Sophomore'
       },
       {
         name: 'Suphia Zhang',
@@ -220,7 +209,7 @@ export const TEAM_SECTIONS = [
       {
         name: 'Julian Gasharov',
         bio: BIO_PLACEHOLDER,
-        meta: 'Undergraduate'
+        year: 'Sophomore'
       },
       {
         name: 'Josh Baik',

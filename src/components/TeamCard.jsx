@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { assetPath } from '../utils/assetPath';
 import { BIO_PLACEHOLDER } from '../data/team';
 
@@ -35,10 +35,50 @@ const getMemberMeta = (member) => {
 
 function TeamCard({ member, formalMode, isExpanded, onToggle, onClear }) {
   const [tiltSide, setTiltSide] = useState(null);
+  const bioRef = useRef(null);
+  const drawerContentRef = useRef(null);
   const photoSrc = getMemberImage(member, formalMode);
   const bio = member.bio ?? BIO_PLACEHOLDER;
   const isPlaceholderBio = bio === BIO_PLACEHOLDER;
   const meta = getMemberMeta(member);
+
+  useEffect(() => {
+    const fitBio = () => {
+      const bioEl = bioRef.current;
+      const contentEl = drawerContentRef.current;
+
+      if (!bioEl || !contentEl) return;
+
+      const isMobile = window.innerWidth <= 640;
+      const maxFontSize = isPlaceholderBio ? (isMobile ? 8.4 : 10.2) : (isMobile ? 9.2 : 12.2);
+      const minFontSize = isPlaceholderBio ? (isMobile ? 6 : 7.2) : (isMobile ? 7 : 8.2);
+      const maxLineHeight = isPlaceholderBio ? 1.15 : (isMobile ? 1.24 : 1.44);
+      const minLineHeight = isPlaceholderBio ? 1.02 : 1.12;
+
+      let fontSize = maxFontSize;
+      let lineHeight = maxLineHeight;
+      let guard = 0;
+
+      bioEl.style.fontSize = `${fontSize}px`;
+      bioEl.style.lineHeight = `${lineHeight}`;
+
+      while (bioEl.scrollHeight > contentEl.clientHeight + 1 && fontSize > minFontSize && guard < 40) {
+        fontSize -= 0.25;
+        lineHeight = Math.max(minLineHeight, lineHeight - 0.015);
+        bioEl.style.fontSize = `${fontSize}px`;
+        bioEl.style.lineHeight = `${lineHeight}`;
+        guard += 1;
+      }
+    };
+
+    const rafId = window.requestAnimationFrame(fitBio);
+    window.addEventListener('resize', fitBio);
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', fitBio);
+    };
+  }, [bio, isExpanded, isPlaceholderBio]);
 
   const handleMouseMove = (event) => {
     if (isExpanded) return;
@@ -89,8 +129,11 @@ function TeamCard({ member, formalMode, isExpanded, onToggle, onClear }) {
             <p className="team-card__name">{member.name}</p>
             <p className="team-card__meta">{meta}</p>
           </div>
-          <div className="team-card__drawer-content">
-            <p className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}>
+          <div className="team-card__drawer-content" ref={drawerContentRef}>
+            <p
+              className={`team-card__bio ${isPlaceholderBio ? 'team-card__bio--placeholder' : ''}`}
+              ref={bioRef}
+            >
               {bio}
             </p>
           </div>
