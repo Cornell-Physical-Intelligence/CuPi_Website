@@ -73,6 +73,11 @@ export const TEAM_SECTIONS = [
         bio: BIO_PLACEHOLDER,
         role: 'Creative Lead',
         year: 'Freshman'
+      },
+      {
+        name: 'Youhanna Meleka',
+        bio: BIO_PLACEHOLDER,
+        role: 'Technical Project Manager'
       }
     ]
   },
@@ -155,11 +160,6 @@ export const TEAM_SECTIONS = [
         name: 'Ty Yue',
         bio: BIO_PLACEHOLDER,
         year: 'Freshman'
-      },
-      {
-        name: 'Youhanna Meleka',
-        bio: BIO_PLACEHOLDER,
-        meta: 'Graduate Student'
       },
       {
         name: 'Mouhammad Dia',

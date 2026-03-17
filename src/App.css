@@ -1644,7 +1644,7 @@ body.scroll-locked {
   border-top: 1px solid rgba(255, 255, 255, 0.55);
   background:
     linear-gradient(180deg, rgba(5, 5, 5, 0.52) 0%, rgba(5, 5, 5, 0.88) 16%, rgba(5, 5, 5, 0.97) 100%);
-  transform: translateY(calc(100% - 66px));
+  transform: translateY(calc(100% - 72px));
   transition: transform 0.45s cubic-bezier(0.24, 0.8, 0.26, 1);
 }
 
@@ -1775,7 +1775,7 @@ body.scroll-locked {
     height: 80%;
     padding: 10px 10px 12px;
     gap: 10px;
-    transform: translateY(calc(100% - 48px));
+    transform: translateY(calc(100% - 52px));
   }
 
   .team-card__name {
