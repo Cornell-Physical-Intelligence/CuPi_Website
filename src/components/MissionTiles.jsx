@@ -7,7 +7,7 @@ import './MissionTiles.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { label: 'Members', value: 17 },
+  { label: 'Members', value: 35 },
   { label: 'Subteams', value: 4 }
 ];
 
