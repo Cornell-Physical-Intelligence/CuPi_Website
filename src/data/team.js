@@ -63,7 +63,14 @@ export const TEAM_SECTIONS = [
       {
         name: 'Max Lee',
         bio: BIO_PLACEHOLDER,
-        role: 'Operations Lead',
+        role: 'Operations Co-Lead',
+        project: 'Business'
+      },
+      {
+        name: 'Aidan Moran',
+        bio: BIO_PLACEHOLDER,
+        role: 'Operations Co-Lead',
+        year: 'Sophomore',
         project: 'Business'
       },
       {
@@ -91,12 +98,6 @@ export const TEAM_SECTIONS = [
         bio: "I'm interested in developing embedded systems. I enjoy running and eating",
         year: 'Freshman',
         project: 'Hexapod'
-      },
-      {
-        name: 'Aidan Moran',
-        bio: BIO_PLACEHOLDER,
-        year: 'Sophomore',
-        project: 'Business'
       },
       {
         name: 'Josh Lennon',
