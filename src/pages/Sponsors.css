@@ -18,6 +18,13 @@
   min-height: clamp(0px, 15vw, 230px);
 }
 
+/* As a flex item the head would shrink to the width of the word, and its rule is drawn
+   at 100vw centred on the head -- so the line ended up centred on the title and stopped
+   well short of the right wall. Span the column and it centres on the page instead. */
+.sponsors__masthead > .page-head {
+  width: 100%;
+}
+
 /* Hexapod leg wireframe. Sized by height so it can never grow into the fixed nav, and
    anchored to the bottom of the head, which is where page-head draws its rule. */
 .sponsors__art {
