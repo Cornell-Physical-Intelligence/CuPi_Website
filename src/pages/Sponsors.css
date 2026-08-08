@@ -93,6 +93,48 @@
   z-index: 1;
 }
 
+/* The address is a button, not a link, but has to read as part of the sentence. */
+.sponsors__email-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.sponsors__email {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
+  color: var(--fg);
+  border-bottom: 1px solid rgba(var(--fg-rgb), 0.3);
+  cursor: pointer;
+}
+
+.sponsors__email:hover,
+.sponsors__email:focus-visible {
+  border-bottom-color: var(--fg);
+}
+
+/* Absolutely placed so the confirmation cannot reflow the sentence it sits under. */
+.sponsors__copied {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.72em;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: rgba(var(--fg-rgb), 0.85);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.sponsors__copied.is-visible {
+  opacity: 1;
+}
+
 .sponsors__lede a {
   color: var(--fg);
   text-decoration: none;

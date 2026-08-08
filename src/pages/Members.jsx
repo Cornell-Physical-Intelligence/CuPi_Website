@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import SiteFooter from '../components/SiteFooter';
-import { assetPath } from '../utils/assetPath';
 import { preloadImages } from '../utils/preloadImages';
-import { TEAM_SECTIONS, PROFESSORS, BIO_PLACEHOLDER, getAboutImagePaths } from '../data/team';
+import { TEAM_SECTIONS, PROFESSORS, BIO_PLACEHOLDER } from '../data/team';
 import './Members.css';
 
 // Rebuilt rather than ported. The old roster spent a 230px card and a sliding drawer on
@@ -12,10 +11,17 @@ import './Members.css';
 
 // One photo per person for now; formal portraits will come back as a second file and a
 // toggle when they are shot.
-const photoFor = (member) => {
-  if (!member.imageBase) return assetPath('img/People/Placeholder.png');
-  return assetPath(`img/People/${member.imageBase}.png`);
-};
+// Photos are imported rather than read from public/, so Vite fingerprints each filename
+// with a content hash. Swapping someone's headshot then changes its URL, which is what
+// stops browsers and the CDN serving the previous one from cache -- an unhashed
+// /img/People/Jon.png is cached forever under the same name.
+const PHOTOS = Object.fromEntries(
+  Object.entries(
+    import.meta.glob('../assets/people/*.webp', { eager: true, query: '?url', import: 'default' })
+  ).map(([path, url]) => [path.split('/').pop().replace('.webp', ''), url])
+);
+
+const photoFor = (member) => PHOTOS[member.imageBase] ?? PHOTOS.Placeholder;
 
 // Role wins over class year; "First Year" reads better as "Freshman".
 const metaFor = (member) => {
@@ -55,7 +61,7 @@ function MemberCard({ member, isOpen, onToggle }) {
 export default function Members() {
   const [openCard, setOpenCard] = useState(null);
 
-  const imagePaths = useMemo(() => getAboutImagePaths(), []);
+  const imagePaths = useMemo(() => Object.values(PHOTOS), []);
   useEffect(() => {
     preloadImages(imagePaths, { priority: 'high', decode: true });
   }, [imagePaths]);

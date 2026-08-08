@@ -1,5 +1,3 @@
-import { assetPath } from '../utils/assetPath';
-
 export const BIO_PLACEHOLDER = '[coming soon]';
 
 export const TEAM_SECTIONS = [
@@ -235,18 +233,3 @@ export const PROFESSORS = [
     role: 'Faculty'
   }
 ];
-
-export const getAboutImagePaths = () => {
-  const paths = new Set();
-
-  const addMemberImages = (member) => {
-    if (!member.imageBase) return;
-    paths.add(assetPath(`img/People/${member.imageBase}.png`));
-  };
-
-  TEAM_SECTIONS.forEach(({ members }) => members.forEach(addMemberImages));
-  PROFESSORS.forEach(addMemberImages);
-  paths.add(assetPath('img/People/Placeholder.png'));
-
-  return Array.from(paths);
-};

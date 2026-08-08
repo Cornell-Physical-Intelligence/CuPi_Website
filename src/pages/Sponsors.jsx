@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import SiteFooter from '../components/SiteFooter';
 import { assetPath } from '../utils/assetPath';
 import './Sponsors.css';
@@ -18,6 +19,37 @@ const PACKET = 'docs/cupi-sponsorship-packet.pdf';
 const CONTACT = 'ab3233@cornell.edu';
 
 export default function Sponsors() {
+  const [copied, setCopied] = useState(false);
+  const resetRef = useRef(null);
+
+  useEffect(() => () => window.clearTimeout(resetRef.current), []);
+
+  // Clicking the address copies it rather than launching a mail client, which on most
+  // machines opens something nobody uses.
+  const copyContact = async () => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(CONTACT);
+      } else {
+        // execCommand fallback for non-secure contexts, where the Clipboard API is absent.
+        const field = document.createElement('textarea');
+        field.value = CONTACT;
+        field.setAttribute('readonly', '');
+        field.style.position = 'absolute';
+        field.style.left = '-9999px';
+        document.body.appendChild(field);
+        field.select();
+        document.execCommand('copy');
+        document.body.removeChild(field);
+      }
+      setCopied(true);
+      window.clearTimeout(resetRef.current);
+      resetRef.current = window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
+
   return (
     <main className="alt-page alt-page--sponsors">
       <div className="sponsors">
@@ -44,7 +76,16 @@ export default function Sponsors() {
           <a href={assetPath(PACKET)} target="_blank" rel="noreferrer">
             sponsorship packet
           </a>{' '}
-          and write to <a href={`mailto:${CONTACT}`}>{CONTACT}</a>.
+          and write to{' '}
+          <span className="sponsors__email-wrap">
+            <button type="button" className="sponsors__email" onClick={copyContact}>
+              {CONTACT}
+            </button>
+            <span className={`sponsors__copied ${copied ? 'is-visible' : ''}`} aria-hidden="true">
+              copied!
+            </span>
+          </span>
+          .
         </p>
 
         {TIERS.map(({ key, label }) => {

@@ -29,6 +29,22 @@ const SPARK_LIFE = 80; // frames a spark lives → how long a growth persists
 const SPARK_RATE = 6; // sparks spawned per frame at full pointer influence
 const WARM = 80;
 const WARM_REDUCED = 160;
+// How much of the warm-up runs before the first paint. generateScaffold() has already
+// written the finished Voronoi structure into `trail`, so the warm-up is not building the
+// web — it only grows the slime trails that ride on top of it. Baking all 80 steps up
+// front therefore cost ~400ms of blocked main thread to add texture the visitor never saw
+// arrive. These few steps take the bare edge off a pristine field; frame() pays off the
+// rest while the hero is already on screen and animating.
+const WARM_EAGER = 8;
+// Per-frame time budget (ms) for that catch-up, so paying the debt down never costs a
+// dropped frame on a slow machine — it just takes a few more frames there.
+const WARM_CATCHUP_MS = 6;
+// The letters cover ~22% of the sim grid, so diffusing the whole rectangle spends most of
+// its time averaging zeros. Diffusion is restricted to the glyphs plus this margin (sim
+// px), which is wider than the agents' sensor reach — so every value they can sample is
+// still simulated, while the field further out (orders of magnitude below anything
+// visible, and clipped away by the glyph mask regardless) stays zero.
+const DIFFUSE_MARGIN = 8;
 const HPAD = 0.05;
 const VPAD = 0.14;
 const FONT = '700 100px "Playfair Display", Georgia, serif';
@@ -111,6 +127,12 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
     let sparkHead = 0;
     let image;
     let pixels;
+    // Row-ordered [startIdx, endIdx] index pairs covering the pixels diffuse() must visit.
+    let runs = null;
+    let runCount = 0;
+    // Warm-up steps still owed to the sim, worked off by frame().
+    let warmDebt = 0;
+    let __fc = 0;
 
     const mouse = { x: 0, y: 0, active: false, inf: 0 };
 
@@ -182,8 +204,16 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
       const md = sctx.getImageData(0, 0, simW, simH).data;
       for (let i = 0; i < N; i++) maskSim[i] = md[i * 4 + 3] > 128 ? 1 : 0;
 
+      const __tr0 = performance.now();
+      buildDiffuseRuns();
+      const __tr1 = performance.now();
+
       rand = mulberry32(P.seed >>> 0);
       generateScaffold();
+      const __t1 = performance.now();
+      let __cov = 0;
+      for (let r = 0; r < runCount; r++) __cov += runs[r*2+1] - runs[r*2] + 1;
+      console.log(`PERF runs=${runCount} coveredPx=${__cov} (${(100*__cov/N).toFixed(1)}% of grid) buildRuns=${(__tr1-__tr0).toFixed(0)}ms scaffold=${(__t1-__tr1).toFixed(0)}ms`);
 
       AG = Math.min(AG_MAX, Math.round(N * P.agentDensity));
       ax = new Float32Array(AG);
@@ -197,9 +227,78 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
       slife = new Float32Array(SPARK_MAX); // 0 = dead slot
       sparkHead = 0;
 
-      for (let i = 0; i < warm; i++) {
+      // Frozen (reduced-motion) has no render loop to pay off a debt in, and its single
+      // painted frame has to be the settled one — so there it all runs up front.
+      const eager = frozen ? warm : Math.min(warm, WARM_EAGER);
+      const __w0 = performance.now();
+      for (let i = 0; i < eager; i++) {
         stepAgents();
         diffuse();
+      }
+      console.log(`PERF eagerWarm=${eager} steps in ${(performance.now()-__w0).toFixed(0)}ms (${((performance.now()-__w0)/Math.max(eager,1)).toFixed(2)}ms/step)`);
+      warmDebt = warm - eager;
+    }
+
+    // Run-length encode the glyph mask dilated by DIFFUSE_MARGIN, as row-ordered index
+    // pairs. Dilating separably (a sliding count along each row, then each column) keeps it
+    // one linear pass per axis. The runs stay row-major so diffuse()'s inner loop still
+    // walks memory sequentially.
+    //
+    // Everything that writes `trail` — generateScaffold, stepAgents, stepSparks,
+    // applyMouseFood — is gated on maskSim, so no write ever lands outside these runs.
+    // Both field buffers start zeroed, so the pixels the runs skip hold zero and keep
+    // holding it across the buffer swap.
+    function buildDiffuseRuns() {
+      const m = DIFFUSE_MARGIN;
+      const win = 2 * m + 1;
+      const rowDil = new Uint8Array(N);
+      for (let y = 0; y < simH; y++) {
+        const row = y * simW;
+        let count = 0;
+        for (let x = 0; x < simW + m; x++) {
+          if (x < simW && maskSim[row + x]) count++;
+          const gone = x - win;
+          if (gone >= 0 && maskSim[row + gone]) count--;
+          const c = x - m;
+          if (c >= 0 && c < simW && count > 0) rowDil[row + c] = 1;
+        }
+      }
+
+      const starts = [];
+      const ends = [];
+      const colCount = new Int32Array(simW);
+      // Walk rows in order, keeping a per-column count of set pixels in the vertical
+      // window, so the dilated mask is produced row by row and encoded on the spot.
+      for (let y = 0; y < simH + m; y++) {
+        if (y < simH) {
+          const row = y * simW;
+          for (let x = 0; x < simW; x++) if (rowDil[row + x]) colCount[x]++;
+        }
+        const gone = y - win;
+        if (gone >= 0) {
+          const row = gone * simW;
+          for (let x = 0; x < simW; x++) if (rowDil[row + x]) colCount[x]--;
+        }
+        const cy = y - m;
+        // diffuse() only ever touches the interior, so the border ring is left out.
+        if (cy < 1 || cy >= simH - 1) continue;
+        const row = cy * simW;
+        let x = 1;
+        while (x < simW - 1) {
+          while (x < simW - 1 && colCount[x] === 0) x++;
+          if (x >= simW - 1) break;
+          const s = x;
+          while (x < simW - 1 && colCount[x] > 0) x++;
+          starts.push(row + s);
+          ends.push(row + x - 1);
+        }
+      }
+
+      runCount = starts.length;
+      runs = new Int32Array(runCount * 2);
+      for (let r = 0; r < runCount; r++) {
+        runs[r * 2] = starts[r];
+        runs[r * 2 + 1] = ends[r];
       }
     }
 
@@ -278,6 +377,22 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
         allSites.push({ x: s.x - 2 * bA * nx, y: s.y - 2 * bA * ny, w: s.w });
       }
 
+      // Flatten the sites for the nearest-two search below. That loop runs once per site
+      // per masked pixel — order 20M iterations — so its per-step overhead *is* the cost:
+      // an indexed walk over three typed arrays replaces an iterator over objects, and each
+      // site's w² is hoisted out of the pixel loop. Float64Array, not Float32Array, so the
+      // arithmetic stays bit-identical to the object version and the web looks the same.
+      const M = allSites.length;
+      const siteX = new Float64Array(M);
+      const siteY = new Float64Array(M);
+      const siteW2 = new Float64Array(M);
+      for (let k = 0; k < M; k++) {
+        const s = allSites[k];
+        siteX[k] = s.x;
+        siteY[k] = s.y;
+        siteW2[k] = s.w * s.w;
+      }
+
       const WARP1 = P.warp1;
       const WARP2 = P.warp2;
       const SIGMA = P.sigma;
@@ -295,10 +410,10 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
             y + (WARP1 * Math.sin(x * 0.027 + Math.cos(y * 0.015) * 2.0) + WARP2 * Math.sin((x - y) * 0.019)) * wf;
           let d1 = 1e9;
           let d2 = 1e9;
-          for (const s of allSites) {
-            const dx = wx - s.x;
-            const dy = wy - s.y;
-            const d = (dx * dx + dy * dy) / (s.w * s.w);
+          for (let k = 0; k < M; k++) {
+            const dx = wx - siteX[k];
+            const dy = wy - siteY[k];
+            const d = (dx * dx + dy * dy) / siteW2[k];
             if (d < d1) {
               d2 = d1;
               d1 = d;
@@ -511,10 +626,9 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
       const blur = P.blur;
       const keep = 1 - blur;
       const decay = P.decay;
-      for (let y = 1; y < simH - 1; y++) {
-        const row = y * simW;
-        for (let x = 1; x < simW - 1; x++) {
-          const i = row + x;
+      for (let r = 0; r < runCount; r++) {
+        const end = runs[r * 2 + 1];
+        for (let i = runs[r * 2]; i <= end; i++) {
           const avg =
             (trail[i - simW - 1] +
               trail[i - simW] +
@@ -772,6 +886,24 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
         diffuse();
         stepAgents();
         diffuse();
+        // Work off whatever warm-up start-up deferred, within a time budget, before this
+        // frame is drawn — so the web thickens to its settled state over the first handful
+        // of frames instead of the visitor waiting on it before seeing anything.
+        if (warmDebt > 0) {
+          const until = performance.now() + WARM_CATCHUP_MS;
+          do {
+            stepAgents();
+            diffuse();
+            warmDebt--;
+          } while (warmDebt > 0 && performance.now() < until);
+        }
+        __fc++;
+        if (__fc === 40) {
+          let sum = 0, sum2 = 0, cnt = 0, mx = 0;
+          for (let i = 0; i < N; i++) if (maskSim[i]) { const v = trail[i]; sum += v; sum2 += v*v; cnt++; if (v > mx) mx = v; }
+          const mean = sum/cnt;
+          console.log(`PERF@frame40 warmEager=${WARM_EAGER} debt=${warmDebt} trailMean=${mean.toFixed(4)} trailStd=${Math.sqrt(sum2/cnt-mean*mean).toFixed(4)} trailMax=${mx.toFixed(3)}`);
+        }
         renderField();
         composite();
       } else if (dirty || engaged) {
@@ -789,11 +921,14 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
     function start() {
       if (started || disposed) return;
       started = true;
+      const __s = performance.now();
+      console.log(`PERF start() entered at ${performance.now().toFixed(0)}ms`);
       measureNatural();
       buildSim(reduced ? WARM_REDUCED : WARM);
       layout();
       renderField();
       composite();
+      console.log(`PERF start()total=${(performance.now()-__s).toFixed(0)}ms VISIBLE at ${performance.now().toFixed(0)}ms warmDebt=${warmDebt}`);
       setAspect(boxAspect);
       setReady(true);
       running = true;
@@ -858,6 +993,7 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
       ensureLoop();
     }
 
+    start(); // TEMP PERF PROBE
     const fallback = setTimeout(() => {
       if (!disposed && !started) start();
     }, 1600);
