@@ -21,6 +21,14 @@ export const TEAM_SECTIONS = [
         project: 'Everything'
       },
       {
+        name: 'Nicholas Letendre',
+        imageBase: 'NickLet',
+        bio: "I'm Nicholas, and I study mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
+        role: 'Team Co-Lead',
+        year: 'Junior',
+        project: 'Hexapod'
+      },
+      {
         name: 'Jonathan Song',
         imageBase: 'Jon',
         bio: "I'm really passionate about integrated electronics and anything robotics. In my free time I like to play ultimate frisbee and acoustic guitar",
@@ -54,12 +62,20 @@ export const TEAM_SECTIONS = [
         project: 'Quad'
       },
       {
-        name: 'Nicholas Letendre',
-        imageBase: 'NickLet',
-        bio: "I'm Nicholas, and I study mechanical and aerospace engineering. I'm interested in programming for robotics and games.",
+        name: 'Nick Lennon',
         role: 'Computer Science Co-Lead',
+        imageBase: 'NickLennon',
+        bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
+        year: 'Sophomore',
+        project: 'Quad'
+      },
+      {
+        name: 'Josh Lennon',
+        role: 'Computer Science Co-Lead',
+        imageBase: 'JoshLennon',
+        bio: BIO_PLACEHOLDER,
         year: 'Junior',
-        project: 'Hexapod'
+        project: 'Quad'
       },
       {
         name: 'Max Lee',
@@ -111,20 +127,6 @@ export const TEAM_SECTIONS = [
         bio: "I'm interested in developing embedded systems. I enjoy running and eating",
         year: 'Freshman',
         project: 'Hexapod'
-      },
-      {
-        name: 'Josh Lennon',
-        imageBase: 'JoshLennon',
-        bio: BIO_PLACEHOLDER,
-        year: 'Junior',
-        project: 'Quad'
-      },
-      {
-        name: 'Nick Lennon',
-        imageBase: 'NickLennon',
-        bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
-        year: 'Sophomore',
-        project: 'Quad'
       },
       {
         name: 'Ronan Alo',
