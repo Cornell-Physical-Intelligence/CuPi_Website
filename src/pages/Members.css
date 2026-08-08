@@ -58,6 +58,23 @@
   transform-origin: top center;
 }
 
+/* Caption for anyone still awaiting a headshot. The placeholder icon sits between 28% and
+   74% of the tile, so this tucks into the clear space just below it. Its colours are fixed
+   rather than themed: the placeholder art is black-on-white in both themes, so following
+   --fg would turn the text white on white on the dark page. */
+.member__nophoto {
+  position: absolute;
+  top: 79%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Questrial', system-ui, sans-serif;
+  font-size: clamp(0.42rem, 0.8vw, 0.54rem);
+  letter-spacing: 0.04em;
+  color: rgba(0, 0, 0, 0.42);
+  pointer-events: none;
+}
+
 /* The bio covers the portrait instead of expanding the card, so opening one leaves
    every other tile exactly where it was. */
 .member__bio {

@@ -21,6 +21,7 @@ const PHOTOS = Object.fromEntries(
   ).map(([path, url]) => [path.split('/').pop().replace('.webp', ''), url])
 );
 
+const hasPhoto = (member) => Boolean(PHOTOS[member.imageBase]);
 const photoFor = (member) => PHOTOS[member.imageBase] ?? PHOTOS.Placeholder;
 
 // Every roster headshot is from one shoot -- same room, same camera -- but people stood at
@@ -36,7 +37,7 @@ const ROSTER_ZOOM = 1.12;
 
 // The faculty cut-outs and the placeholder icon come from elsewhere and are framed on their
 // own terms, so they sit out the roster default rather than getting cropped by it.
-const zoomFor = (member) => (member.imageBase ? member.zoom ?? ROSTER_ZOOM : 1);
+const zoomFor = (member) => (hasPhoto(member) ? member.zoom ?? ROSTER_ZOOM : 1);
 
 // Role wins over class year; "First Year" reads better as "Freshman".
 const metaFor = (member) => {
@@ -72,6 +73,7 @@ function MemberCard({ member, isOpen, onToggle }) {
             '--photo-shift': `${member.zoomShift ?? 0}%`,
           }}
         />
+        {!hasPhoto(member) && <span className="member__nophoto">photo coming soon</span>}
         <span className="member__bio">
           <span className="member__bio-text">{bio}</span>
         </span>
