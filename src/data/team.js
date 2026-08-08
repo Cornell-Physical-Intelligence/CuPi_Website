@@ -15,6 +15,7 @@ export const TEAM_SECTIONS = [
     members: [
       {
         name: 'Andre Boufama',
+        imageBase: 'Andre',
         bio: "Hi I'm Andre. I like making websites and CAD and also eating",
         role: 'Team Lead',
         project: 'Everything'
@@ -113,6 +114,7 @@ export const TEAM_SECTIONS = [
       },
       {
         name: 'Josh Lennon',
+        imageBase: 'JoshLennon',
         bio: BIO_PLACEHOLDER,
         year: 'Junior',
         project: 'Quad'
