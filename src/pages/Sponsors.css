@@ -182,8 +182,21 @@
   object-fit: contain;
 }
 
+/* An emblem is deep rather than wide, so the common height that balances two wordmarks
+   leaves it looking half their weight. Roughly 1.45x, which is where the shield stops
+   reading as the small one and stops short of dominating the row. */
+.tier__sponsor img.is-emblem {
+  height: clamp(38px, 4.9vw, 58px);
+}
+
 /* Logos are dark artwork; invert on the dark theme so they don't vanish. */
 .app--dark .tier__sponsor img {
   filter: invert(1) hue-rotate(180deg);
+}
+
+/* Except the ones whose colours are the brand. They already read on black, and inverting
+   would only send them somewhere their owner never signed off on. */
+.app--dark .tier__sponsor img.is-colour {
+  filter: none;
 }
 

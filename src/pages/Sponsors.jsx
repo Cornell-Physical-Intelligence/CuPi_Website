@@ -11,9 +11,16 @@ const TIERS = [
   { key: 'bronze', label: 'Bronze' },
 ];
 
+// `colour` marks artwork that carries its own brand colours, which the dark theme has to
+// leave alone rather than invert. `emblem` marks a tall, compact mark rather than a
+// wordmark — matched on height it would look half the weight of its neighbours, so it runs
+// taller. Without a logo file a mark gets drawn from the name.
 const SPONSORS = [
   { name: 'CU GeoData', tier: 'gold', logo: 'icons/CUGeoData_Logo.png' },
   { name: 'Tantalus', tier: 'bronze' },
+  // Wikimedia Commons, public domain — the shield is below the threshold of originality.
+  // Still a UPS trademark, so it stays unmodified.
+  { name: 'UPS', tier: 'bronze', logo: 'icons/UPS_Logo.svg', colour: true, emblem: true },
 ];
 
 const PACKET = 'docs/cupi-sponsorship-packet.pdf';
@@ -94,12 +101,19 @@ export default function Sponsors() {
               <h2 className={`tier__name tier__name--${key}`}>{label}</h2>
               {members.length > 0 && (
                 <ul className="tier__list">
-                  {members.map(({ name, logo }) => (
+                  {members.map(({ name, logo, colour, emblem }) => (
                     <li className="tier__sponsor" key={name}>
                       {/* No logo file on hand, so draw the lockup instead of dropping a
                           bare line of text into a row of logos. */}
                       {logo ? (
-                        <img src={assetPath(logo)} alt={name} loading="lazy" />
+                        <img
+                          className={[colour && 'is-colour', emblem && 'is-emblem']
+                            .filter(Boolean)
+                            .join(' ')}
+                          src={assetPath(logo)}
+                          alt={name}
+                          loading="lazy"
+                        />
                       ) : (
                         <SponsorMark name={name} />
                       )}
