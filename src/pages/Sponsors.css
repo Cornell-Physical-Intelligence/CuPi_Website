@@ -1,46 +1,34 @@
 /* Sponsors: title, subtitle, a full-width rule, three tiers, and how to become one.
    Nothing else on the page. */
 
-/* The masthead artwork already occupies the top of the page, so this page needs far less
-   leading padding than the default alt-page (which only has to clear the glass nav). */
-.alt-page--sponsors {
-  padding-top: clamp(48px, 7vh, 84px);
-}
 
 .sponsors {
   width: min(1100px, 100%);
   margin: 0 auto clamp(48px, 8vh, 112px);
 }
 
-/* The artwork's stage. No clipping: the asset already has a straight base, and
-   min-height keeps the drawing clear of the nav, so there is nothing left to cut. */
+/* The artwork's stage. Its height scales with the viewport so the drawing can be large on
+   a wide screen and shrinks with it; below the mobile breakpoint it collapses to nothing
+   and the title lands exactly where the Members title does. The head is bottom-aligned, so
+   the rule it draws is always the floor the leg rises from. */
 .sponsors__masthead {
   position: relative;
   display: flex;
   align-items: flex-end;
-  min-height: clamp(155px, 21vw, 245px);
+  min-height: clamp(0px, 15vw, 230px);
 }
 
-/* The title sits directly on the rule: only enough padding below the baseline to keep
-   descenders off it. */
-.sponsors__head {
-  position: relative;
-  z-index: 1;
-  padding-bottom: clamp(2px, 0.5vw, 6px);
-}
-
-/* Hexapod leg wireframe, anchored bottom-right, full strength, no mask. The 12deg tilt
-   and the straight bottom crop are baked into the asset, so its bottom edge is already
-   horizontal and sits flush on the rule with nothing hidden below it. */
+/* Hexapod leg wireframe. Sized by height so it can never grow into the fixed nav, and
+   anchored to the bottom of the head, which is where page-head draws its rule. */
 .sponsors__art {
   position: absolute;
   right: 50%;
-  /* 50vw would put the right edge exactly on the page edge; the small subtraction pulls
-     the whole drawing back in from it. */
   transform: translateX(calc(50vw - 26px));
   bottom: 0;
-  width: min(840px, 74%);
-  height: auto;
+  /* Sized by height, and kept a little shorter than the stage so it can never reach up
+     into the fixed nav. Width follows from the aspect ratio. */
+  height: clamp(0px, 13.5vw, 205px);
+  width: auto;
   z-index: 0;
   pointer-events: none;
   user-select: none;
@@ -49,34 +37,6 @@
 /* Dark ink on a dark page would vanish, so flip it. */
 .app--dark .sponsors__art {
   filter: invert(1);
-}
-
-@media (max-width: 720px) {
-  /* On a phone the leg has to give the title more room, not less. */
-  .sponsors__masthead {
-    min-height: clamp(140px, 26vw, 190px);
-  }
-
-  .sponsors__art {
-    width: 94%;
-  }
-}
-
-/* Full-bleed. A border on the head would stop at the content measure and again at
-   .alt-page's padding, so it is drawn separately at viewport width. Safe because body
-   clips overflow-x. */
-.sponsors__rule {
-  position: relative;
-  z-index: 1;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw;
-  /* Matched to the wireframe's own line weight: its strokes measure 3px in a 1600px-wide
-     asset, and it renders at ~0.51 scale on desktop, so ~1.5px is the same optical
-     thickness. Tracks the viewport because the artwork's scale does too, with a 1px floor
-     since thinner hairlines render inconsistently. */
-  height: clamp(1px, 0.095vw, 1.35px);
-  background: var(--fg);
 }
 
 /* Directly under the rule, and smaller than the title it explains. */
@@ -218,10 +178,5 @@
 /* Logos are dark artwork; invert on the dark theme so they don't vanish. */
 .app--dark .tier__sponsor img {
   filter: invert(1) hue-rotate(180deg);
-}
-
-.tier__sponsor-name {
-  font-size: clamp(1rem, 1.7vw, 1.2rem);
-  color: var(--fg);
 }
 

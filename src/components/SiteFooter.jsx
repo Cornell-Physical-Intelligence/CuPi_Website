@@ -46,10 +46,6 @@ export default function SiteFooter() {
               https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment
             </a>
           </p>
-          <p>
-            For Questions &amp; Sponsorship Inquiries:{' '}
-            <a href="mailto:cuphysicalintelligence@cornell.edu">cuphysicalintelligence@cornell.edu</a>
-          </p>
         </div>
       </div>
     </footer>

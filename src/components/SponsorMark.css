@@ -1,0 +1,83 @@
+/* Lockup for a sponsor with no logo file: squircle badge + wordmark. Sized off one
+   variable so it can sit in a row of real logos at a matching height. */
+
+.sponsor-mark {
+  /* Same ramp the sponsor <img> logos run at, so the row keeps one optical height. */
+  --mark-size: clamp(26px, 3.4vw, 40px);
+  /* Warm near-black. Not the page's --fg: the badge is a brand colour and shouldn't
+     invert with the theme, the way a real logo file wouldn't. */
+  --mark-plate-top: #241d17;
+  --mark-plate-bottom: #100d0a;
+  /* Burnt orange rather than a signal orange — a narrow ramp, so it still reads flat. */
+  --mark-ink-top: #e9975b;
+  --mark-ink-bottom: #c86a2a;
+  --mark-edge: rgba(255, 255, 255, 0.08);
+  --mark-lift: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.16));
+
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--mark-size) * 0.24);
+}
+
+/* On black the plate needs lifting off the page or it reads as a hole, and the hairline
+   does the separating that the shadow does on white. */
+.app--dark .sponsor-mark {
+  --mark-plate-top: #2a231c;
+  --mark-plate-bottom: #16120e;
+  --mark-ink-top: #f0a268;
+  --mark-ink-bottom: #d2762f;
+  --mark-edge: rgba(255, 255, 255, 0.14);
+  --mark-lift: none;
+}
+
+.sponsor-mark__badge {
+  display: block;
+  flex: none;
+  width: var(--mark-size);
+  height: var(--mark-size);
+  filter: var(--mark-lift);
+}
+
+.sponsor-mark__plate-top {
+  stop-color: var(--mark-plate-top);
+}
+
+.sponsor-mark__plate-bottom {
+  stop-color: var(--mark-plate-bottom);
+}
+
+.sponsor-mark__ink-top {
+  stop-color: var(--mark-ink-top);
+}
+
+.sponsor-mark__ink-bottom {
+  stop-color: var(--mark-ink-bottom);
+}
+
+/* One user unit of the badge's 64, so it thins as the badge shrinks instead of growing
+   into a border. */
+.sponsor-mark__edge {
+  stroke: var(--mark-edge);
+  stroke-width: 1;
+}
+
+.sponsor-mark__initial {
+  /* Already self-hosted and preloaded for the hero, so this costs no extra request. */
+  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+  font-weight: 700;
+  /* User units in the badge's 64-unit grid, not screen pixels. */
+  font-size: 42px;
+}
+
+.sponsor-mark__word {
+  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+  font-weight: 700;
+  font-size: calc(var(--mark-size) * 0.42);
+  letter-spacing: 0.012em;
+  line-height: 1;
+  /* Page ink warmed towards the badge, so the two halves read as one mark. */
+  color: color-mix(in srgb, var(--fg) 88%, var(--mark-ink-bottom));
+  /* align-items centres the em box, and Playfair's descender hangs low enough to push the
+     cap band — all you actually see in "Tantalus" — below the badge's middle. */
+  transform: translateY(-0.03em);
+}

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import SiteFooter from '../components/SiteFooter';
+import SponsorMark from '../components/SponsorMark';
 import { assetPath } from '../utils/assetPath';
 import './Sponsors.css';
 
@@ -51,7 +52,7 @@ export default function Sponsors() {
   };
 
   return (
-    <main className="alt-page alt-page--sponsors">
+    <main className="alt-page">
       <div className="sponsors">
         {/* The wireframe is cropped at its base, so aligning that cut edge with the
             rule makes the leg read as rising out from behind the line. */}
@@ -62,12 +63,10 @@ export default function Sponsors() {
             alt=""
             aria-hidden="true"
           />
-          <header className="sponsors__head">
+          <div className="page-head">
             <h1 className="page-title">Sponsors</h1>
-          </header>
+          </div>
         </div>
-
-        <div className="sponsors__rule" />
 
         <p className="sponsors__lede">
           CUPI builds the future of human robot interaction at Cornell. Robots and compute
@@ -97,10 +96,12 @@ export default function Sponsors() {
                 <ul className="tier__list">
                   {members.map(({ name, logo }) => (
                     <li className="tier__sponsor" key={name}>
+                      {/* No logo file on hand, so draw the lockup instead of dropping a
+                          bare line of text into a row of logos. */}
                       {logo ? (
                         <img src={assetPath(logo)} alt={name} loading="lazy" />
                       ) : (
-                        <span className="tier__sponsor-name">{name}</span>
+                        <SponsorMark name={name} />
                       )}
                     </li>
                   ))}

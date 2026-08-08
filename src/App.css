@@ -67,8 +67,7 @@
   transform: translateY(1px);
 }
 
-/* Frosted menu bar. The bar sizes itself to the nav items, so only the height and
-   the side padding come from here; the edge is the SpecularBar rim, not a border. */
+/* Positions the menu bar; .menu-glass below is the bar itself. */
 .menu-bar {
   position: fixed;
   top: 32px;
