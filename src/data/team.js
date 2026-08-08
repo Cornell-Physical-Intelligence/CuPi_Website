@@ -119,6 +119,7 @@ export const TEAM_SECTIONS = [
       },
       {
         name: 'Nick Lennon',
+        imageBase: 'NickLennon',
         bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
         year: 'Sophomore',
         project: 'Quad'
