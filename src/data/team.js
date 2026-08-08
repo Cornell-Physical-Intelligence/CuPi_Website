@@ -85,10 +85,10 @@ export const TEAM_SECTIONS = [
     title: 'Members',
     members: [
       {
-        name: 'Nigel',
+        name: 'Nigel Tatem',
         imageBase: 'Nigel',
         bio: BIO_PLACEHOLDER,
-        year: 'TBD'
+        year: 'Junior'
       },
       {
         name: 'Nathan Cunningham',
