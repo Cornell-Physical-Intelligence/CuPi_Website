@@ -1,0 +1,77 @@
+/* Work areas stacked one over another, each a small label over a pair of clips. */
+.work-stack {
+  display: flex;
+  flex-direction: column;
+  /* Between projects. Each block is a tall run of media plus copy, so the gap has to
+     be clearly larger than the spacing inside a block for the two to read as separate. */
+  gap: clamp(88px, 14vw, 168px);
+  width: min(960px, 100%);
+  /* Leading space above the first label (on top of .alt-page's own top padding, which
+     only clears the fixed menu bar) and trailing space before the footer. */
+  margin: clamp(28px, 6vh, 64px) auto clamp(64px, 10vh, 136px);
+}
+
+.work-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.work-area .section-label {
+  margin-bottom: clamp(12px, 1.8vw, 18px);
+}
+
+/* The pair shares one seam — no gap, and the radius lives on this wrapper with
+   overflow clipping rather than on the tiles, so only the outer corners round and
+   the shared edge stays flush. */
+.work-area__clips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  line-height: 0;
+  border-radius: var(--box-radius);
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ summary */
+.work-area__summary {
+  margin: clamp(14px, 2.2vw, 22px) 0 0;
+  font-size: clamp(0.72rem, 1.15vw, 0.8rem);
+  line-height: 1.6;
+  color: rgba(var(--fg-rgb), 0.72);
+  text-align: left;
+}
+
+/* -------------------------------------------------------------- partner */
+.work-area__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: clamp(12px, 2vw, 24px);
+  margin-top: clamp(14px, 2.2vw, 22px);
+}
+
+/* The partner mark is the one piece of colour on the page, so it gets no border or
+   box — it sits on the page at the same optical weight as the link row. */
+.work-area__partner {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.work-area__partner img {
+  height: clamp(20px, 2.6vw, 30px);
+  width: auto;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  /* Side by side leaves each clip too small to read on a phone. */
+  .work-area__clips {
+    grid-template-columns: 1fr;
+  }
+
+  .work-area__footer {
+    justify-content: flex-start;
+  }
+}

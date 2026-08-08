@@ -1,45 +1,47 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import GlassSurface from './components/GlassSurface';
-import GridBackground from './components/GridBackground';
-import HomePage from './pages/HomePage';
-import WorkPage from './pages/WorkPage';
-import AboutPage from './pages/AboutPage';
-import ApplyPage from './pages/ApplyPage';
+import { useState, useRef, useEffect } from 'react';
+import Controls from './components/Controls';
+import Home from './pages/Home';
+import Work from './pages/Work';
+import Members from './pages/Members';
+import Sponsors from './pages/Sponsors';
+import Apply from './pages/Apply';
+import { P, applyParam } from './components/voronoiConfig';
 import './App.css';
-import { assetPath } from './utils/assetPath';
-import { preloadImages } from './utils/preloadImages';
-import { getAboutImagePaths } from './data/team';
 
-const VALID_PAGES = ['home', 'work', 'about', 'apply'];
-
+// Hash-based routing, mirroring the old General-Website (no router dependency).
+const NAV_ITEMS = [
+  { label: 'Home', page: 'home' },
+  { label: 'Work', page: 'work' },
+  { label: 'Members', page: 'members' },
+  { label: 'Sponsors', page: 'sponsors' },
+  { label: 'Apply', page: 'apply' },
+];
+const VALID_PAGES = ['home', 'work', 'members', 'sponsors', 'apply'];
 const getPageFromHash = () => {
   const hash = window.location.hash.replace('#', '');
   return VALID_PAGES.includes(hash) ? hash : 'home';
 };
-
-const glassSettings = {
-  borderRadius: 14,
-  blur: 2,
-  displace: 2,
-  distortionScale: -180,
-  redOffset: 0,
-  greenOffset: 10,
-  blueOffset: 20,
-  brightness: 50,
-  opacity: 0.8,
-  backgroundOpacity: 0,
-  saturation: 1
+// Writing the hash lives at module scope (components must not assign to globals directly).
+const writeHash = (page) => {
+  window.location.hash = page === 'home' ? '' : page;
 };
 
-function App() {
+// The live-tuning panel is a dev-only tool — Vite sets this false in production builds,
+// so the "Customize" button and panel never ship to visitors.
+const SHOW_CUSTOMIZE = import.meta.env.DEV;
+
+export default function App() {
   const [currentPage, setCurrentPage] = useState(getPageFromHash);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [inverted, setInverted] = useState(P.invert);
+  const [showControls, setShowControls] = useState(false);
+  const titleApi = useRef(null);
 
-  const handleNavClick = (page) => {
-    window.location.hash = page === 'home' ? '' : page;
-    setCurrentPage(page);
-  };
+  // Keep the page chrome (background + text colours) in sync with the canvas theme.
+  useEffect(() => {
+    document.body.dataset.theme = inverted ? 'light' : 'dark';
+  }, [inverted]);
 
+  // Sync the page with the URL hash (and the browser back/forward buttons).
   useEffect(() => {
     const onHashChange = () => setCurrentPage(getPageFromHash());
     window.addEventListener('hashchange', onHashChange);
@@ -48,96 +50,72 @@ function App() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
-    document.body.classList.remove('scrolled');
   }, [currentPage]);
 
-  const projectImagePaths = useMemo(
-    () => [
-      assetPath('img/Quad.png'),
-      assetPath('img/DroneFlipped.png'),
-      assetPath('img/Hexapod.png'),
-      assetPath('img/LegFlipped.png'),
-      assetPath('img/SwallowProject.png'),
-    ],
-    []
-  );
+  const navigate = (page) => {
+    writeHash(page);
+    setCurrentPage(page);
+  };
 
-  const aboutPreviewPaths = useMemo(() => getAboutImagePaths().slice(0, 6), []);
-
-  const prefetchPageAssets = useCallback((page) => {
-    if (page === 'work') {
-      preloadImages(projectImagePaths, { priority: 'low' });
-    }
-    if (page === 'about' && aboutPreviewPaths.length) {
-      preloadImages(aboutPreviewPaths, { priority: 'low' });
-    }
-  }, [projectImagePaths, aboutPreviewPaths]);
-
-  const handleLightboxChange = useCallback((isOpen) => {
-    setLightboxOpen(isOpen);
-  }, []);
+  const handleInvert = (value) => {
+    applyParam('invert', value);
+    setInverted(value);
+    titleApi.current?.poke();
+  };
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'home':
-        return <HomePage onLightboxChange={handleLightboxChange} />;
       case 'work':
-        return <WorkPage />;
-      case 'about':
-        return <AboutPage />;
+        return <Work />;
+      case 'members':
+        return <Members />;
+      case 'sponsors':
+        return <Sponsors />;
       case 'apply':
-        return <ApplyPage />;
+        return <Apply />;
       default:
-        return null;
+        return <Home titleApi={titleApi} />;
     }
   };
 
+  const onHome = currentPage === 'home';
+
   return (
-    <div className={`demo-container ${lightboxOpen ? 'lightbox-open' : ''}`}>
-      {currentPage === 'home' && <GridBackground />}
+    <div className={`app ${inverted ? 'app--light' : 'app--dark'}`}>
       <nav className="menu-bar">
-        <GlassSurface
-          width="auto"
-          height={44}
-          {...glassSettings}
-        >
+        <div className="menu-glass">
           <div className="menu-content">
-            <button
-              onClick={() => handleNavClick('home')}
-              className={`menu-item ${currentPage === 'home' ? 'active' : ''}`}
-            >
-              HOME
-            </button>
-            <button
-              onClick={() => handleNavClick('work')}
-              onMouseEnter={() => prefetchPageAssets('work')}
-              onFocus={() => prefetchPageAssets('work')}
-              className={`menu-item ${currentPage === 'work' ? 'active' : ''}`}
-            >
-              WORK
-            </button>
-            <button
-              onClick={() => handleNavClick('about')}
-              onMouseEnter={() => prefetchPageAssets('about')}
-              onFocus={() => prefetchPageAssets('about')}
-              className={`menu-item ${currentPage === 'about' ? 'active' : ''}`}
-            >
-              ABOUT
-            </button>
-            <button
-              onClick={() => handleNavClick('apply')}
-              className={`menu-item ${currentPage === 'apply' ? 'active' : ''}`}
-              type="button"
-            >
-              APPLY
-            </button>
+            {NAV_ITEMS.map(({ label, page }) => (
+              <button
+                key={page}
+                type="button"
+                className={`menu-item ${currentPage === page ? 'active' : ''}`}
+                onClick={() => navigate(page)}
+              >
+                {label}
+              </button>
+            ))}
           </div>
-        </GlassSurface>
+        </div>
       </nav>
 
-      {renderPage()}
+      {SHOW_CUSTOMIZE && onHome && (
+        <button
+          type="button"
+          className="controls-toggle"
+          onClick={() => setShowControls((s) => !s)}
+          aria-pressed={showControls}
+        >
+          {showControls ? '× Close' : '⚙ Customize'}
+        </button>
+      )}
+
+      {SHOW_CUSTOMIZE && onHome && showControls && (
+        <Controls apiRef={titleApi} inverted={inverted} onInvertChange={handleInvert} />
+      )}
+
+      {/* Everything the glass refracts lives inside #page-content. */}
+      <main id="page-content">{renderPage()}</main>
     </div>
   );
 }
-
-export default App;

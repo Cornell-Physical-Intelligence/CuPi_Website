@@ -1,0 +1,38 @@
+/* A tier name painted by MetallicPaint.
+
+   MetallicPaint only composes correctly in a square box (square drawing buffer, u_ratio 1,
+   object-fit: contain). So the paint lives in a square that is scaled up until the word
+   band inside it matches this wrapper's height, and the wrapper crops the empty margins
+   away. --overscan is that ratio, measured when the mask is drawn. */
+
+.metal-word {
+  position: relative;
+  display: block;
+  height: var(--metal-word-height, clamp(72px, 11vw, 140px));
+  overflow: hidden;
+  /* Cropping a centred square leaves the word horizontally centred in the page. */
+  text-align: center;
+}
+
+.metal-word__square {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Square: side = wrapper height x overscan. */
+  height: calc(var(--metal-word-height, clamp(72px, 11vw, 140px)) * var(--overscan, 3));
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.metal-word__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

@@ -4,20 +4,15 @@ export const BIO_PLACEHOLDER = '[coming soon]';
 
 export const TEAM_SECTIONS = [
   {
-    title: 'Team Lead',
+    // The team lead sits at the head of Leads rather than in a section of one.
+    title: 'Leads',
     members: [
       {
         name: 'Andre Boufama',
-        imageBase: 'Andre',
         bio: "Hi I'm Andre. I like making websites and CAD and also eating",
         role: 'Team Lead',
         project: 'Everything'
-      }
-    ]
-  },
-  {
-    title: 'Leads',
-    members: [
+      },
       {
         name: 'Jonathan Song',
         imageBase: 'Jon',
@@ -27,7 +22,6 @@ export const TEAM_SECTIONS = [
       },
       {
         name: 'Mic Robbins',
-        imageBase: 'Mic',
         bio: "I'm an electrical engineer and like to play clash royale (15k)",
         role: 'Electrical Co-Lead',
         project: 'Quad'
@@ -41,13 +35,13 @@ export const TEAM_SECTIONS = [
       },
       {
         name: 'Ollie Aizer',
-        imageBase: 'Ollie',
         bio: 'Hi, my name is Ollie and I like drone design and cooking.',
         role: 'Mech Co-Lead',
         project: 'Quad'
       },
       {
         name: 'James Cenawood',
+        imageBase: 'James',
         bio: BIO_PLACEHOLDER,
         role: 'Computer Science Co-Lead',
         project: 'Quad'
@@ -68,18 +62,19 @@ export const TEAM_SECTIONS = [
       },
       {
         name: 'Aidan Moran',
+        imageBase: 'Aidan',
         bio: BIO_PLACEHOLDER,
         role: 'Operations Co-Lead',
         year: 'Sophomore',
         project: 'Business'
       },
       {
-        name: 'Sophie',
+        name: 'Sophie Di',
         imageBase: 'Sophie',
-        formalSuffix: 'Suit',
-        bio: BIO_PLACEHOLDER,
+        bio: "I'm a mechanical engineer and I love sketching, bouldering, and throwing paper airplanes",
         role: 'Creative Lead',
-        year: 'Freshman'
+        year: 'Sophomore',
+        project: 'Quad'
       },
       {
         name: 'Youhanna Meleka',
@@ -92,9 +87,14 @@ export const TEAM_SECTIONS = [
     title: 'Members',
     members: [
       {
+        name: 'Nigel',
+        imageBase: 'Nigel',
+        bio: BIO_PLACEHOLDER,
+        year: 'TBD'
+      },
+      {
         name: 'Nathan Cunningham',
         imageBase: 'Nathan',
-        formalSuffix: 'Suit',
         bio: "I'm interested in developing embedded systems. I enjoy running and eating",
         year: 'Freshman',
         project: 'Hexapod'
@@ -106,21 +106,7 @@ export const TEAM_SECTIONS = [
         project: 'Quad'
       },
       {
-        name: 'Sophie Di',
-        bio: "I'm a mechanical engineer and I love sketching, bouldering, and throwing paper airplanes",
-        year: 'Sophomore',
-        project: 'Quad'
-      },
-      {
-        name: 'Lindsay Kossoff',
-        imageBase: 'Lindsay',
-        bio: 'Hi, my name is Lindsay Kossoff. I am from Maryland and study mechanical engineering.',
-        year: 'Sophomore',
-        project: 'Quad'
-      },
-      {
         name: 'Nick Lennon',
-        imageBase: 'NickLen',
         bio: 'Hey, my name is Nick Lennon and I am interested in software, firmware, modeling, team coordination, and spicy food!',
         year: 'Sophomore',
         project: 'Quad'
@@ -134,11 +120,13 @@ export const TEAM_SECTIONS = [
       },
       {
         name: 'Amanuel Adane',
+        imageBase: 'Amanuel',
         bio: BIO_PLACEHOLDER,
         year: 'Freshman'
       },
       {
         name: 'Raymond Sheng',
+        imageBase: 'Raymond',
         bio: BIO_PLACEHOLDER,
         year: 'Freshman'
       },
@@ -149,16 +137,19 @@ export const TEAM_SECTIONS = [
       },
       {
         name: 'Shaurya Sen',
+        imageBase: 'Shaurya',
         bio: BIO_PLACEHOLDER,
         year: 'Sophomore'
       },
       {
         name: 'Jonathan Bael',
+        imageBase: 'JonBael',
         bio: BIO_PLACEHOLDER,
         year: 'Freshman'
       },
       {
         name: 'Ty Yue',
+        imageBase: 'Ty',
         bio: BIO_PLACEHOLDER,
         year: 'Freshman'
       },
@@ -169,11 +160,13 @@ export const TEAM_SECTIONS = [
       },
       {
         name: 'Ruichen Bao',
+        imageBase: 'Ruichen',
         bio: BIO_PLACEHOLDER,
         meta: 'Graduate Student'
       },
       {
         name: 'Alicia He',
+        imageBase: 'Alicia',
         bio: BIO_PLACEHOLDER,
         year: 'Freshman'
       },
@@ -184,41 +177,43 @@ export const TEAM_SECTIONS = [
       },
       {
         name: 'Vincent Yi',
+        imageBase: 'Vincent',
         bio: BIO_PLACEHOLDER,
         year: 'Sophomore'
       },
       {
         name: 'Calvin Pang',
+        imageBase: 'Calvin',
         bio: BIO_PLACEHOLDER,
         year: 'Sophomore'
       },
       {
         name: 'Suphia Zhang',
+        imageBase: 'Suphia',
         bio: BIO_PLACEHOLDER,
         year: 'Freshman'
       },
       {
         name: 'Claire Shi',
+        imageBase: 'Claire',
         bio: BIO_PLACEHOLDER,
         year: 'Freshman'
       },
       {
         name: 'Cam Hogan',
+        imageBase: 'Cam',
         bio: BIO_PLACEHOLDER,
         meta: 'Graduate Student'
       },
       {
         name: 'Julian Gasharov',
+        imageBase: 'Julian',
         bio: BIO_PLACEHOLDER,
         year: 'Sophomore'
       },
       {
-        name: 'Josh Baik',
-        bio: BIO_PLACEHOLDER,
-        year: 'Freshman'
-      },
-      {
         name: 'Anant Gupta',
+        imageBase: 'Anant',
         bio: BIO_PLACEHOLDER,
         year: 'Freshman'
       },
@@ -230,14 +225,12 @@ export const PROFESSORS = [
   {
     name: 'Prof. Jake Welde',
     imageBase: 'ProfWelde',
-    formalSuffix: '_suit',
     bio: 'He has worked extensively in drone control systems',
     role: 'Faculty'
   },
   {
     name: 'Prof. Jingjie Yeo',
     imageBase: 'ProfYeo',
-    formalSuffix: '_Suit',
     bio: 'Joined Cornell in 2020 after research in Singapore and postdocs at Tufts & MIT.',
     role: 'Faculty'
   }
@@ -248,10 +241,7 @@ export const getAboutImagePaths = () => {
 
   const addMemberImages = (member) => {
     if (!member.imageBase) return;
-    const base = member.imageBase;
-    const formalSuffix = member.formalSuffix ?? '_suit';
-    paths.add(assetPath(`img/People/${base}.png`));
-    paths.add(assetPath(`img/People/${base}${formalSuffix}.png`));
+    paths.add(assetPath(`img/People/${member.imageBase}.png`));
   };
 
   TEAM_SECTIONS.forEach(({ members }) => members.forEach(addMemberImages));

@@ -1,0 +1,185 @@
+/* Ported from the old site's App.css, themed through the --fg-rgb / --page-rgb channels. */
+.subteam-section {
+  width: min(960px, 100%);
+  margin: clamp(-80px, -6vw, -40px) auto clamp(40px, 6vw, 120px);
+  padding: 0 clamp(24px, 6vw, 72px);
+  position: relative;
+}
+
+.subteam-section .section-label {
+  margin-bottom: clamp(12px, 2vw, 24px);
+}
+
+.subteam-panel {
+  flex: 0 0 auto;
+  display: block;
+  width: 100%;
+  margin: 0;
+  border: 2px dotted rgba(var(--fg-rgb), 0.8);
+  border-radius: var(--box-radius);
+  box-shadow: inset 0 0 0 2px transparent;
+  background: var(--page);
+  position: relative;
+  cursor: default;
+  transition: border-color 0.17s ease, box-shadow 0.17s ease;
+}
+
+.subteam-panel::before {
+  content: 'subteams';
+  position: absolute;
+  top: -22px;
+  left: 8px;
+  background: rgba(var(--page-rgb), 0.75);
+  color: var(--fg);
+  border: 1px solid rgba(var(--fg-rgb), 0.35);
+  font-size: 9px;
+  font-family: monospace;
+  padding: 1px 5px;
+  line-height: 1.2;
+  border-radius: 2px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Finalized state — dots fade out, solid fades in, tag flashes out */
+.subteam-panel.is-finalized {
+  border-color: transparent;
+  box-shadow: inset 0 0 0 2px rgba(var(--fg-rgb), 0.8);
+}
+
+.subteam-panel.is-finalized::before {
+  animation: tag-flash-out 0.17s ease-out forwards;
+}
+
+.subteam-panel__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(6px, 1.2vw, 12px);
+  padding: clamp(12px, 2.2vw, 20px);
+  color: rgba(var(--fg-rgb), 0.85);
+  text-align: left;
+}
+
+.subteam-panel__title {
+  margin: 0;
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+  letter-spacing: 0.02em;
+  color: rgba(var(--fg-rgb), 0.7);
+  font-weight: 500;
+}
+
+.subteam-panel__desc {
+  margin: 0;
+  font-size: clamp(0.75rem, 1.4vw, 0.9rem);
+  line-height: 1.6;
+  color: rgba(var(--fg-rgb), 0.7);
+}
+
+.subteam-panel__blurb {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1.2vw, 10px);
+  padding: clamp(8px, 1.6vw, 14px) 0;
+  width: 100%;
+  position: relative;
+}
+
+.subteam-panel__blurb + .subteam-panel__blurb {
+  border-top: 2px dotted rgba(var(--fg-rgb), 0.8);
+  transition: border-top-color 0.17s ease;
+}
+
+/* The divider has to bleed past the panel's padding to reach both edges, so it is
+   drawn a second time as a full-bleed pseudo-element that swaps dotted → solid. */
+.subteam-panel__blurb + .subteam-panel__blurb::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: calc(-1 * clamp(12px, 2.2vw, 20px));
+  right: calc(-1 * clamp(12px, 2.2vw, 20px));
+  height: 2px;
+  border-top: 2px dotted rgba(var(--fg-rgb), 0.8);
+  background: transparent;
+  transition: border-top-color 0.17s ease, background-color 0.17s ease;
+}
+
+.subteam-panel.is-finalized .subteam-panel__blurb + .subteam-panel__blurb {
+  border-top-color: transparent;
+}
+
+.subteam-panel.is-finalized .subteam-panel__blurb + .subteam-panel__blurb::before {
+  border-top-color: transparent;
+  background: rgba(var(--fg-rgb), 0.8);
+}
+
+.subteam-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  gap: 12px;
+}
+
+.subteam-panel__toggle {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  color: rgba(var(--fg-rgb), 0.5);
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.subteam-panel__header:hover .subteam-panel__toggle {
+  color: rgba(var(--fg-rgb), 0.9);
+}
+
+/* 0fr → 1fr grid row is the height-agnostic way to animate "auto" height open. */
+.subteam-panel__items-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.subteam-panel__items-wrap.is-expanded {
+  grid-template-rows: 1fr;
+}
+
+.subteam-panel__items-wrap > div {
+  overflow: hidden;
+}
+
+.subteam-panel__items {
+  padding-top: clamp(8px, 1.4vw, 14px);
+}
+
+.subteam-panel__items-label {
+  margin: 0 0 clamp(6px, 1vw, 10px);
+  font-size: clamp(0.68rem, 1.2vw, 0.82rem);
+  color: rgba(var(--fg-rgb), 0.5);
+  letter-spacing: 0.06em;
+}
+
+.subteam-panel__items-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1vw, 10px);
+}
+
+.subteam-panel__items-list li {
+  font-size: clamp(0.7rem, 1.2vw, 0.82rem);
+  line-height: 1.55;
+  color: rgba(var(--fg-rgb), 0.6);
+  padding-left: 1.2em;
+  position: relative;
+}
+
+.subteam-panel__items-list li::before {
+  content: '\00b7';
+  position: absolute;
+  left: 0;
+  color: rgba(var(--fg-rgb), 0.4);
+}

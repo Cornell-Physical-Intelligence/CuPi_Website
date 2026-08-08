@@ -1,0 +1,217 @@
+/* Publications open the Work page, so the section shares that page's column rather
+   than running full-bleed the way it did under the gallery. The tile treatment is
+   still the gallery's: same eyebrow, shimmer-then-fade cover, same lightbox backdrop. */
+.pubs-section {
+  width: min(960px, 100%);
+  margin: 0 auto;
+  position: relative;
+}
+
+.pubs-section .section-label {
+  margin-bottom: clamp(12px, 2vw, 22px);
+}
+
+/* Covers are portrait pages, so the track is narrow; a single paper shouldn't stretch
+   to fill the viewport. */
+.pubs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 240px));
+  gap: clamp(20px, 3vw, 36px);
+  justify-content: center;
+}
+
+.pub-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pub-card__cover {
+  position: relative;
+  aspect-ratio: 8.5 / 11;
+  overflow: hidden;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--ph1) 0%, var(--ph2) 100%);
+  border: 1px solid rgba(var(--fg-rgb), 0.35);
+  border-radius: var(--box-radius);
+}
+
+/* No movement and no transition on hover — just the border stating that it's clickable. */
+.pub-card__cover:hover,
+.pub-card__cover:focus-visible {
+  border-color: rgba(var(--fg-rgb), 0.8);
+  outline: none;
+}
+
+/* Same skeleton sweep the gallery tiles use. */
+.pub-card__cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(var(--fg-rgb), 0.05) 50%,
+      transparent 100%);
+  animation: gallery-shimmer 1.5s infinite;
+  z-index: 1;
+}
+
+.pub-card__cover.is-loaded::before { display: none; }
+
+.pub-card__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  position: relative;
+  z-index: 2;
+}
+
+.pub-card__cover img.loaded { opacity: 1; }
+
+.pub-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.pub-card__title {
+  margin: 0;
+  font-size: clamp(0.84rem, 1.45vw, 0.96rem);
+  letter-spacing: 0.01em;
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.pub-card__subtitle {
+  margin: 0;
+  font-size: clamp(0.6rem, 1vw, 0.7rem);
+  line-height: 1.45;
+  color: rgba(var(--fg-rgb), 0.6);
+}
+
+/* ---------------------------------------------------------------- the viewer */
+/* Same backdrop treatment as .gallery-lightbox, but the panel scrolls. */
+.pub-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(var(--page-rgb), 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pub-viewer__bar {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(10px, 1.6vw, 16px) clamp(12px, 3vw, 32px);
+  cursor: default;
+  border-bottom: 1px solid rgba(var(--fg-rgb), 0.15);
+}
+
+.pub-viewer__name {
+  font-size: clamp(0.78rem, 1.35vw, 0.9rem);
+  letter-spacing: 0.01em;
+  color: var(--fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pub-viewer__actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2vw, 18px);
+  flex-shrink: 0;
+}
+
+/* Icon-only now, so it is sized as a square target rather than a text chip. */
+.pub-viewer__download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  color: rgba(var(--fg-rgb), 0.6);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.pub-viewer__download svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+.pub-viewer__download:hover,
+.pub-viewer__download:focus-visible {
+  color: var(--fg);
+}
+
+.pub-viewer__close {
+  background: none;
+  border: none;
+  color: rgba(var(--fg-rgb), 0.7);
+  font-size: 30px;
+  line-height: 1;
+  padding: 0 4px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.pub-viewer__close:hover,
+.pub-viewer__close:focus-visible {
+  color: var(--fg);
+}
+
+/* The scrolling window itself. */
+.pub-viewer__scroll {
+  flex: 1 1 auto;
+  width: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 20px);
+  padding: clamp(12px, 2.5vw, 28px) clamp(8px, 3vw, 32px) clamp(28px, 5vw, 56px);
+  cursor: default;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pub-viewer__page {
+  display: block;
+  width: min(100%, 860px);
+  height: auto;
+  border-radius: 2px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+  background: #ffffff;
+}
+
+/* Freeze the document while the viewer owns the screen. */
+body.pub-viewer-open {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .pubs-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+  }
+
+  .pub-viewer__page {
+    width: 100%;
+  }
+}

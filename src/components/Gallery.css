@@ -1,0 +1,179 @@
+/* Concept-art tapestry + lightbox, ported from the old site's home page.
+   Colours run through the --fg-rgb / --page-rgb theme channels declared in App.css. */
+
+/* Full-bleed: the tapestry escapes whatever column it is dropped into. */
+.gallery-section {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: clamp(160px, 20vw, 320px);
+  padding: 0;
+  position: relative;
+  content-visibility: auto;
+  contain-intrinsic-size: 800px 2000px;
+}
+
+.gallery-section .section-label {
+  margin-bottom: clamp(8px, 1.5vw, 16px);
+  padding-left: clamp(24px, 6vw, 72px);
+}
+
+.gallery-tapestry {
+  column-count: 3;
+  column-gap: 2px;
+  width: 100%;
+  padding: 0;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: 2px;
+  line-height: 0;
+  background: linear-gradient(135deg, var(--ph1) 0%, var(--ph2) 100%);
+  min-height: 100px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.gallery-item:focus { outline: none; }
+
+/* Skeleton sweep while the thumb is still in flight. */
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(var(--fg-rgb), 0.05) 50%,
+      transparent 100%);
+  animation: gallery-shimmer 1.5s infinite;
+  z-index: 1;
+}
+
+@keyframes gallery-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.gallery-item.is-loaded::before { display: none; }
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  position: relative;
+  z-index: 2;
+}
+
+.gallery-item img.loaded { opacity: 1; }
+
+/* Dissolves the bottom edge of the tapestry into the page instead of cutting it. */
+.gallery-fade-end {
+  position: relative;
+  width: 100%;
+  height: clamp(80px, 15vw, 180px);
+  background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(var(--page-rgb), 0.3) 30%,
+      rgba(var(--page-rgb), 0.7) 70%,
+      rgba(var(--page-rgb), 0.95) 100%);
+  pointer-events: none;
+  margin-top: -2px;
+}
+
+.gallery-more {
+  text-align: center;
+  font-size: clamp(10px, 1.5vw, 14px);
+  letter-spacing: 0.15em;
+  color: rgba(var(--fg-rgb), 0.35);
+  font-family: 'Courier New', Courier, monospace;
+  padding: clamp(8px, 2vw, 16px) 0 clamp(48px, 8vw, 96px) 0;
+  margin: 0;
+  user-select: none;
+}
+
+/* ---------------------------------------------------------------- lightbox */
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(var(--page-rgb), 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 48px);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.gallery-lightbox__close {
+  position: absolute;
+  top: clamp(8px, 2vw, 20px);
+  right: clamp(8px, 2vw, 20px);
+  background: none;
+  border: none;
+  color: rgba(var(--fg-rgb), 0.7);
+  font-size: 32px;
+  cursor: pointer;
+  z-index: 1;
+  padding: 4px 12px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.gallery-lightbox__close:hover,
+.gallery-lightbox__close:focus-visible {
+  color: var(--fg);
+}
+
+.gallery-lightbox__content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.gallery-lightbox__content img {
+  max-width: 100%;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-lightbox__author {
+  display: block;
+  text-align: center;
+  margin-top: clamp(8px, 1.5vw, 16px);
+  font-size: clamp(10px, 1.2vw, 13px);
+  letter-spacing: 0.12em;
+  color: rgba(var(--fg-rgb), 0.5);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+@media (min-width: 1600px) {
+  .gallery-tapestry { column-count: 4; }
+}
+
+@media (max-width: 900px) {
+  .gallery-tapestry { column-count: 2; }
+}
+
+@media (max-width: 480px) {
+  .gallery-tapestry {
+    column-count: 1;
+    padding: 0;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}

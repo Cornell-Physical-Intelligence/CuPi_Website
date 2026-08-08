@@ -1,0 +1,58 @@
+.specular-bar {
+  --sb-radius: 14px;
+  --sb-tint: #ffffff;
+  --sb-tint-opacity: 0.045;
+  --sb-blur: 10px;
+  --sb-saturate: 1.2;
+  --sb-shadow: none;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  /* No CSS border: the rim drawn in the canvas layer *is* the edge. */
+  border: none;
+  border-radius: var(--sb-radius);
+  background: color-mix(in srgb, var(--sb-tint) calc(var(--sb-tint-opacity) * 100%), transparent);
+  -webkit-backdrop-filter: blur(var(--sb-blur)) saturate(var(--sb-saturate));
+  backdrop-filter: blur(var(--sb-blur)) saturate(var(--sb-saturate));
+  box-shadow: var(--sb-shadow);
+}
+
+/* Canvas extends past the bar so the rim glow can bleed outside the edge.
+   Keep the inset in sync with PAD in SpecularBar.jsx. */
+.specular-bar__fx {
+  position: absolute;
+  inset: -20px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.specular-bar__fx canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.specular-bar__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* No WebGL2 — leave a plain hairline so the bar still has a defined edge.
+   box-sizing keeps the extra 2px inside whatever height the caller set. */
+.specular-bar--no-rim {
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.14));
+}
+
+/* Without a backdrop-filter the tint is all that separates the bar from the
+   page, so make it opaque enough to keep the labels legible. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .specular-bar {
+    background: color-mix(in srgb, var(--sb-tint) 80%, transparent);
+  }
+}

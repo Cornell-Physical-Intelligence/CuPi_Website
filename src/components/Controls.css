@@ -1,0 +1,225 @@
+/* Effect tuning panel — a dark glass tool overlay readable on either theme. */
+.controls {
+  position: fixed;
+  top: 88px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1200;
+  width: 290px;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  background: rgba(16, 16, 18, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+  color: #f2f2f2;
+  font-family: 'Questrial', system-ui, sans-serif;
+  overflow: hidden;
+  animation: controls-in 0.22s cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes controls-in {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.controls__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex: 0 0 auto;
+}
+
+.controls__title {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.controls__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.controls__btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f2f2f2;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.06s ease;
+}
+
+.controls__btn:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.controls__btn:active {
+  transform: translateY(1px);
+}
+
+.controls__body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px 14px 16px;
+}
+
+.controls__group {
+  padding-top: 12px;
+}
+
+.controls__group-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.controls__group-note {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.controls__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 8px;
+  margin-bottom: 9px;
+}
+
+.controls__name {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.controls__val {
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: right;
+}
+
+.controls__range {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: #6ea8ff;
+  cursor: pointer;
+}
+
+.controls__switch {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 9px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.82);
+  cursor: pointer;
+}
+
+.controls__switch input {
+  width: 15px;
+  height: 15px;
+  accent-color: #6ea8ff;
+  cursor: pointer;
+}
+
+/* Preset export / import */
+.controls__status {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: #8fd39a;
+}
+
+.controls__io-actions {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.controls__btn[disabled] {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.controls__io {
+  width: 100%;
+  resize: vertical;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #d6e2f5;
+  font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.controls__io::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.controls__io:focus {
+  border-color: rgba(110, 168, 255, 0.6);
+}
+
+/* Scrollbar — keep it subtle inside the panel. */
+.controls__body::-webkit-scrollbar {
+  width: 8px;
+}
+.controls__body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 4px;
+}
+.controls__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (max-width: 520px) {
+  .controls {
+    top: auto;
+    right: 8px;
+    left: 8px;
+    bottom: 8px;
+    width: auto;
+    max-height: 60vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .controls {
+    animation: none;
+  }
+}

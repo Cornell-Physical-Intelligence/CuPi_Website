@@ -77,15 +77,12 @@ function MissionTiles({ played, onPlay }) {
       <div className="mission-tiles__content">
         <div className="mission-tiles__blurb-wrapper" ref={blurbRef}>
           <p className="mission-tiles__blurb">
-            At CUPI, we believe advanced engineering solutions already exist in nature. Through
-            millions of years of evolution, natural systems have mastered adaptability and
-            efficiency. These are the very same principles that guide our design process.
-            <br /><br />
-            By analyzing biological structures and systems, we can create new mechanical systems
-            that combine convention with innovation. Our team is made up of students from various
-            disciplines at Cornell, united by a common vision: to engineer with inspiration and
-            creativity, building machines that can function autonomously and meet ever-advancing
-            goals.
+            At CUPI, we aim to create physical systems that can intelligently reason and
+            interact with their environments. The gap between AI software and hardware
+            needs to be closed seamlessly, and through our multidisciplinary team, we
+            pursue this symbiosis. We prioritize creative, ambitious, and self-starting
+            thinkers, because the problems worth solving here do not come with
+            instructions.
           </p>
         </div>
         <div className="mission-tiles__stats" aria-label="Team scale insights">

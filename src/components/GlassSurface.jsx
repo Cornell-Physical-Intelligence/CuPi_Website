@@ -1,36 +1,8 @@
 import { useCallback, useEffect, useId, useMemo, useRef } from 'react';
 import './GlassSurface.css';
+import { supportsGlassSurface } from './glass/glassSupport';
 
 const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
-let cachedSvgFilterSupport;
-
-const detectSvgFilterSupport = () => {
-  if (!isBrowser) {
-    return false;
-  }
-
-  if (cachedSvgFilterSupport !== undefined) {
-    return cachedSvgFilterSupport;
-  }
-
-  // Disable on touch-primary devices (mobile, tablets)
-  if (window.matchMedia?.('(pointer: coarse)')?.matches) {
-    cachedSvgFilterSupport = false;
-    return false;
-  }
-
-  // Must support backdrop-filter
-  if (!CSS?.supports?.('backdrop-filter', 'blur(1px)')) {
-    cachedSvgFilterSupport = false;
-    return false;
-  }
-
-  // SVG filter displacement via backdrop-filter only renders correctly in
-  // Chromium-based browsers. Detect via the chrome global, which is present
-  // in Chrome, Edge, Brave, Opera, etc.
-  cachedSvgFilterSupport = 'chrome' in window;
-  return cachedSvgFilterSupport;
-};
 
 const GlassSurface = ({
   children,
@@ -66,7 +38,7 @@ const GlassSurface = ({
   const blueChannelRef = useRef(null);
   const gaussianBlurRef = useRef(null);
 
-  const supportsSVG = useMemo(() => detectSvgFilterSupport(), []);
+  const supportsSVG = useMemo(() => supportsGlassSurface(), []);
   const rafRef = useRef(null);
 
   const generateDisplacementMap = useCallback(() => {

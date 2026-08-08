@@ -1,17 +1,16 @@
-# CuPi Effects Website
+# React + Vite
 
-This repo now ships a pared-down React + Vite experience focused on the compressor spin demo.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Getting started
+Currently, two official plugins are available:
 
-1. `npm install`
-2. `npm install three @react-three/fiber @react-three/drei maath`
-3. `npm run dev`
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Project structure
+## React Compiler
 
-- `src/App.jsx` – renders the barebones layout and handles React Router navigation.
-- `src/index.css` – minimal styling for the menu, scroll stage, and placeholders.
-- `public/img/SpinAnimation.mp4` – video clip scrubbed via scroll.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-Point your server at `index.html` (the Vite entry) to render the React experience.
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

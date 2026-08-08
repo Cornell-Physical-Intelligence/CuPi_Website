@@ -1,8 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap');
-
 :root {
-  color-scheme: light dark;
+  /* The old site's root stack, matched exactly. Everything ported from it was written
+     to inherit this, so the two named faces are the deliberate exceptions rather than
+     the rule: Questrial for eyebrows/footer, Times for the hero subtitle.
+     Playfair is still loaded in index.html — the Voronoi hero rasterises it on a
+     canvas, and no DOM node renders it. */
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color-scheme: light;
 }
 
 *,
@@ -11,26 +14,28 @@
   box-sizing: border-box;
 }
 
-html {
-  background: transparent;
-  /* Use -webkit-overflow-scrolling for Safari compatibility */
-  -webkit-overflow-scrolling: touch;
+html,
+body {
+  margin: 0;
+  /* Light by default (inverted theme); App flips this via data-theme on <body>. */
+  background: #ffffff;
+}
+
+body[data-theme='dark'] {
+  background: #000000;
 }
 
 body {
-  margin: 0;
-  /* Use min-height with dvh fallback for Safari mobile */
   min-height: 100vh;
-  min-height: 100dvh;
+  /* The gallery tapestry and the team rule are full-bleed via 100vw, which overshoots
+     the content box by the scrollbar width. Clip that rather than let the page pan. */
   overflow-x: hidden;
-  overflow-y: auto;
-  background: transparent;
-  /* Ensure touch scrolling works on Safari */
-  -webkit-overflow-scrolling: touch;
+  /* Crisper text rendering on macOS. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 #root {
-  background: transparent;
   min-height: 100vh;
-  min-height: 100dvh;
 }

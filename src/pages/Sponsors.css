@@ -1,0 +1,185 @@
+/* Sponsors: title, subtitle, a full-width rule, three tiers, and how to become one.
+   Nothing else on the page. */
+
+/* The masthead artwork already occupies the top of the page, so this page needs far less
+   leading padding than the default alt-page (which only has to clear the glass nav). */
+.alt-page--sponsors {
+  padding-top: clamp(48px, 7vh, 84px);
+}
+
+.sponsors {
+  width: min(1100px, 100%);
+  margin: 0 auto clamp(48px, 8vh, 112px);
+}
+
+/* The artwork's stage. No clipping: the asset already has a straight base, and
+   min-height keeps the drawing clear of the nav, so there is nothing left to cut. */
+.sponsors__masthead {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(155px, 21vw, 245px);
+}
+
+/* The title sits directly on the rule: only enough padding below the baseline to keep
+   descenders off it. */
+.sponsors__head {
+  position: relative;
+  z-index: 1;
+  padding-bottom: clamp(2px, 0.5vw, 6px);
+}
+
+/* Hexapod leg wireframe, anchored bottom-right, full strength, no mask. The 12deg tilt
+   and the straight bottom crop are baked into the asset, so its bottom edge is already
+   horizontal and sits flush on the rule with nothing hidden below it. */
+.sponsors__art {
+  position: absolute;
+  right: 50%;
+  /* 50vw would put the right edge exactly on the page edge; the small subtraction pulls
+     the whole drawing back in from it. */
+  transform: translateX(calc(50vw - 26px));
+  bottom: 0;
+  width: min(840px, 74%);
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Dark ink on a dark page would vanish, so flip it. */
+.app--dark .sponsors__art {
+  filter: invert(1);
+}
+
+@media (max-width: 720px) {
+  /* On a phone the leg has to give the title more room, not less. */
+  .sponsors__masthead {
+    min-height: clamp(140px, 26vw, 190px);
+  }
+
+  .sponsors__art {
+    width: 94%;
+  }
+}
+
+/* Full-bleed. A border on the head would stop at the content measure and again at
+   .alt-page's padding, so it is drawn separately at viewport width. Safe because body
+   clips overflow-x. */
+.sponsors__rule {
+  position: relative;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  /* Matched to the wireframe's own line weight: its strokes measure 3px in a 1600px-wide
+     asset, and it renders at ~0.51 scale on desktop, so ~1.5px is the same optical
+     thickness. Tracks the viewport because the artwork's scale does too, with a 1px floor
+     since thinner hairlines render inconsistently. */
+  height: clamp(1px, 0.095vw, 1.35px);
+  background: var(--fg);
+}
+
+/* Directly under the rule, and smaller than the title it explains. */
+.sponsors__lede {
+  margin: clamp(10px, 1.5vw, 16px) 0 0;
+  /* No character cap: at full width the sentence fits on one line, and it wraps by
+     itself once the column is too narrow for it. */
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(0.74rem, 1vw, 0.86rem);
+  line-height: 1.55;
+  color: rgba(var(--fg-rgb), 0.6);
+  /* Above the artwork, which now runs at full strength behind this area. */
+  position: relative;
+  z-index: 1;
+}
+
+.sponsors__lede a {
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(var(--fg-rgb), 0.3);
+}
+
+.sponsors__lede a:hover {
+  border-bottom-color: var(--fg);
+}
+
+/* -------------------------------------------------------------------- tiers */
+.tier {
+  margin-top: clamp(46px, 6.5vw, 88px);
+}
+
+/* Plain type shaded in the tier's metal. A soft vertical gradient gives it depth without
+   any of the animated shine; the flat colour underneath is what shows if a browser can't
+   clip a background to text. */
+.tier__name {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(24px, 3.2vw, 44px);
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  line-height: 1.1;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.tier__name--gold {
+  color: #b8860b;
+  background-image: linear-gradient(175deg, #e8c86a 0%, #c9992c 42%, #8a6412 100%);
+  -webkit-text-fill-color: transparent;
+}
+
+.tier__name--silver {
+  color: #8a9099;
+  background-image: linear-gradient(175deg, #c9cfd7 0%, #9aa1aa 42%, #6d747d 100%);
+  -webkit-text-fill-color: transparent;
+}
+
+.tier__name--bronze {
+  color: #96522a;
+  background-image: linear-gradient(175deg, #cf9061 0%, #a5643a 42%, #6f3d1d 100%);
+  -webkit-text-fill-color: transparent;
+}
+
+/* The ramps are mixed for the white page; on black they need lifting or they go muddy. */
+.app--dark .tier__name--gold {
+  background-image: linear-gradient(175deg, #f6dd93 0%, #dcae42 42%, #a87c1c 100%);
+}
+
+.app--dark .tier__name--silver {
+  background-image: linear-gradient(175deg, #eef1f5 0%, #bcc3cc 42%, #878e97 100%);
+}
+
+.app--dark .tier__name--bronze {
+  background-image: linear-gradient(175deg, #e6a97c 0%, #c07a4a 42%, #8a4f27 100%);
+}
+
+.tier__list {
+  list-style: none;
+  margin: clamp(16px, 2.4vw, 26px) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(24px, 4vw, 56px);
+}
+
+/* Wordmarks run at a common height rather than a common width, so logos of different
+   proportions carry the same optical weight. */
+.tier__sponsor img {
+  display: block;
+  height: clamp(26px, 3.4vw, 40px);
+  width: auto;
+  object-fit: contain;
+}
+
+/* Logos are dark artwork; invert on the dark theme so they don't vanish. */
+.app--dark .tier__sponsor img {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.tier__sponsor-name {
+  font-size: clamp(1rem, 1.7vw, 1.2rem);
+  color: var(--fg);
+}
+
