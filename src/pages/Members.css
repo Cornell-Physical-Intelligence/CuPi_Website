@@ -51,6 +51,11 @@
   object-fit: cover;
   object-position: top center;
   display: block;
+  /* Per-person framing correction; the values and the reasoning live in Members.jsx.
+     Anchored to the top edge to match object-position, so a zoom crops from the bottom
+     rather than sliding faces up out of the tile. */
+  transform: translateY(var(--photo-shift, 0)) scale(var(--photo-zoom, 1));
+  transform-origin: top center;
 }
 
 /* The bio covers the portrait instead of expanding the card, so opening one leaves

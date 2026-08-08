@@ -23,6 +23,21 @@ const PHOTOS = Object.fromEntries(
 
 const photoFor = (member) => PHOTOS[member.imageBase] ?? PHOTOS.Placeholder;
 
+// Every roster headshot is from one shoot -- same room, same camera -- but people stood at
+// slightly different distances from it, so under object-fit: cover a few read noticeably
+// larger than the rest of the grid. A per-person zoom evens them up (see team.js).
+//
+// The default sits above 1 deliberately. These sources are 960x1088 in a 3:4 tile, so cover
+// already shows their full height and crops only the sides: there is nothing above or below
+// left to zoom *out* into, and a value below 1 would shrink the photo clear of the frame and
+// leave a bare strip along the bottom. Holding the roster at 1.12 is what gives the handful
+// shot closest somewhere to come down to -- they take zoom: 1 and everyone else meets them.
+const ROSTER_ZOOM = 1.12;
+
+// The faculty cut-outs and the placeholder icon come from elsewhere and are framed on their
+// own terms, so they sit out the roster default rather than getting cropped by it.
+const zoomFor = (member) => (member.imageBase ? member.zoom ?? ROSTER_ZOOM : 1);
+
 // Role wins over class year; "First Year" reads better as "Freshman".
 const metaFor = (member) => {
   if (member.role) return member.role;
@@ -47,7 +62,16 @@ function MemberCard({ member, isOpen, onToggle }) {
         aria-expanded={isOpen}
         aria-label={hasBio ? `Read about ${member.name}` : member.name}
       >
-        <img src={photoFor(member)} alt={member.name} loading="lazy" decoding="async" />
+        <img
+          src={photoFor(member)}
+          alt={member.name}
+          loading="lazy"
+          decoding="async"
+          style={{
+            '--photo-zoom': zoomFor(member),
+            '--photo-shift': `${member.zoomShift ?? 0}%`,
+          }}
+        />
         <span className="member__bio">
           <span className="member__bio-text">{bio}</span>
         </span>
