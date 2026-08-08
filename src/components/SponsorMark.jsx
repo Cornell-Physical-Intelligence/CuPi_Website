@@ -21,8 +21,12 @@ const round = (n) => Math.round(n * 1000) / 1000;
    in "Desperately seeking squircles" (Figma, 2019).
 
    The corners are emitted as relative segments, so only the straight runs between them care
-   about the box being a rectangle rather than a square. */
-function squircle(w, h, radius, smoothing) {
+   about the box being a rectangle rather than a square. `sharp` names the one corner left
+   as a plain vertex — three smoothed corners and one square one reads as a decision, where
+   four of either reads as a default. */
+const CORNERS = { TOP_RIGHT: 0, BOTTOM_RIGHT: 1, BOTTOM_LEFT: 2, TOP_LEFT: 3 };
+
+function squircle(w, h, radius, smoothing, sharp) {
   const p = (1 + smoothing) * radius;
   const sweep = 90 * (1 - smoothing); // degrees still spent on a true arc
   const arc = Math.sin(deg(sweep / 2)) * radius * Math.SQRT2; // its span on each axis
@@ -38,36 +42,37 @@ function squircle(w, h, radius, smoothing) {
   const bc = round(b + c);
   const [A, C, D, R, S, P] = [a, c, d, radius, arc, p].map(round);
 
-  return [
-    `M ${round(w - p)} 0`,
-    `c ${A} 0 ${ab} 0 ${e} ${D}`,
-    `a ${R} ${R} 0 0 1 ${S} ${S}`,
-    `c ${D} ${C} ${D} ${bc} ${D} ${e}`,
-    `L ${w} ${round(h - p)}`,
-    `c 0 ${A} 0 ${ab} ${-D} ${e}`,
-    `a ${R} ${R} 0 0 1 ${-S} ${S}`,
-    `c ${-C} ${D} ${-bc} ${D} ${-e} ${D}`,
-    `L ${P} ${h}`,
-    `c ${-A} 0 ${-ab} 0 ${-e} ${-D}`,
-    `a ${R} ${R} 0 0 1 ${-S} ${-S}`,
-    `c ${-D} ${-C} ${-D} ${-bc} ${-D} ${-e}`,
-    `L 0 ${P}`,
-    `c 0 ${-A} 0 ${-ab} ${D} ${-e}`,
-    `a ${R} ${R} 0 0 1 ${S} ${-S}`,
-    `c ${C} ${-D} ${bc} ${-D} ${e} ${-D}`,
-    'Z',
-  ].join(' ');
+  // Clockwise from the top edge. Each turn starts p back from its corner and ends p past
+  // it, so a sharp corner is just the two straight runs meeting at the vertex instead.
+  const turns = [
+    [`c ${A} 0 ${ab} 0 ${e} ${D}`, `a ${R} ${R} 0 0 1 ${S} ${S}`, `c ${D} ${C} ${D} ${bc} ${D} ${e}`],
+    [`c 0 ${A} 0 ${ab} ${-D} ${e}`, `a ${R} ${R} 0 0 1 ${-S} ${S}`, `c ${-C} ${D} ${-bc} ${D} ${-e} ${D}`],
+    [`c ${-A} 0 ${-ab} 0 ${-e} ${-D}`, `a ${R} ${R} 0 0 1 ${-S} ${-S}`, `c ${-D} ${-C} ${-D} ${-bc} ${-D} ${-e}`],
+    [`c 0 ${-A} 0 ${-ab} ${D} ${-e}`, `a ${R} ${R} 0 0 1 ${S} ${-S}`, `c ${C} ${-D} ${bc} ${-D} ${e} ${-D}`],
+  ];
+  const entry = [[round(w - p), 0], [w, round(h - p)], [P, h], [0, P]];
+  const vertex = [[w, 0], [w, h], [0, h], [0, 0]];
+
+  const out = [`M ${entry[0][0]} ${entry[0][1]}`];
+  for (let i = 0; i < 4; i += 1) {
+    out.push(i === sharp ? `L ${vertex[i][0]} ${vertex[i][1]}` : turns[i].join(' '));
+    const next = entry[(i + 1) % 4];
+    out.push(`L ${next[0]} ${next[1]}`);
+  }
+  out.push('Z');
+  return out.join(' ');
 }
 
 // The plate's own grid, in SVG units; CSS scales the whole thing. Only the width varies,
-// with the name it has to hold. A radius of 17 against a height of 64 keeps a short flat
+// with the name it has to hold. A radius of 11 against a height of 48 keeps a short flat
 // run down each end — the plate still reads as a rectangle, which a fully rounded one
 // stops doing — while spending nearly the whole corner on the smoothed curve.
-const HEIGHT = 64;
-const RADIUS = 17;
+const HEIGHT = 48;
+const RADIUS = 11;
 const SMOOTHING = 0.8;
-const PAD_X = 30; // half again the space above and below the caps, which is how a plate
-                  // has to be padded to look evenly padded
+const SHARP = CORNERS.BOTTOM_LEFT;
+const PAD_X = 15; // a little more than the 12.8 above and below the caps, which is what it
+                  // takes for a plate to look evenly padded
 
 // Already self-hosted and preloaded for the hero, so it costs no extra request here.
 const FONT = "'Playfair Display', 'Times New Roman', Times, serif";
@@ -126,13 +131,9 @@ export default function SponsorMark({ name }) {
           <stop className="sponsor-mark__ink-bottom" offset="1" />
         </linearGradient>
       </defs>
-      <path className="sponsor-mark__plate" d={squircle(width, HEIGHT, RADIUS, SMOOTHING)} />
-      {/* The same outline inset half a unit, rather than a stroke on the plate itself: that
-          would straddle the edge and leave its outer half to be clipped. */}
       <path
-        className="sponsor-mark__edge"
-        d={squircle(width - 1, HEIGHT - 1, RADIUS - 0.5, SMOOTHING)}
-        transform="translate(0.5 0.5)"
+        className="sponsor-mark__plate"
+        d={squircle(width, HEIGHT, RADIUS, SMOOTHING, SHARP)}
       />
       <text
         className="sponsor-mark__word"

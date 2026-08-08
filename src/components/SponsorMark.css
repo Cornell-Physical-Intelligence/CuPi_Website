@@ -1,34 +1,21 @@
-/* Mark for a sponsor with no logo file: the name in serif on a black squircle plate.
+/* Mark for a sponsor with no logo file: the name in serif on a dark grey squircle plate.
    Geometry lives in SponsorMark.jsx; this is colour and scale only. */
 
 .sponsor-mark {
-  /* A shade above the height the sponsor <img> logos run at. The plate's padding is part
-     of the drawing, so matching box heights would leave these letters visibly smaller than
-     the glyphs in a neighbouring logo. */
-  --mark-height: clamp(34px, 4.6vw, 52px);
-  /* Barely-warm black. Not the page's --fg: this is a brand colour and shouldn't invert
-     with the theme, the way a real logo file wouldn't. */
-  --mark-plate: #0c0a08;
+  /* Close to the height the sponsor <img> logos run at — the plate is padded tightly
+     enough that its letters land near theirs optically. */
+  --mark-height: clamp(28px, 3.8vw, 44px);
+  /* Warm dark grey, and the same on both themes: this is a brand colour, and a real logo
+     file wouldn't invert with the page. It sits clear of white and of black on its own,
+     which is what lets the plate go without an outline or a shadow. */
+  --mark-plate: #2a2724;
   /* Burnt orange rather than a signal orange, on a narrow ramp so it still reads flat. */
-  --mark-ink-top: #e9975b;
-  --mark-ink-bottom: #c86a2a;
-  --mark-edge: rgba(255, 255, 255, 0.07);
-  --mark-lift: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.18));
+  --mark-ink-top: #eb9a5e;
+  --mark-ink-bottom: #cb6d2c;
 
   display: block;
   height: var(--mark-height);
   width: calc(var(--mark-height) * var(--mark-ratio));
-  filter: var(--mark-lift);
-}
-
-/* Black on black is a hole rather than a plate, so lift it just off the page and let the
-   hairline do the separating that the shadow does on white. */
-.app--dark .sponsor-mark {
-  --mark-plate: #17130f;
-  --mark-ink-top: #f0a268;
-  --mark-ink-bottom: #d2762f;
-  --mark-edge: rgba(255, 255, 255, 0.13);
-  --mark-lift: none;
 }
 
 .sponsor-mark__plate {
@@ -43,20 +30,12 @@
   stop-color: var(--mark-ink-bottom);
 }
 
-/* One user unit of the plate's 64, so it thins as the mark shrinks instead of growing
-   into a border. */
-.sponsor-mark__edge {
-  fill: none;
-  stroke: var(--mark-edge);
-  stroke-width: 1;
-}
-
 .sponsor-mark__word {
   /* Kept in step with FONT/FONT_SIZE/TRACKING in SponsorMark.jsx — the plate is measured
      against these, so changing one here alone would misfit the padding. */
   font-family: 'Playfair Display', 'Times New Roman', Times, serif;
   font-weight: 700;
-  /* User units in the plate's 64-unit grid, not screen pixels. */
+  /* User units in the plate's 48-unit grid, not screen pixels. */
   font-size: 32px;
   letter-spacing: 0.01em;
 }
