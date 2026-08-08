@@ -17,21 +17,34 @@ const NAV_ITEMS = [
   { label: 'Apply', page: 'apply' },
 ];
 const VALID_PAGES = ['home', 'work', 'members', 'sponsors', 'apply'];
-const getPageFromHash = () => {
-  const hash = window.location.hash.replace('#', '');
-  return VALID_PAGES.includes(hash) ? hash : 'home';
+// Real paths rather than #fragments. The build writes an index.html into a folder per
+// route, so /work is a genuine document that Pages can serve and the router reads back
+// from the pathname.
+const getPageFromPath = () => {
+  const seg = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  return VALID_PAGES.includes(seg) ? seg : 'home';
 };
-// Writing the hash lives at module scope (components must not assign to globals directly).
-const writeHash = (page) => {
-  window.location.hash = page === 'home' ? '' : page;
+
+// Navigating lives at module scope (components must not assign to globals directly).
+const writePath = (page) => {
+  window.history.pushState({}, '', page === 'home' ? '/' : `/${page}`);
 };
+
+// Anything still linking to the old #work style URLs is rewritten in place, once, before
+// the first render, so those links keep working and no stray fragment is left in the bar.
+const legacyHash = window.location.hash.replace('#', '');
+if (VALID_PAGES.includes(legacyHash)) {
+  window.history.replaceState({}, '', legacyHash === 'home' ? '/' : `/${legacyHash}`);
+} else if (window.location.hash) {
+  window.history.replaceState({}, '', window.location.pathname);
+}
 
 // The live-tuning panel is a dev-only tool — Vite sets this false in production builds,
 // so the "Customize" button and panel never ship to visitors.
 const SHOW_CUSTOMIZE = import.meta.env.DEV;
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState(getPageFromHash);
+  const [currentPage, setCurrentPage] = useState(getPageFromPath);
   const [inverted, setInverted] = useState(P.invert);
   const [showControls, setShowControls] = useState(false);
   const titleApi = useRef(null);
@@ -41,11 +54,11 @@ export default function App() {
     document.body.dataset.theme = inverted ? 'light' : 'dark';
   }, [inverted]);
 
-  // Sync the page with the URL hash (and the browser back/forward buttons).
+  // Follow the browser's back and forward buttons.
   useEffect(() => {
-    const onHashChange = () => setCurrentPage(getPageFromHash());
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+    const onPop = () => setCurrentPage(getPageFromPath());
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
   }, []);
 
   useEffect(() => {
@@ -53,7 +66,7 @@ export default function App() {
   }, [currentPage]);
 
   const navigate = (page) => {
-    writeHash(page);
+    writePath(page);
     setCurrentPage(page);
   };
 
