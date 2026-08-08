@@ -17,6 +17,7 @@ const TIERS = [
 // taller. Without a logo file a mark gets drawn from the name.
 const SPONSORS = [
   { name: 'CU GeoData', tier: 'gold', logo: 'icons/CUGeoData_Logo.png' },
+  { name: 'Modovolo', tier: 'silver', logo: 'icons/Modovolo_Logo.png', emblem: true },
   { name: 'Tantalus', tier: 'bronze' },
   // Wikimedia Commons, public domain — the shield is below the threshold of originality.
   // Still a UPS trademark, so it stays unmodified.
