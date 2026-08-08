@@ -969,10 +969,15 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
     } catch {
       fontLoad = Promise.resolve();
     }
+    // Wait on that one face and nothing else. document.fonts.ready used to be chained in
+    // here too, and it resolves only once *every* font on the page has settled — Questrial
+    // included, which is still a Google Fonts request. So the hero sat behind fonts it never
+    // draws with, and self-hosting Playfair bought nothing until this came off: measured,
+    // fonts.load resolved at 149ms while fonts.ready had not resolved a second later.
+    // fonts.load(FONT_WANTED, text) already resolves exactly when the glyphs we rasterise
+    // are available, and anything landing late is still caught by loadingdone → rebake().
     Promise.resolve(fontLoad)
       .catch(() => {}) // font 404 / offline → Georgia everywhere, still consistent
-      .then(() => document.fonts?.ready)
-      .catch(() => {})
       .then(() => {
         if (disposed) return;
         clearTimeout(fallback);
