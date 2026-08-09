@@ -80,11 +80,13 @@
    and the padding-top below is widened just enough that it never crowds the first line. */
 .mission-tiles__crab {
   position: absolute;
-  top: clamp(9px, 1.4vw, 14px);
-  left: clamp(9px, 1.4vw, 14px);
+  top: clamp(4px, 0.6vw, 7px);
+  left: clamp(4px, 0.6vw, 7px);
   width: clamp(14px, 1.7vw, 20px);
   height: auto;
   z-index: 1;
+  /* Sits back from the blurb rather than competing with it, like the body copy's alpha. */
+  opacity: 0.6;
   pointer-events: none;
   user-select: none;
 }
@@ -92,6 +94,12 @@
 /* The mark is white line art, so it needs flipping for the light page. */
 .app--light .mission-tiles__crab {
   filter: invert(1);
+  /* Inverted, it lands on solid black, which sits far heavier against a white page than the
+     white original does against a black one — the same alpha reads as a hard mark here and
+     a soft one there. Fading it further keeps it light grey, tucked behind the blurb rather
+     than punctuating it. Deliberately not applied to the dark page, where 0.6 white is
+     already a light grey. */
+  opacity: 0.3;
 }
 
 .mission-tiles__blurb {
