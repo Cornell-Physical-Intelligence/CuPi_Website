@@ -28,8 +28,20 @@ export const PUBLICATIONS = [
   },
 ];
 
+// Covers are rendered straight from the PDF at the three sizes the card can actually
+// need -- it is 200-240 CSS px wide, so 240/480/720 is exactly 1x/2x/3x and nothing is
+// downloaded that a display cannot resolve. Re-rendering from the source beats
+// downscaling the old 816px file, which was already lossy.
+const COVER_WIDTHS = [240, 480, 720];
+
+export const getPublicationCoverSet = (slug, ext) =>
+  COVER_WIDTHS.map((w) => `${assetPath(`img/Publications/${slug}-cover-${w}.${ext}`)} ${w}w`)
+    .join(', ');
+
+// Fallback for browsers that take neither <source>: the 2x file, which is the one most
+// displays would have picked anyway.
 export const getPublicationCover = (slug) =>
-  assetPath(`img/Publications/${slug}-cover.webp`);
+  assetPath(`img/Publications/${slug}-cover-480.webp`);
 
 export const getPublicationPage = (slug, page) =>
   assetPath(`img/Publications/${slug}/p${String(page).padStart(2, '0')}.webp`);

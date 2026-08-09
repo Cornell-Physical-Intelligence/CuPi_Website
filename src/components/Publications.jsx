@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   PUBLICATIONS,
   getPublicationCover,
+  getPublicationCoverSet,
   getPublicationPage,
   getPublicationPdf,
 } from '../data/publications';
@@ -57,21 +58,41 @@ export default function Publications() {
                   }
                 }}
               >
-                <img
-                  draggable={false}
-                  src={getPublicationCover(pub.slug)}
-                  alt={`First page of ${pub.title}`}
-                  loading="lazy"
-                  decoding="async"
-                  onLoad={(e) => {
-                    e.currentTarget.classList.add('loaded');
-                    e.currentTarget.parentElement?.classList.add('is-loaded');
-                  }}
-                  onError={(e) => {
-                    e.currentTarget.classList.add('loaded');
-                    e.currentTarget.parentElement?.classList.add('is-loaded');
-                  }}
-                />
+                {/* Not lazy. These sit below the fold, so lazy loading held the request
+                    until the scroll almost reached them and the fade-in then waited on a
+                    cold fetch. Loading eagerly at low priority starts them with the page
+                    without competing with the hero, so they are decoded before arrival. */}
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcSet={getPublicationCoverSet(pub.slug, 'avif')}
+                    sizes="240px"
+                  />
+                  <source
+                    type="image/webp"
+                    srcSet={getPublicationCoverSet(pub.slug, 'webp')}
+                    sizes="240px"
+                  />
+                  <img
+                    draggable={false}
+                    src={getPublicationCover(pub.slug)}
+                    alt={`First page of ${pub.title}`}
+                    width={240}
+                    height={311}
+                    decoding="async"
+                    fetchPriority="low"
+                    /* closest(), not parentElement: the parent is now <picture>, and the
+                       skeleton sweep lives on the cover div outside it. */
+                    onLoad={(e) => {
+                      e.currentTarget.classList.add('loaded');
+                      e.currentTarget.closest('.pub-card__cover')?.classList.add('is-loaded');
+                    }}
+                    onError={(e) => {
+                      e.currentTarget.classList.add('loaded');
+                      e.currentTarget.closest('.pub-card__cover')?.classList.add('is-loaded');
+                    }}
+                  />
+                </picture>
               </div>
               <div className="pub-card__meta">
                 <h3 className="pub-card__title">{pub.title}</h3>
