@@ -76,40 +76,16 @@
   animation: tag-flash-out 0.17s ease-out forwards;
 }
 
-/* The crab tucks into the box's top-left corner. It sits in the paragraph's own padding,
-   and the padding-top below is widened just enough that it never crowds the first line. */
-.mission-tiles__crab {
-  position: absolute;
-  top: clamp(4px, 0.6vw, 7px);
-  left: clamp(4px, 0.6vw, 7px);
-  width: clamp(14px, 1.7vw, 20px);
-  height: auto;
-  z-index: 1;
-  /* Sits back from the blurb rather than competing with it, like the body copy's alpha. */
-  opacity: 0.6;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* The mark is white line art, so it needs flipping for the light page. */
-.app--light .mission-tiles__crab {
-  filter: invert(1);
-  /* Inverted, it lands on solid black, which sits far heavier against a white page than the
-     white original does against a black one — the same alpha reads as a hard mark here and
-     a soft one there. Taken right down so it settles at roughly #d1d1d1: a faint watermark
-     the eye finds only once it is looking, rather than a mark that punctuates the blurb.
-     Deliberately not applied to the dark page, where 0.6 white is already a light grey. */
-  opacity: 0.18;
-}
-
 .mission-tiles__blurb {
   font-size: clamp(0.7rem, 1.4vw, 0.875rem);
   line-height: 1.7;
   color: rgba(var(--fg-rgb), 0.78);
   text-align: justify;
   margin: 0;
-  padding: clamp(12px, 2.5vw, 24px);
-  padding-top: clamp(30px, 4.2vw, 46px);
+  /* Uniform, and tighter than it was: the old value left the rule floating well clear of
+     the copy, and the top was inflated further still to clear a mark in the corner that no
+     longer exists. The box now traces the text block. */
+  padding: clamp(9px, 1.5vw, 14px);
 }
 
 .mission-tiles__stats {
