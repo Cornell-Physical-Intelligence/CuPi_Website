@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CountUp from './CountUp';
+import { assetPath } from '../utils/assetPath';
 import './MissionTiles.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -76,6 +77,12 @@ function MissionTiles({ played, onPlay }) {
     <section className="mission-tiles">
       <div className="mission-tiles__content">
         <div className="mission-tiles__blurb-wrapper" ref={blurbRef}>
+          <img
+            className="mission-tiles__crab"
+            src={assetPath('icons/logo-1.svg')}
+            alt=""
+            aria-hidden="true"
+          />
           <p className="mission-tiles__blurb">
             At CUPI, we aim to create physical systems that can intelligently reason and
             interact with their environments. The gap between AI software and hardware
