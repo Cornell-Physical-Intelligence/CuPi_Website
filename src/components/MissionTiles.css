@@ -96,10 +96,10 @@
   filter: invert(1);
   /* Inverted, it lands on solid black, which sits far heavier against a white page than the
      white original does against a black one — the same alpha reads as a hard mark here and
-     a soft one there. Fading it further keeps it light grey, tucked behind the blurb rather
-     than punctuating it. Deliberately not applied to the dark page, where 0.6 white is
-     already a light grey. */
-  opacity: 0.3;
+     a soft one there. Taken right down so it settles at roughly #d1d1d1: a faint watermark
+     the eye finds only once it is looking, rather than a mark that punctuates the blurb.
+     Deliberately not applied to the dark page, where 0.6 white is already a light grey. */
+  opacity: 0.18;
 }
 
 .mission-tiles__blurb {
