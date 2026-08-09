@@ -61,7 +61,9 @@ function MemberCard({ member, isOpen, onToggle }) {
         </span>
       </button>
       <p className="member__name">{member.name}</p>
-      {meta && <p className="member__meta">{meta}</p>}
+      {meta && (
+        <p className={`member__meta${member.role === 'Team Lead' ? ' is-lead' : ''}`}>{meta}</p>
+      )}
     </article>
   );
 }

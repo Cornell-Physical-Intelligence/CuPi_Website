@@ -118,6 +118,12 @@
   color: rgba(var(--fg-rgb), 0.5);
 }
 
+/* The team lead's title carries full weight rather than sitting back with the rest.
+   Full-strength foreground, not a literal black, so it stays legible on the dark page. */
+.member__meta.is-lead {
+  color: var(--fg);
+}
+
 @media (max-width: 640px) {
   .members__grid {
     grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
