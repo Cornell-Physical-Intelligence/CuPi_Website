@@ -56,6 +56,7 @@ export default function Gallery() {
                 }}
               >
                 <img
+                  draggable={false}
                   src={thumbSrc}
                   srcSet={thumbSrcSet}
                   sizes="(min-width: 1600px) 25vw, (min-width: 900px) 33vw, (min-width: 480px) 50vw, 100vw"
@@ -110,6 +111,7 @@ export default function Gallery() {
               onClick={(e) => e.stopPropagation()}
             >
               <img
+                draggable={false}
                 src={assetPath(`img/Gallery/${expandedImage.filename}`)}
                 alt="Expanded view"
               />

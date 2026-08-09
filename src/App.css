@@ -74,6 +74,8 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
+  /* Chrome, not copy. A drag across the bar should never leave it half highlighted. */
+  user-select: none;
 }
 
 /* Frosted bar with a static hairline edge: no rim, no shadow, sized to its contents. */
@@ -223,6 +225,7 @@
   line-height: 0;
   display: flex;
   justify-content: center;
+  user-select: none;
 }
 
 /* ---------------------------------------------------------------------------
@@ -309,12 +312,15 @@
   pointer-events: none;
 }
 
+/* Display type, like .section-label above: big enough that a stray drag highlights the
+   whole line, and never something anyone means to copy. Body copy stays selectable. */
 .page-title {
   margin: 0;
   font-size: clamp(34px, 6vw, 64px);
   font-weight: 400;
   letter-spacing: 0.01em;
   color: var(--fg);
+  user-select: none;
 }
 
 .block {
@@ -330,6 +336,7 @@
   font-weight: 500;
   letter-spacing: 0.01em;
   color: var(--fg);
+  user-select: none;
 }
 
 /* Counts sit with the heading so a section's size is readable at a glance. Set in the

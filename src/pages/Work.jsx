@@ -89,7 +89,7 @@ export default function Work() {
                   rel="noreferrer"
                   aria-label={area.partner.alt}
                 >
-                  <img src={assetPath(area.partner.src)} alt={area.partner.alt} loading="lazy" />
+                  <img draggable={false} src={assetPath(area.partner.src)} alt={area.partner.alt} loading="lazy" />
                 </a>
               </div>
             )}

@@ -39,3 +39,11 @@ body {
 #root {
   min-height: 100vh;
 }
+
+/* Nothing here is a file to be carried off, so dragging an image only ever produces a
+   ghost thumbnail stuck to the cursor. -webkit-user-drag covers Chrome and Safari; the
+   draggable="false" attributes in the markup are what Firefox reads. */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}

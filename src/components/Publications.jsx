@@ -58,6 +58,7 @@ export default function Publications() {
                 }}
               >
                 <img
+                  draggable={false}
                   src={getPublicationCover(pub.slug)}
                   alt={`First page of ${pub.title}`}
                   loading="lazy"
@@ -145,6 +146,7 @@ export default function Publications() {
             >
               {Array.from({ length: openPub.pageCount }, (_, i) => (
                 <img
+                  draggable={false}
                   key={i}
                   className="pub-viewer__page"
                   src={getPublicationPage(openPub.slug, i + 1)}

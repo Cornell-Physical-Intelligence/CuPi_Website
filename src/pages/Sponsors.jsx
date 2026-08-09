@@ -66,6 +66,7 @@ export default function Sponsors() {
             rule makes the leg read as rising out from behind the line. */}
         <div className="sponsors__masthead">
           <img
+            draggable={false}
             className="sponsors__art"
             src={assetPath('img/HexapodLegWireframe.png')}
             alt=""
@@ -108,6 +109,7 @@ export default function Sponsors() {
                           bare line of text into a row of logos. */}
                       {logo ? (
                         <img
+                          draggable={false}
                           className={[colour && 'is-colour', emblem && 'is-emblem']
                             .filter(Boolean)
                             .join(' ')}

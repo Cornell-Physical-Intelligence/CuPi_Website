@@ -17,27 +17,24 @@
   margin: 0;
 }
 
+/* The artwork is square but its opaque band is only the middle ~55%, the rest fading out
+   through the alpha channel, so the box runs larger than the crab looks. Capped against
+   the viewport height too, since this page is meant not to scroll. */
 .apply-page__logo-wrap {
-  width: clamp(120px, 22vw, 240px);
-  height: clamp(120px, 22vw, 240px);
+  width: min(520px, 88vw, 62vh);
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
+/* Full colour with its own transparent edges: nothing to invert, tint, or fade. */
 .apply-page__logo {
   width: 100%;
   height: 100%;
-  opacity: 0.9;
   display: block;
-  cursor: pointer;
   object-fit: contain;
-}
-
-/* The crab logos are white line art, so they need inverting on the light page. */
-.app--light .apply-page__logo {
-  filter: invert(1);
 }
 
 .apply-page__logo-loading {

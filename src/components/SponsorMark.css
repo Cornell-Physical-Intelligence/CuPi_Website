@@ -16,6 +16,9 @@
   display: block;
   height: var(--mark-height);
   width: calc(var(--mark-height) * var(--mark-ratio));
+  /* The name is drawn type inside a logo, so it behaves like the logo files beside it
+     rather than like text. */
+  user-select: none;
 }
 
 .sponsor-mark__plate {

@@ -53,7 +53,7 @@ export default function HoverVideo({ src, poster, label, ratio }) {
       onBlur={stopPlaying}
       aria-label={label}
     >
-      <img className="hover-video__still" src={poster} alt="" aria-hidden="true" />
+      <img draggable={false} className="hover-video__still" src={poster} alt="" aria-hidden="true" />
       <video
         ref={videoRef}
         className="hover-video__clip"
