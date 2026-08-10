@@ -51,6 +51,10 @@ Even wide open they cannot quite reach the median — their photos are simply sh
 cropped closer than the others. Mic is the extreme case. Re-exporting Mic's and
 Ollie's photos with more room below the chest would let them match on both counts.
 
+Claire sits at a softer version of the same ceiling: her window tops out 4px from the
+frame edge, so on the line she can only zoom out ~1.5% past her original framing —
+already applied. Anything wider needs sky her source was never shot with.
+
 The two faculty portraits keep their own framing — they come from a different shoot,
 are much looser, and sit well below the line. They are 1024x1024 squares, so they are
 cropped to the card's aspect rather than resized to it; resizing a square to 600x680

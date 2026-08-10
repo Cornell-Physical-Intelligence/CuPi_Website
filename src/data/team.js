@@ -101,6 +101,7 @@ export const TEAM_SECTIONS = [
       },
       {
         name: 'Youhanna Meleka',
+        imageBase: 'Youhanna',
         bio: BIO_PLACEHOLDER,
         role: 'Technical Project Manager'
       }
