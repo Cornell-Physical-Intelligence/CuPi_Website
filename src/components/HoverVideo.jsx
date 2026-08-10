@@ -19,6 +19,13 @@ import './HoverVideo.css';
  * same dimensions, so they land on exactly the same pixels — nothing shifts when the two
  * trade places.
  *
+ * Control lives in a small corner button — a play triangle that becomes a stop square —
+ * and it is the only real <button> here, so it is also what the keyboard tabs to. On a
+ * pointer-and-hover machine the whole surface still toggles on click, with hover-to-play
+ * on top. On touch the surface is deliberately inert: a scroll drag lands on these tiles
+ * constantly, and tap-anywhere meant flicking past the page set clips playing. There, the
+ * corner button is the one way in.
+ *
  * `ratio` is the tile's aspect ratio (any CSS aspect-ratio value), defaulting to square.
  * Pass the source footage's own ratio to avoid `object-fit: cover` cropping content out —
  * it matters for clips with overlaid telemetry near the edges.
@@ -43,24 +50,22 @@ export default function HoverVideo({ src, poster, label, ratio }) {
     setPlaying(false);
   };
 
-  // Hover doesn't exist on touch, so there a tap toggles instead.
-  const onPointerDown = (e) => {
-    if (e.pointerType !== 'touch') return;
-    if (playing) stopPlaying();
-    else startPlaying();
-  };
+  const toggle = () => (playing ? stopPlaying() : startPlaying());
 
   return (
-    <button
-      type="button"
+    /* Not a <button>: the corner control is one, and buttons don't nest. The surface
+       keeps its pointer conveniences; the button carries the semantics. */
+    <div
       className={`hover-video ${playing ? 'is-playing' : ''}`.trim()}
       style={ratio ? { '--hover-video-ratio': ratio } : undefined}
       onPointerEnter={(e) => e.pointerType !== 'touch' && startPlaying()}
       onPointerLeave={(e) => e.pointerType !== 'touch' && stopPlaying()}
-      onPointerDown={onPointerDown}
-      onFocus={startPlaying}
-      onBlur={stopPlaying}
-      aria-label={label}
+      onClick={() => {
+        // Checked at event time, not render: it is the hover capability that separates
+        // a scroll-dragging thumb from a mouse, not the viewport width.
+        if (window.matchMedia('(hover: none)').matches) return;
+        toggle();
+      }}
     >
       <ResponsiveImage
         group="poster"
@@ -84,6 +89,43 @@ export default function HoverVideo({ src, poster, label, ratio }) {
         aria-hidden="true"
         onPlaying={() => setPlaying(true)}
       />
-    </button>
+      <button
+        type="button"
+        className="hover-video__toggle"
+        onClick={(e) => {
+          e.stopPropagation(); // the surface would toggle it straight back on desktop
+          toggle();
+        }}
+        onFocus={startPlaying}
+        onBlur={stopPlaying}
+        aria-label={playing ? 'Stop the clip' : label}
+        aria-pressed={playing}
+      >
+        {/* One drawing: a soft square scrim with the glyph inside, every corner G2 —
+            pairs of cubics whose curvature is zero where they meet the straight edges
+            and continuous through the apex. Generated, not hand-drawn, so the ramps
+            are exact; the backdrop echoes the glyphs instead of fighting them the way
+            the circle did. */}
+        <svg viewBox="0 0 34 34" aria-hidden="true" focusable="false">
+          <path
+            fill="rgba(0, 0, 0, 0.22)"
+            d="M 0.00 12.00 C 0.00 9.30 0.00 6.60 3.30 3.30 C 6.60 0.00 9.30 0.00 12.00 0.00 L 22.00 0.00 C 24.70 0.00 27.40 0.00 30.70 3.30 C 34.00 6.60 34.00 9.30 34.00 12.00 L 34.00 22.00 C 34.00 24.70 34.00 27.40 30.70 30.70 C 27.40 34.00 24.70 34.00 22.00 34.00 L 12.00 34.00 C 9.30 34.00 6.60 34.00 3.30 30.70 C 0.00 27.40 0.00 24.70 0.00 22.00 L 0.00 12.00 Z"
+          />
+          <g transform="translate(9 9) scale(0.8)">
+            {playing ? (
+              <path
+                fill="currentColor"
+                d="M 3.20 6.60 C 3.20 5.83 3.20 5.07 4.13 4.13 C 5.07 3.20 5.83 3.20 6.60 3.20 L 13.40 3.20 C 14.17 3.20 14.93 3.20 15.87 4.13 C 16.80 5.07 16.80 5.83 16.80 6.60 L 16.80 13.40 C 16.80 14.17 16.80 14.93 15.87 15.87 C 14.93 16.80 14.17 16.80 13.40 16.80 L 6.60 16.80 C 5.83 16.80 5.07 16.80 4.13 15.87 C 3.20 14.93 3.20 14.17 3.20 13.40 L 3.20 6.60 Z"
+              />
+            ) : (
+              <path
+                fill="currentColor"
+                d="M 5.40 5.60 C 5.40 4.92 5.40 4.25 6.10 3.86 C 6.80 3.47 7.38 3.82 7.95 4.17 L 14.85 8.43 C 15.42 8.78 16.00 9.13 16.00 10.00 C 16.00 10.87 15.42 11.22 14.85 11.57 L 7.95 15.83 C 7.38 16.18 6.80 16.53 6.10 16.14 C 5.40 15.75 5.40 15.07 5.40 14.40 L 5.40 5.60 Z"
+              />
+            )}
+          </g>
+        </svg>
+      </button>
+    </div>
   );
 }

@@ -8,13 +8,17 @@
   aspect-ratio: var(--hover-video-ratio, 1 / 1);
   margin: 0;
   padding: 0;
-  appearance: none;
-  border: 0;
-  border-radius: 0;
   overflow: hidden;
   background: var(--ph1);
-  cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* The surface only acts on machines with hover; on touch it is inert (see the JSX),
+   so it shouldn't advertise clickability there either. */
+@media (hover: hover) {
+  .hover-video {
+    cursor: pointer;
+  }
 }
 
 /* No lift, shadow, or scale. The tiles share an edge that any transform would crack
@@ -30,11 +34,6 @@
   object-fit: cover;
 }
 
-.hover-video:focus-visible {
-  outline: 2px solid var(--fg);
-  outline-offset: -2px;
-}
-
 /* The still sits above the clip and dissolves once the first frame is actually painted.
    This is a handover, not a hover effect — without it the tile flashes empty <video>. */
 .hover-video__still {
@@ -46,8 +45,64 @@
   opacity: 0;
 }
 
+/* ------------------------------------------------------------- corner control */
+/* Deliberately quiet: a faint scrimmed square that reads against any footage but does
+   not compete with it. It exists for touch, where the tile surface is inert and this
+   is the only control — hence a hit target a thumb can actually land on. */
+.hover-video__toggle {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2; /* above the still (z 1), which lingers through the cross-fade */
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  border: 0;
+  /* The scrim is drawn inside the SVG (a G2 square that echoes the glyphs), so the
+     button itself paints nothing; the radius just shapes the focus ring to match. */
+  border-radius: 10px;
+  background: none;
+  color: rgba(255, 255, 255, 0.92);
+  opacity: 0.85;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hover-video__toggle:focus-visible {
+  opacity: 1;
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
+}
+
+/* On hover machines the tile itself plays on hover and toggles on click, so the badge
+   would be clutter — hidden, but it stays in the tab order and surfaces for keyboard
+   users, since it is the only focusable thing in the tile. */
+@media (hover: hover) {
+  .hover-video__toggle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .hover-video__toggle:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.hover-video__toggle svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hover-video__still {
+  .hover-video__still,
+  .hover-video__toggle {
     transition: none;
   }
 }
