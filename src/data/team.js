@@ -77,13 +77,6 @@ export const TEAM_SECTIONS = [
         project: 'Quad'
       },
       {
-        name: 'Max Lee',
-        imageBase: 'Max',
-        bio: BIO_PLACEHOLDER,
-        role: 'Operations Co-Lead',
-        project: 'Business'
-      },
-      {
         name: 'Aidan Moran',
         imageBase: 'Aidan',
         bio: BIO_PLACEHOLDER,
