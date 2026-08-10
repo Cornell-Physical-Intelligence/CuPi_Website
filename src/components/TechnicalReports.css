@@ -1,33 +1,33 @@
-/* Publications open the Work page, so the section shares that page's column rather
+/* The reports open the Work page, so the section shares that page's column rather
    than running full-bleed the way it did under the gallery. The tile treatment is
    still the gallery's: same eyebrow, shimmer-then-fade cover, same lightbox backdrop. */
-.pubs-section {
+.reports-section {
   width: min(960px, 100%);
-  /* Publications opens the Work page, so it carries the clearance from the glass bar. */
+  /* This section opens the Work page, so it carries the clearance from the glass bar. */
   margin: clamp(28px, 5vw, 64px) auto 0;
   position: relative;
 }
 
-.pubs-section .section-label {
+.reports-section .section-label {
   margin-bottom: clamp(12px, 2vw, 22px);
 }
 
-/* Covers are portrait pages, so the track is narrow; a single paper shouldn't stretch
+/* Covers are portrait pages, so the track is narrow; a single report shouldn't stretch
    to fill the viewport. */
-.pubs-grid {
+.reports-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 240px));
   gap: clamp(20px, 3vw, 36px);
   justify-content: center;
 }
 
-.pub-card {
+.report-card {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.pub-card__cover {
+.report-card__cover {
   position: relative;
   aspect-ratio: 8.5 / 11;
   overflow: hidden;
@@ -38,14 +38,14 @@
 }
 
 /* No movement and no transition on hover — just the border stating that it's clickable. */
-.pub-card__cover:hover,
-.pub-card__cover:focus-visible {
+.report-card__cover:hover,
+.report-card__cover:focus-visible {
   border-color: rgba(var(--fg-rgb), 0.8);
   outline: none;
 }
 
 /* Same skeleton sweep the gallery tiles use. */
-.pub-card__cover::before {
+.report-card__cover::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -57,9 +57,9 @@
   z-index: 1;
 }
 
-.pub-card__cover.is-loaded::before { display: none; }
+.report-card__cover.is-loaded::before { display: none; }
 
-.pub-card__cover img {
+.report-card__cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -71,16 +71,16 @@
   z-index: 2;
 }
 
-.pub-card__cover img.loaded { opacity: 1; }
+.report-card__cover img.loaded { opacity: 1; }
 
-.pub-card__meta {
+.report-card__meta {
   display: flex;
   flex-direction: column;
   gap: 4px;
   text-align: center;
 }
 
-.pub-card__title {
+.report-card__title {
   margin: 0;
   font-size: clamp(0.84rem, 1.45vw, 0.96rem);
   letter-spacing: 0.01em;
@@ -88,7 +88,7 @@
   font-weight: 500;
 }
 
-.pub-card__subtitle {
+.report-card__subtitle {
   margin: 0;
   font-size: clamp(0.6rem, 1vw, 0.7rem);
   line-height: 1.45;
@@ -97,7 +97,7 @@
 
 /* ---------------------------------------------------------------- the viewer */
 /* Same backdrop treatment as .gallery-lightbox, but the panel scrolls. */
-.pub-viewer {
+.report-viewer {
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -111,7 +111,7 @@
   cursor: pointer;
 }
 
-.pub-viewer__bar {
+.report-viewer__bar {
   flex: 0 0 auto;
   width: 100%;
   display: flex;
@@ -123,7 +123,7 @@
   border-bottom: 1px solid rgba(var(--fg-rgb), 0.15);
 }
 
-.pub-viewer__name {
+.report-viewer__name {
   font-size: clamp(0.78rem, 1.35vw, 0.9rem);
   letter-spacing: 0.01em;
   color: var(--fg);
@@ -132,7 +132,7 @@
   white-space: nowrap;
 }
 
-.pub-viewer__actions {
+.report-viewer__actions {
   display: flex;
   align-items: center;
   gap: clamp(10px, 2vw, 18px);
@@ -140,7 +140,7 @@
 }
 
 /* Icon-only now, so it is sized as a square target rather than a text chip. */
-.pub-viewer__download {
+.report-viewer__download {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -151,18 +151,18 @@
   transition: color 0.15s ease;
 }
 
-.pub-viewer__download svg {
+.report-viewer__download svg {
   width: 17px;
   height: 17px;
   display: block;
 }
 
-.pub-viewer__download:hover,
-.pub-viewer__download:focus-visible {
+.report-viewer__download:hover,
+.report-viewer__download:focus-visible {
   color: var(--fg);
 }
 
-.pub-viewer__close {
+.report-viewer__close {
   background: none;
   border: none;
   color: rgba(var(--fg-rgb), 0.7);
@@ -173,13 +173,13 @@
   transition: color 0.15s;
 }
 
-.pub-viewer__close:hover,
-.pub-viewer__close:focus-visible {
+.report-viewer__close:hover,
+.report-viewer__close:focus-visible {
   color: var(--fg);
 }
 
 /* The scrolling window itself. */
-.pub-viewer__scroll {
+.report-viewer__scroll {
   flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
@@ -193,7 +193,7 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.pub-viewer__page {
+.report-viewer__page {
   display: block;
   width: min(100%, 860px);
   height: auto;
@@ -203,16 +203,16 @@
 }
 
 /* Freeze the document while the viewer owns the screen. */
-body.pub-viewer-open {
+body.report-viewer-open {
   overflow: hidden;
 }
 
 @media (max-width: 640px) {
-  .pubs-grid {
+  .reports-grid {
     grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
   }
 
-  .pub-viewer__page {
+  .report-viewer__page {
     width: 100%;
   }
 }

@@ -1,5 +1,5 @@
 import HoverVideo from '../components/HoverVideo';
-import Publications from '../components/Publications';
+import TechnicalReports from '../components/TechnicalReports';
 import SiteFooter from '../components/SiteFooter';
 import { assetPath } from '../utils/assetPath';
 import './Work.css';
@@ -65,7 +65,7 @@ const WORK_AREAS = [
 export default function Work() {
   return (
     <main className="alt-page">
-      <Publications />
+      <TechnicalReports />
 
       <section className="work-stack">
         {WORK_AREAS.map((area) => (

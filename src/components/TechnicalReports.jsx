@@ -1,60 +1,60 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  PUBLICATIONS,
-  getPublicationCover,
-  getPublicationCoverSet,
-  getPublicationPage,
-  getPublicationPdf,
-} from '../data/publications';
-import './Publications.css';
+  REPORTS,
+  getReportCover,
+  getReportCoverSet,
+  getReportPage,
+  getReportPdf,
+} from '../data/reports';
+import './TechnicalReports.css';
 
-// Papers, sitting above the gallery and following its conventions: the same eyebrow
-// label, the same shimmer-then-fade-in tile treatment, and the same lightbox shell.
-// The difference is what the lightbox holds — a scrollable stack of page renders rather
-// than a single image.
-export default function Publications() {
-  const [openPub, setOpenPub] = useState(null);
+// Technical reports, sitting above the gallery and following its conventions: the same
+// eyebrow label, the same shimmer-then-fade-in tile treatment, and the same lightbox
+// shell. The difference is what the lightbox holds — a scrollable stack of page renders
+// rather than a single image.
+export default function TechnicalReports() {
+  const [openReport, setOpenReport] = useState(null);
 
   // Blur the glass bar (shared with the gallery) and lock the page behind the viewer, so
   // a scroll gesture inside the modal can't chain through to the document underneath.
   useEffect(() => {
-    document.body.classList.toggle('lightbox-open', !!openPub);
-    document.body.classList.toggle('pub-viewer-open', !!openPub);
+    document.body.classList.toggle('lightbox-open', !!openReport);
+    document.body.classList.toggle('report-viewer-open', !!openReport);
     return () => {
       document.body.classList.remove('lightbox-open');
-      document.body.classList.remove('pub-viewer-open');
+      document.body.classList.remove('report-viewer-open');
     };
-  }, [openPub]);
+  }, [openReport]);
 
   useEffect(() => {
-    if (!openPub) return;
+    if (!openReport) return;
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setOpenPub(null);
+      if (e.key === 'Escape') setOpenReport(null);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [openPub]);
+  }, [openReport]);
 
-  if (PUBLICATIONS.length === 0) return null;
+  if (REPORTS.length === 0) return null;
 
   return (
     <>
-      <section className="pubs-section">
-        <h2 className="section-label">Publications</h2>
-        <div className="pubs-grid">
-          {PUBLICATIONS.map((pub) => (
-            <article className="pub-card" key={pub.slug}>
+      <section className="reports-section">
+        <h2 className="section-label">Technical Reports</h2>
+        <div className="reports-grid">
+          {REPORTS.map((report) => (
+            <article className="report-card" key={report.slug}>
               <div
-                className="pub-card__cover"
+                className="report-card__cover"
                 role="button"
                 tabIndex={0}
-                aria-label={`Open ${pub.title}`}
-                onClick={() => setOpenPub(pub)}
+                aria-label={`Open ${report.title}`}
+                onClick={() => setOpenReport(report)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    setOpenPub(pub);
+                    setOpenReport(report);
                   }
                 }}
               >
@@ -65,18 +65,18 @@ export default function Publications() {
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet={getPublicationCoverSet(pub.slug, 'avif')}
+                    srcSet={getReportCoverSet(report.slug, 'avif')}
                     sizes="240px"
                   />
                   <source
                     type="image/webp"
-                    srcSet={getPublicationCoverSet(pub.slug, 'webp')}
+                    srcSet={getReportCoverSet(report.slug, 'webp')}
                     sizes="240px"
                   />
                   <img
                     draggable={false}
-                    src={getPublicationCover(pub.slug)}
-                    alt={`First page of ${pub.title}`}
+                    src={getReportCover(report.slug)}
+                    alt={`First page of ${report.title}`}
                     width={240}
                     height={311}
                     decoding="async"
@@ -85,18 +85,18 @@ export default function Publications() {
                        skeleton sweep lives on the cover div outside it. */
                     onLoad={(e) => {
                       e.currentTarget.classList.add('loaded');
-                      e.currentTarget.closest('.pub-card__cover')?.classList.add('is-loaded');
+                      e.currentTarget.closest('.report-card__cover')?.classList.add('is-loaded');
                     }}
                     onError={(e) => {
                       e.currentTarget.classList.add('loaded');
-                      e.currentTarget.closest('.pub-card__cover')?.classList.add('is-loaded');
+                      e.currentTarget.closest('.report-card__cover')?.classList.add('is-loaded');
                     }}
                   />
                 </picture>
               </div>
-              <div className="pub-card__meta">
-                <h3 className="pub-card__title">{pub.title}</h3>
-                <p className="pub-card__subtitle">{pub.subtitle}</p>
+              <div className="report-card__meta">
+                <h3 className="report-card__title">{report.title}</h3>
+                <p className="report-card__subtitle">{report.subtitle}</p>
               </div>
             </article>
           ))}
@@ -104,26 +104,26 @@ export default function Publications() {
       </section>
 
       <AnimatePresence>
-        {openPub && (
+        {openReport && (
           <motion.div
-            className="pub-viewer"
+            className="report-viewer"
             role="dialog"
             aria-modal="true"
-            aria-label={openPub.title}
+            aria-label={openReport.title}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            onClick={() => setOpenPub(null)}
+            onClick={() => setOpenReport(null)}
           >
-            <div className="pub-viewer__bar" onClick={(e) => e.stopPropagation()}>
-              <span className="pub-viewer__name">{openPub.title}</span>
-              <span className="pub-viewer__actions">
-                {/* Glyph, not the word "PDF": you are already looking at the paper, so
+            <div className="report-viewer__bar" onClick={(e) => e.stopPropagation()}>
+              <span className="report-viewer__name">{openReport.title}</span>
+              <span className="report-viewer__actions">
+                {/* Glyph, not the word "PDF": you are already looking at the report, so
                     the only thing worth saying here is that this fetches the file. */}
                 <a
-                  className="pub-viewer__download"
-                  href={getPublicationPdf(openPub.slug)}
+                  className="report-viewer__download"
+                  href={getReportPdf(openReport.slug)}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Download the PDF"
@@ -145,9 +145,9 @@ export default function Publications() {
                   </svg>
                 </a>
                 <button
-                  className="pub-viewer__close"
-                  onClick={() => setOpenPub(null)}
-                  aria-label="Close paper"
+                  className="report-viewer__close"
+                  onClick={() => setOpenReport(null)}
+                  aria-label="Close report"
                   type="button"
                 >
                   &times;
@@ -158,20 +158,20 @@ export default function Publications() {
             {/* The scroll container. stopPropagation keeps a click on a page from
                 reaching the backdrop's close handler. */}
             <motion.div
-              className="pub-viewer__scroll"
+              className="report-viewer__scroll"
               initial={{ scale: 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.96, opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {Array.from({ length: openPub.pageCount }, (_, i) => (
+              {Array.from({ length: openReport.pageCount }, (_, i) => (
                 <img
                   draggable={false}
                   key={i}
-                  className="pub-viewer__page"
-                  src={getPublicationPage(openPub.slug, i + 1)}
-                  alt={`Page ${i + 1} of ${openPub.pageCount}`}
+                  className="report-viewer__page"
+                  src={getReportPage(openReport.slug, i + 1)}
+                  alt={`Page ${i + 1} of ${openReport.pageCount}`}
                   /* Only the opening spread is worth blocking on; the rest stream in
                      as the reader scrolls, which keeps the modal cheap to open. */
                   loading={i < 2 ? 'eager' : 'lazy'}

@@ -268,7 +268,7 @@
   gap: clamp(12px, 2vw, 24px);
 }
 
-/* Section title above a block ("Publications", "Gallery"). */
+/* Section title above a block ("Technical Reports", "Gallery"). */
 .section-label {
   margin: 0 0 clamp(8px, 1.5vw, 14px) 0;
   font-size: clamp(19px, 2.7vw, 27px);
