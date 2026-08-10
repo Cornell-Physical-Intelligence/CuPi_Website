@@ -47,3 +47,12 @@ img {
   -webkit-user-drag: none;
   user-select: none;
 }
+
+/* Serving AVIF with a WebP fallback means wrapping images in <picture>, which would
+   otherwise insert an inline box between a styled parent and its <img> — enough to break
+   an absolutely positioned still, a grid child, or a flex item. `display: contents` makes
+   the wrapper generate no box at all, so every existing rule keeps applying to the <img>
+   as if it were still the direct child. */
+picture {
+  display: contents;
+}

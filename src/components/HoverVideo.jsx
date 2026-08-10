@@ -1,12 +1,18 @@
 import { useRef, useState } from 'react';
+import ResponsiveImage from './ResponsiveImage';
 import './HoverVideo.css';
 
 /**
- * A still PNG that becomes a video on hover.
+ * A still that becomes a video on hover.
  *
- * The PNG is the only thing fetched on page load: the <video> carries `preload="none"`,
+ * The still is the only thing fetched on page load: the <video> carries `preload="none"`,
  * so not a byte of it moves until the pointer (or keyboard focus, or a tap) asks for it.
- * That keeps the hero paint as cheap as an image while still giving the tile motion.
+ * That keeps the tile as cheap as an image while still giving it motion.
+ *
+ * Which makes the still's own weight the whole cost of this component, and it used to be a
+ * full-frame PNG — the worst possible container for a photographic video frame, and four
+ * of them ran to 2.4MB on a page whose text is a few kilobytes. They are AVIF now, at the
+ * sizes the tile can actually occupy.
  *
  * The still stays layered on top until the video's `playing` event fires, so the handover
  * is a cross-fade rather than a flash of empty <video>. Poster and clip are encoded at the
@@ -17,6 +23,9 @@ import './HoverVideo.css';
  * Pass the source footage's own ratio to avoid `object-fit: cover` cropping content out —
  * it matters for clips with overlaid telemetry near the edges.
  */
+// Two per row inside a 960px column, one per row on a phone.
+const POSTER_SIZES = '(max-width: 640px) 100vw, (max-width: 960px) 50vw, 480px';
+
 export default function HoverVideo({ src, poster, label, ratio }) {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
@@ -53,7 +62,16 @@ export default function HoverVideo({ src, poster, label, ratio }) {
       onBlur={stopPlaying}
       aria-label={label}
     >
-      <img draggable={false} className="hover-video__still" src={poster} alt="" aria-hidden="true" />
+      <ResponsiveImage
+        group="poster"
+        name={poster}
+        sizes={POSTER_SIZES}
+        className="hover-video__still"
+        draggable={false}
+        decoding="async"
+        alt=""
+        aria-hidden="true"
+      />
       <video
         ref={videoRef}
         className="hover-video__clip"

@@ -1,0 +1,1432 @@
+{
+  "galleryThumb": {
+    "DragonFlyTop": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/DragonFlyTop-640.avif",
+          "w": 640,
+          "h": 758
+        },
+        {
+          "src": "/img/Gallery/thumbs/DragonFlyTop-960.avif",
+          "w": 960,
+          "h": 1137
+        },
+        {
+          "src": "/img/Gallery/thumbs/DragonFlyTop-1118.avif",
+          "w": 1118,
+          "h": 1324
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/DragonFlyTop-640.webp",
+          "w": 640,
+          "h": 758
+        },
+        {
+          "src": "/img/Gallery/thumbs/DragonFlyTop-960.webp",
+          "w": 960,
+          "h": 1137
+        },
+        {
+          "src": "/img/Gallery/thumbs/DragonFlyTop-1118.webp",
+          "w": 1118,
+          "h": 1324
+        }
+      ]
+    },
+    "GlitchDrone": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/GlitchDrone-640.avif",
+          "w": 640,
+          "h": 640
+        },
+        {
+          "src": "/img/Gallery/thumbs/GlitchDrone-960.avif",
+          "w": 960,
+          "h": 960
+        },
+        {
+          "src": "/img/Gallery/thumbs/GlitchDrone-1024.avif",
+          "w": 1024,
+          "h": 1024
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/GlitchDrone-640.webp",
+          "w": 640,
+          "h": 640
+        },
+        {
+          "src": "/img/Gallery/thumbs/GlitchDrone-960.webp",
+          "w": 960,
+          "h": 960
+        },
+        {
+          "src": "/img/Gallery/thumbs/GlitchDrone-1024.webp",
+          "w": 1024,
+          "h": 1024
+        }
+      ]
+    },
+    "HandsSketch": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/HandsSketch-640.avif",
+          "w": 640,
+          "h": 993
+        },
+        {
+          "src": "/img/Gallery/thumbs/HandsSketch-960.avif",
+          "w": 960,
+          "h": 1489
+        },
+        {
+          "src": "/img/Gallery/thumbs/HandsSketch-1280.avif",
+          "w": 1280,
+          "h": 1986
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/HandsSketch-640.webp",
+          "w": 640,
+          "h": 993
+        },
+        {
+          "src": "/img/Gallery/thumbs/HandsSketch-960.webp",
+          "w": 960,
+          "h": 1489
+        },
+        {
+          "src": "/img/Gallery/thumbs/HandsSketch-1280.webp",
+          "w": 1280,
+          "h": 1986
+        }
+      ]
+    },
+    "HexapodLeg": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/HexapodLeg-640.avif",
+          "w": 640,
+          "h": 372
+        },
+        {
+          "src": "/img/Gallery/thumbs/HexapodLeg-960.avif",
+          "w": 960,
+          "h": 558
+        },
+        {
+          "src": "/img/Gallery/thumbs/HexapodLeg-1280.avif",
+          "w": 1280,
+          "h": 745
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/HexapodLeg-640.webp",
+          "w": 640,
+          "h": 372
+        },
+        {
+          "src": "/img/Gallery/thumbs/HexapodLeg-960.webp",
+          "w": 960,
+          "h": 558
+        },
+        {
+          "src": "/img/Gallery/thumbs/HexapodLeg-1280.webp",
+          "w": 1280,
+          "h": 745
+        }
+      ]
+    },
+    "MetalPoster": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/MetalPoster-640.avif",
+          "w": 640,
+          "h": 791
+        },
+        {
+          "src": "/img/Gallery/thumbs/MetalPoster-960.avif",
+          "w": 960,
+          "h": 1187
+        },
+        {
+          "src": "/img/Gallery/thumbs/MetalPoster-1280.avif",
+          "w": 1280,
+          "h": 1582
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/MetalPoster-640.webp",
+          "w": 640,
+          "h": 791
+        },
+        {
+          "src": "/img/Gallery/thumbs/MetalPoster-960.webp",
+          "w": 960,
+          "h": 1187
+        },
+        {
+          "src": "/img/Gallery/thumbs/MetalPoster-1280.webp",
+          "w": 1280,
+          "h": 1582
+        }
+      ]
+    },
+    "PerchedDragonfly": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/PerchedDragonfly-640.avif",
+          "w": 640,
+          "h": 403
+        },
+        {
+          "src": "/img/Gallery/thumbs/PerchedDragonfly-960.avif",
+          "w": 960,
+          "h": 604
+        },
+        {
+          "src": "/img/Gallery/thumbs/PerchedDragonfly-1280.avif",
+          "w": 1280,
+          "h": 806
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/PerchedDragonfly-640.webp",
+          "w": 640,
+          "h": 403
+        },
+        {
+          "src": "/img/Gallery/thumbs/PerchedDragonfly-960.webp",
+          "w": 960,
+          "h": 604
+        },
+        {
+          "src": "/img/Gallery/thumbs/PerchedDragonfly-1280.webp",
+          "w": 1280,
+          "h": 806
+        }
+      ]
+    },
+    "PixelHands": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/PixelHands-640.avif",
+          "w": 640,
+          "h": 963
+        },
+        {
+          "src": "/img/Gallery/thumbs/PixelHands-750.avif",
+          "w": 750,
+          "h": 1128
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/PixelHands-640.webp",
+          "w": 640,
+          "h": 963
+        },
+        {
+          "src": "/img/Gallery/thumbs/PixelHands-750.webp",
+          "w": 750,
+          "h": 1128
+        }
+      ]
+    },
+    "PosterRed": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/PosterRed-640.avif",
+          "w": 640,
+          "h": 849
+        },
+        {
+          "src": "/img/Gallery/thumbs/PosterRed-880.avif",
+          "w": 880,
+          "h": 1168
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/PosterRed-640.webp",
+          "w": 640,
+          "h": 849
+        },
+        {
+          "src": "/img/Gallery/thumbs/PosterRed-880.webp",
+          "w": 880,
+          "h": 1168
+        }
+      ]
+    },
+    "PosterSketch": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/PosterSketch-640.avif",
+          "w": 640,
+          "h": 857
+        },
+        {
+          "src": "/img/Gallery/thumbs/PosterSketch-960.avif",
+          "w": 960,
+          "h": 1286
+        },
+        {
+          "src": "/img/Gallery/thumbs/PosterSketch-1280.avif",
+          "w": 1280,
+          "h": 1714
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/PosterSketch-640.webp",
+          "w": 640,
+          "h": 857
+        },
+        {
+          "src": "/img/Gallery/thumbs/PosterSketch-960.webp",
+          "w": 960,
+          "h": 1286
+        },
+        {
+          "src": "/img/Gallery/thumbs/PosterSketch-1280.webp",
+          "w": 1280,
+          "h": 1714
+        }
+      ]
+    },
+    "PosterSlide": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/PosterSlide-640.avif",
+          "w": 640,
+          "h": 685
+        },
+        {
+          "src": "/img/Gallery/thumbs/PosterSlide-960.avif",
+          "w": 960,
+          "h": 1027
+        },
+        {
+          "src": "/img/Gallery/thumbs/PosterSlide-1280.avif",
+          "w": 1280,
+          "h": 1369
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/PosterSlide-640.webp",
+          "w": 640,
+          "h": 685
+        },
+        {
+          "src": "/img/Gallery/thumbs/PosterSlide-960.webp",
+          "w": 960,
+          "h": 1027
+        },
+        {
+          "src": "/img/Gallery/thumbs/PosterSlide-1280.webp",
+          "w": 1280,
+          "h": 1369
+        }
+      ]
+    },
+    "Separated": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/Separated-640.avif",
+          "w": 640,
+          "h": 544
+        },
+        {
+          "src": "/img/Gallery/thumbs/Separated-848.avif",
+          "w": 848,
+          "h": 721
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/Separated-640.webp",
+          "w": 640,
+          "h": 544
+        },
+        {
+          "src": "/img/Gallery/thumbs/Separated-848.webp",
+          "w": 848,
+          "h": 721
+        }
+      ]
+    },
+    "Spider": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/Spider-640.avif",
+          "w": 640,
+          "h": 670
+        },
+        {
+          "src": "/img/Gallery/thumbs/Spider-960.avif",
+          "w": 960,
+          "h": 1006
+        },
+        {
+          "src": "/img/Gallery/thumbs/Spider-1280.avif",
+          "w": 1280,
+          "h": 1341
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/Spider-640.webp",
+          "w": 640,
+          "h": 670
+        },
+        {
+          "src": "/img/Gallery/thumbs/Spider-960.webp",
+          "w": 960,
+          "h": 1006
+        },
+        {
+          "src": "/img/Gallery/thumbs/Spider-1280.webp",
+          "w": 1280,
+          "h": 1341
+        }
+      ]
+    },
+    "VTOL": {
+      "avif": [
+        {
+          "src": "/img/Gallery/thumbs/VTOL-640.avif",
+          "w": 640,
+          "h": 318
+        },
+        {
+          "src": "/img/Gallery/thumbs/VTOL-960.avif",
+          "w": 960,
+          "h": 477
+        },
+        {
+          "src": "/img/Gallery/thumbs/VTOL-1280.avif",
+          "w": 1280,
+          "h": 636
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/thumbs/VTOL-640.webp",
+          "w": 640,
+          "h": 318
+        },
+        {
+          "src": "/img/Gallery/thumbs/VTOL-960.webp",
+          "w": 960,
+          "h": 477
+        },
+        {
+          "src": "/img/Gallery/thumbs/VTOL-1280.webp",
+          "w": 1280,
+          "h": 636
+        }
+      ]
+    }
+  },
+  "galleryFull": {
+    "DragonFlyTop": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/DragonFlyTop-1324.avif",
+          "w": 1118,
+          "h": 1324
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/DragonFlyTop-1324.webp",
+          "w": 1118,
+          "h": 1324
+        }
+      ]
+    },
+    "GlitchDrone": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/GlitchDrone-1024.avif",
+          "w": 1024,
+          "h": 1024
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/GlitchDrone-1024.webp",
+          "w": 1024,
+          "h": 1024
+        }
+      ]
+    },
+    "HandsSketch": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/HandsSketch-1600.avif",
+          "w": 1031,
+          "h": 1600
+        },
+        {
+          "src": "/img/Gallery/full/HandsSketch-2560.avif",
+          "w": 1650,
+          "h": 2560
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/HandsSketch-1600.webp",
+          "w": 1031,
+          "h": 1600
+        },
+        {
+          "src": "/img/Gallery/full/HandsSketch-2560.webp",
+          "w": 1650,
+          "h": 2560
+        }
+      ]
+    },
+    "HexapodLeg": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/HexapodLeg-1600.avif",
+          "w": 1600,
+          "h": 931
+        },
+        {
+          "src": "/img/Gallery/full/HexapodLeg-2560.avif",
+          "w": 2560,
+          "h": 1489
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/HexapodLeg-1600.webp",
+          "w": 1600,
+          "h": 931
+        },
+        {
+          "src": "/img/Gallery/full/HexapodLeg-2560.webp",
+          "w": 2560,
+          "h": 1489
+        }
+      ]
+    },
+    "MetalPoster": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/MetalPoster-1600.avif",
+          "w": 1294,
+          "h": 1600
+        },
+        {
+          "src": "/img/Gallery/full/MetalPoster-2215.avif",
+          "w": 1792,
+          "h": 2215
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/MetalPoster-1600.webp",
+          "w": 1294,
+          "h": 1600
+        },
+        {
+          "src": "/img/Gallery/full/MetalPoster-2215.webp",
+          "w": 1792,
+          "h": 2215
+        }
+      ]
+    },
+    "PerchedDragonfly": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/PerchedDragonfly-1600.avif",
+          "w": 1600,
+          "h": 1007
+        },
+        {
+          "src": "/img/Gallery/full/PerchedDragonfly-2560.avif",
+          "w": 2560,
+          "h": 1612
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/PerchedDragonfly-1600.webp",
+          "w": 1600,
+          "h": 1007
+        },
+        {
+          "src": "/img/Gallery/full/PerchedDragonfly-2560.webp",
+          "w": 2560,
+          "h": 1612
+        }
+      ]
+    },
+    "PixelHands": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/PixelHands-1128.avif",
+          "w": 750,
+          "h": 1128
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/PixelHands-1128.webp",
+          "w": 750,
+          "h": 1128
+        }
+      ]
+    },
+    "PosterRed": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/PosterRed-1168.avif",
+          "w": 880,
+          "h": 1168
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/PosterRed-1168.webp",
+          "w": 880,
+          "h": 1168
+        }
+      ]
+    },
+    "PosterSketch": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/PosterSketch-1600.avif",
+          "w": 1195,
+          "h": 1600
+        },
+        {
+          "src": "/img/Gallery/full/PosterSketch-2400.avif",
+          "w": 1792,
+          "h": 2400
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/PosterSketch-1600.webp",
+          "w": 1195,
+          "h": 1600
+        },
+        {
+          "src": "/img/Gallery/full/PosterSketch-2400.webp",
+          "w": 1792,
+          "h": 2400
+        }
+      ]
+    },
+    "PosterSlide": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/PosterSlide-1440.avif",
+          "w": 1346,
+          "h": 1440
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/PosterSlide-1440.webp",
+          "w": 1346,
+          "h": 1440
+        }
+      ]
+    },
+    "Separated": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/Separated-848.avif",
+          "w": 848,
+          "h": 721
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/Separated-848.webp",
+          "w": 848,
+          "h": 721
+        }
+      ]
+    },
+    "Spider": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/Spider-1600.avif",
+          "w": 1527,
+          "h": 1600
+        },
+        {
+          "src": "/img/Gallery/full/Spider-2112.avif",
+          "w": 2016,
+          "h": 2112
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/Spider-1600.webp",
+          "w": 1527,
+          "h": 1600
+        },
+        {
+          "src": "/img/Gallery/full/Spider-2112.webp",
+          "w": 2016,
+          "h": 2112
+        }
+      ]
+    },
+    "VTOL": {
+      "avif": [
+        {
+          "src": "/img/Gallery/full/VTOL-1600.avif",
+          "w": 1600,
+          "h": 795
+        },
+        {
+          "src": "/img/Gallery/full/VTOL-2560.avif",
+          "w": 2560,
+          "h": 1272
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Gallery/full/VTOL-1600.webp",
+          "w": 1600,
+          "h": 795
+        },
+        {
+          "src": "/img/Gallery/full/VTOL-2560.webp",
+          "w": 2560,
+          "h": 1272
+        }
+      ]
+    }
+  },
+  "poster": {
+    "arm-ball": {
+      "avif": [
+        {
+          "src": "/media/arm-ball-640.avif",
+          "w": 640,
+          "h": 640
+        },
+        {
+          "src": "/media/arm-ball-1080.avif",
+          "w": 1080,
+          "h": 1080
+        }
+      ],
+      "webp": [
+        {
+          "src": "/media/arm-ball-640.webp",
+          "w": 640,
+          "h": 640
+        },
+        {
+          "src": "/media/arm-ball-1080.webp",
+          "w": 1080,
+          "h": 1080
+        }
+      ]
+    },
+    "arm-meat": {
+      "avif": [
+        {
+          "src": "/media/arm-meat-640.avif",
+          "w": 640,
+          "h": 640
+        },
+        {
+          "src": "/media/arm-meat-1080.avif",
+          "w": 1080,
+          "h": 1080
+        }
+      ],
+      "webp": [
+        {
+          "src": "/media/arm-meat-640.webp",
+          "w": 640,
+          "h": 640
+        },
+        {
+          "src": "/media/arm-meat-1080.webp",
+          "w": 1080,
+          "h": 1080
+        }
+      ]
+    },
+    "drone-gates": {
+      "avif": [
+        {
+          "src": "/media/drone-gates-640.avif",
+          "w": 640,
+          "h": 480
+        },
+        {
+          "src": "/media/drone-gates-1024.avif",
+          "w": 1024,
+          "h": 768
+        }
+      ],
+      "webp": [
+        {
+          "src": "/media/drone-gates-640.webp",
+          "w": 640,
+          "h": 480
+        },
+        {
+          "src": "/media/drone-gates-1024.webp",
+          "w": 1024,
+          "h": 768
+        }
+      ]
+    },
+    "drone-sim": {
+      "avif": [
+        {
+          "src": "/media/drone-sim-640.avif",
+          "w": 640,
+          "h": 480
+        },
+        {
+          "src": "/media/drone-sim-960.avif",
+          "w": 960,
+          "h": 720
+        }
+      ],
+      "webp": [
+        {
+          "src": "/media/drone-sim-640.webp",
+          "w": 640,
+          "h": 480
+        },
+        {
+          "src": "/media/drone-sim-960.webp",
+          "w": 960,
+          "h": 720
+        }
+      ]
+    }
+  },
+  "report:racing-without-a-map": {
+    "p01": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p01-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p01-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p01-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p01-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p02": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p02-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p02-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p02-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p02-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p03": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p03-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p03-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p03-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p03-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p04": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p04-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p04-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p04-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p04-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p05": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p05-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p05-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p05-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p05-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p06": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p06-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p06-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p06-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p06-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p07": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p07-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p07-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p07-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p07-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p08": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p08-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p08-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p08-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p08-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p09": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p09-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p09-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p09-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p09-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p10": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p10-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p10-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p10-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p10-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p11": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p11-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p11-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p11-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p11-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p12": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p12-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p12-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p12-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p12-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p13": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p13-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p13-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p13-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p13-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p14": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p14-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p14-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p14-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p14-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p15": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p15-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p15-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p15-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p15-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p16": {
+      "avif": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p16-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p16-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/racing-without-a-map/p16-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/racing-without-a-map/p16-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    }
+  },
+  "report:vq1-deterministic-policy": {
+    "p01": {
+      "avif": [
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p01-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p01-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p01-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p01-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p02": {
+      "avif": [
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p02-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p02-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p02-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p02-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    },
+    "p03": {
+      "avif": [
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p03-860.avif",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p03-1122.avif",
+          "w": 1122,
+          "h": 1452
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p03-860.webp",
+          "w": 860,
+          "h": 1113
+        },
+        {
+          "src": "/img/Reports/vq1-deterministic-policy/p03-1122.webp",
+          "w": 1122,
+          "h": 1452
+        }
+      ]
+    }
+  },
+  "art": {
+    "HexapodLegWireframe": {
+      "avif": [
+        {
+          "src": "/img/HexapodLegWireframe-800.avif",
+          "w": 800,
+          "h": 227
+        },
+        {
+          "src": "/img/HexapodLegWireframe-1600.avif",
+          "w": 1600,
+          "h": 453
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/HexapodLegWireframe-800.webp",
+          "w": 800,
+          "h": 227
+        },
+        {
+          "src": "/img/HexapodLegWireframe-1600.webp",
+          "w": 1600,
+          "h": 453
+        }
+      ]
+    },
+    "CrabOnBeach": {
+      "avif": [
+        {
+          "src": "/img/CrabOnBeach-380.avif",
+          "w": 380,
+          "h": 380
+        },
+        {
+          "src": "/img/CrabOnBeach-760.avif",
+          "w": 760,
+          "h": 760
+        }
+      ],
+      "webp": [
+        {
+          "src": "/img/CrabOnBeach-380.webp",
+          "w": 380,
+          "h": 380
+        },
+        {
+          "src": "/img/CrabOnBeach-760.webp",
+          "w": 760,
+          "h": 760
+        }
+      ]
+    },
+    "CUGeoData_Logo": {
+      "avif": [
+        {
+          "src": "/icons/CUGeoData_Logo-493.avif",
+          "w": 493,
+          "h": 100
+        },
+        {
+          "src": "/icons/CUGeoData_Logo-985.avif",
+          "w": 985,
+          "h": 199
+        }
+      ],
+      "webp": [
+        {
+          "src": "/icons/CUGeoData_Logo-493.webp",
+          "w": 493,
+          "h": 100
+        },
+        {
+          "src": "/icons/CUGeoData_Logo-985.webp",
+          "w": 985,
+          "h": 199
+        }
+      ]
+    },
+    "Modovolo_Logo": {
+      "avif": [
+        {
+          "src": "/icons/Modovolo_Logo-280.avif",
+          "w": 280,
+          "h": 313
+        },
+        {
+          "src": "/icons/Modovolo_Logo-500.avif",
+          "w": 500,
+          "h": 559
+        }
+      ],
+      "webp": [
+        {
+          "src": "/icons/Modovolo_Logo-280.webp",
+          "w": 280,
+          "h": 313
+        },
+        {
+          "src": "/icons/Modovolo_Logo-500.webp",
+          "w": 500,
+          "h": 559
+        }
+      ]
+    }
+  }
+}

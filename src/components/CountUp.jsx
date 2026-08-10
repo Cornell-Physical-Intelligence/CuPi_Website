@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { useInView, useMotionValue, useSpring } from 'motion/react';
+
+// Counts from one number to another when it scrolls into view.
+//
+// This used to be three hooks from `motion` — useInView, useMotionValue, useSpring — which
+// made a 42KB gzipped animation library part of the home page's critical path in order to
+// animate one integer. The spring below is the same second-order system those hooks
+// integrate, with the same stiffness, damping and unit mass, so the number moves the way it
+// did; what it no longer does is arrive with a physics engine attached.
 
 const getDecimalPlaces = (num) => {
   const str = num.toString();
@@ -11,6 +18,13 @@ const getDecimalPlaces = (num) => {
   }
   return 0;
 };
+
+// Fixed sub-steps rather than integrating over the whole frame delta: a long frame (a tab
+// regaining focus, a slow paint) would otherwise take one huge step and can make a stiff
+// spring overshoot or diverge outright.
+const STEP = 1 / 120;
+const REST_DISTANCE = 0.005;
+const REST_VELOCITY = 0.05;
 
 export default function CountUp({
   to,
@@ -25,8 +39,10 @@ export default function CountUp({
   onEnd
 }) {
   const ref = useRef(null);
-  const motionValue = useMotionValue(direction === 'down' ? to : from);
+  const frameRef = useRef(0);
 
+  // Matches the mapping the previous implementation used, so a given `duration` produces
+  // the same curve it always did. Mass is 1, as it was.
   const { damping, stiffness } = useMemo(() => {
     const safeDuration = Math.max(duration, 0.1);
     return {
@@ -35,12 +51,6 @@ export default function CountUp({
     };
   }, [duration]);
 
-  const springValue = useSpring(motionValue, {
-    damping,
-    stiffness
-  });
-
-  const isInView = useInView(ref, { once: true, margin: '0px' });
   const maxDecimals = useMemo(
     () => Math.max(getDecimalPlaces(from), getDecimalPlaces(to)),
     [from, to]
@@ -66,49 +76,74 @@ export default function CountUp({
     [numberFormatter, separator]
   );
 
+  const start = direction === 'down' ? to : from;
+  const target = direction === 'down' ? from : to;
+
   useEffect(() => {
     if (ref.current) {
-      ref.current.textContent = formatValue(direction === 'down' ? to : from);
+      ref.current.textContent = formatValue(start);
     }
-  }, [from, to, direction, formatValue]);
+  }, [start, formatValue]);
 
   useEffect(() => {
-    if (isInView && startWhen) {
-      if (typeof onStart === 'function') onStart();
+    const node = ref.current;
+    if (!node || !startWhen) return undefined;
 
-      const timeoutId = setTimeout(() => {
-        motionValue.set(direction === 'down' ? from : to);
-      }, delay * 1000);
+    let timeoutId;
+    let cancelled = false;
 
-      const durationTimeoutId = setTimeout(() => {
-        if (typeof onEnd === 'function') onEnd();
-      }, delay * 1000 + duration * 1000);
+    const run = () => {
+      onStart?.();
+      let value = start;
+      let velocity = 0;
+      let previous = performance.now();
+      let carry = 0;
 
-      return () => {
-        clearTimeout(timeoutId);
-        clearTimeout(durationTimeoutId);
+      const tick = (now) => {
+        if (cancelled) return;
+        // A backgrounded tab can hand back a delta of many seconds; clamp it so the
+        // animation resumes rather than teleports.
+        const elapsed = Math.min((now - previous) / 1000, 0.25);
+        previous = now;
+        carry += elapsed;
+
+        while (carry >= STEP) {
+          const acceleration = -stiffness * (value - target) - damping * velocity;
+          velocity += acceleration * STEP;
+          value += velocity * STEP;
+          carry -= STEP;
+        }
+
+        if (Math.abs(target - value) < REST_DISTANCE && Math.abs(velocity) < REST_VELOCITY) {
+          node.textContent = formatValue(target);
+          onEnd?.();
+          return;
+        }
+
+        node.textContent = formatValue(value);
+        frameRef.current = requestAnimationFrame(tick);
       };
-    }
 
-    return undefined;
-  }, [isInView, startWhen, motionValue, direction, from, to, delay, onStart, onEnd, duration]);
+      frameRef.current = requestAnimationFrame(tick);
+    };
 
-  useEffect(() => {
-    const unsubscribe = springValue.on('change', (latest) => {
-      if (ref.current) {
-        ref.current.textContent = formatValue(latest);
-      }
-    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        timeoutId = window.setTimeout(run, delay * 1000);
+      },
+      { threshold: 0 }
+    );
+    observer.observe(node);
 
-    return () => unsubscribe();
-  }, [springValue, formatValue]);
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      window.clearTimeout(timeoutId);
+      cancelAnimationFrame(frameRef.current);
+    };
+  }, [startWhen, delay, start, target, stiffness, damping, formatValue, onStart, onEnd]);
 
   return <span className={className} ref={ref} />;
 }
-
-
-
-
-
-
-

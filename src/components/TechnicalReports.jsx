@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import Overlay from './Overlay';
+import ResponsiveImage from './ResponsiveImage';
 import {
   REPORTS,
+  REPORT_PAGE_SIZES,
   getReportCover,
   getReportCoverSet,
-  getReportPage,
+  getReportPageGroup,
+  getReportPageName,
   getReportPdf,
 } from '../data/reports';
 import './TechnicalReports.css';
@@ -15,6 +18,15 @@ import './TechnicalReports.css';
 // rather than a single image.
 export default function TechnicalReports() {
   const [openReport, setOpenReport] = useState(null);
+  // What was open when the viewer started closing, so it still has a report to draw while
+  // it fades out. Escape is handled by Overlay.
+  const [closingReport, setClosingReport] = useState(null);
+  const shown = openReport ?? closingReport;
+
+  const closeViewer = () => {
+    setClosingReport(openReport);
+    setOpenReport(null);
+  };
 
   // Blur the glass bar (shared with the gallery) and lock the page behind the viewer, so
   // a scroll gesture inside the modal can't chain through to the document underneath.
@@ -25,15 +37,6 @@ export default function TechnicalReports() {
       document.body.classList.remove('lightbox-open');
       document.body.classList.remove('report-viewer-open');
     };
-  }, [openReport]);
-
-  useEffect(() => {
-    if (!openReport) return;
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setOpenReport(null);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [openReport]);
 
   if (REPORTS.length === 0) return null;
@@ -103,27 +106,24 @@ export default function TechnicalReports() {
         </div>
       </section>
 
-      <AnimatePresence>
-        {openReport && (
-          <motion.div
-            className="report-viewer"
-            role="dialog"
-            aria-modal="true"
-            aria-label={openReport.title}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => setOpenReport(null)}
-          >
+      <Overlay
+        open={Boolean(openReport)}
+        onClose={closeViewer}
+        className="report-viewer"
+        role="dialog"
+        aria-modal="true"
+        aria-label={shown?.title}
+      >
+        {shown && (
+          <>
             <div className="report-viewer__bar" onClick={(e) => e.stopPropagation()}>
-              <span className="report-viewer__name">{openReport.title}</span>
+              <span className="report-viewer__name">{shown.title}</span>
               <span className="report-viewer__actions">
                 {/* Glyph, not the word "PDF": you are already looking at the report, so
                     the only thing worth saying here is that this fetches the file. */}
                 <a
                   className="report-viewer__download"
-                  href={getReportPdf(openReport.slug)}
+                  href={getReportPdf(shown.slug)}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Download the PDF"
@@ -146,7 +146,7 @@ export default function TechnicalReports() {
                 </a>
                 <button
                   className="report-viewer__close"
-                  onClick={() => setOpenReport(null)}
+                  onClick={closeViewer}
                   aria-label="Close report"
                   type="button"
                 >
@@ -157,31 +157,36 @@ export default function TechnicalReports() {
 
             {/* The scroll container. stopPropagation keeps a click on a page from
                 reaching the backdrop's close handler. */}
-            <motion.div
+            <div
               className="report-viewer__scroll"
-              initial={{ scale: 0.96, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.96, opacity: 0 }}
-              transition={{ duration: 0.2 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {Array.from({ length: openReport.pageCount }, (_, i) => (
-                <img
-                  draggable={false}
+              {/* Only the opening spread is worth blocking on; the rest stream in as the
+                  reader scrolls. That was always the intent, but it did not happen: an
+                  <img> with no width or height is zero pixels tall until its bytes land,
+                  so all sixteen pages stacked inside one screen, every one of them counted
+                  as near the viewport, and `loading="lazy"` fetched the entire report on
+                  open — 2.8MB to read page one. ResponsiveImage carries the encoded
+                  dimensions, which gives each page a real height before it loads and lets
+                  the browser defer the ones genuinely further down. */}
+              {Array.from({ length: shown.pageCount }, (_, i) => (
+                <ResponsiveImage
                   key={i}
+                  group={getReportPageGroup(shown.slug)}
+                  name={getReportPageName(i + 1)}
+                  sizes={REPORT_PAGE_SIZES}
                   className="report-viewer__page"
-                  src={getReportPage(openReport.slug, i + 1)}
-                  alt={`Page ${i + 1} of ${openReport.pageCount}`}
-                  /* Only the opening spread is worth blocking on; the rest stream in
-                     as the reader scrolls, which keeps the modal cheap to open. */
+                  alt={`Page ${i + 1} of ${shown.pageCount}`}
+                  draggable={false}
                   loading={i < 2 ? 'eager' : 'lazy'}
+                  fetchPriority={i === 0 ? 'high' : 'auto'}
                   decoding="async"
                 />
               ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </>
         )}
-      </AnimatePresence>
+      </Overlay>
     </>
   );
 }

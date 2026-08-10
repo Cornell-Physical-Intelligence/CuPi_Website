@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import SiteFooter from '../components/SiteFooter';
-import { preloadImages } from '../utils/preloadImages';
+import ResponsiveImage from '../components/ResponsiveImage';
 import { TEAM_SECTIONS, PROFESSORS, BIO_PLACEHOLDER } from '../data/team';
 import './Members.css';
 
@@ -11,18 +11,59 @@ import './Members.css';
 
 // One photo per person for now; formal portraits will come back as a second file and a
 // toggle when they are shot.
+//
 // Photos are imported rather than read from public/, so Vite fingerprints each filename
 // with a content hash. Swapping someone's headshot then changes its URL, which is what
 // stops browsers and the CDN serving the previous one from cache -- an unhashed
 // /img/People/Jon.png is cached forever under the same name.
-const PHOTOS = Object.fromEntries(
-  Object.entries(
-    import.meta.glob('../assets/people/*.webp', { eager: true, query: '?url', import: 'default' })
-  ).map(([path, url]) => [path.split('/').pop().replace('.webp', ''), url])
-);
+//
+// What is imported is the `sized/` set, not the 600x680 crops beside it: a card is 96-135
+// CSS px wide, so a 600px file was between four and six times the pixels any display could
+// resolve, thirty-four times over. The crops stay in the repo as the framing of record
+// (see photos/README.md) and are what scripts/build-assets.mjs cuts these from.
+const SIZED = import.meta.glob('../assets/people/sized/*.{avif,webp}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+
+// '../assets/people/sized/Andre-320.avif' -> { Andre: { avif: [{ src, w }], webp: [...] } }
+const PHOTOS = {};
+for (const [path, src] of Object.entries(SIZED)) {
+  const file = path.split('/').pop();
+  const [, name, width, format] = file.match(/^(.+)-(\d+)\.(avif|webp)$/) ?? [];
+  if (!name) continue;
+  PHOTOS[name] ??= { avif: [], webp: [] };
+  PHOTOS[name][format].push({ src, w: Number(width) });
+}
+for (const entry of Object.values(PHOTOS)) {
+  entry.avif.sort((a, b) => a.w - b.w);
+  entry.webp.sort((a, b) => a.w - b.w);
+}
+
+const toSrcSet = (entries) => entries.map(({ src, w }) => `${src} ${w}w`).join(', ');
+
+// Portraits are all one shape, so the box can be stated once rather than read per file.
+const PORTRAIT_WIDTH = 600;
+const PORTRAIT_HEIGHT = 680;
+
+// Cards sit in a `repeat(auto-fill, minmax(118px, 1fr))` grid, which on a phone packs to
+// roughly a third of the viewport and on a desktop settles near its 118px minimum.
+const PORTRAIT_SIZES = '(max-width: 640px) 33vw, 160px';
+
+const sourcesFor = (member) => {
+  const entry = PHOTOS[member.imageBase] ?? PHOTOS.Placeholder;
+  if (!entry) return null;
+  return {
+    avif: toSrcSet(entry.avif),
+    webp: toSrcSet(entry.webp),
+    src: entry.webp[entry.webp.length - 1]?.src,
+    width: PORTRAIT_WIDTH,
+    height: PORTRAIT_HEIGHT,
+  };
+};
 
 const hasPhoto = (member) => Boolean(PHOTOS[member.imageBase]);
-const photoFor = (member) => PHOTOS[member.imageBase] ?? PHOTOS.Placeholder;
 
 // Role wins over class year; "First Year" reads better as "Freshman".
 const metaFor = (member) => {
@@ -34,7 +75,7 @@ const metaFor = (member) => {
   return null;
 };
 
-function MemberCard({ member, isOpen, onToggle }) {
+function MemberCard({ member, isOpen, onToggle, eager }) {
   const meta = metaFor(member);
   const bio = member.bio ?? BIO_PLACEHOLDER;
   const hasBio = bio !== BIO_PLACEHOLDER;
@@ -48,11 +89,12 @@ function MemberCard({ member, isOpen, onToggle }) {
         aria-expanded={isOpen}
         aria-label={hasBio ? `Read about ${member.name}` : member.name}
       >
-        <img
-          draggable={false}
-          src={photoFor(member)}
+        <ResponsiveImage
+          sources={sourcesFor(member)}
+          sizes={PORTRAIT_SIZES}
           alt={member.name}
-          loading="lazy"
+          draggable={false}
+          loading={eager ? 'eager' : 'lazy'}
           decoding="async"
         />
         {!hasPhoto(member) && <span className="member__nophoto">photo coming soon</span>}
@@ -68,13 +110,19 @@ function MemberCard({ member, isOpen, onToggle }) {
   );
 }
 
+// How many cards to load without waiting for a scroll. The first section fills roughly
+// two rows above the fold on a laptop; everything past that is lazy, which is now safe
+// because each portrait carries its own dimensions and the grid therefore has its real
+// height before any of them arrive.
+const EAGER_CARDS = 12;
+
 export default function Members() {
   const [openCard, setOpenCard] = useState(null);
 
-  const imagePaths = useMemo(() => Object.values(PHOTOS), []);
-  useEffect(() => {
-    preloadImages(imagePaths, { priority: 'high', decode: true });
-  }, [imagePaths]);
+  // There was a preload here that fetched all thirty-four portraits at high priority and
+  // forced a decode on each. It fought its own `loading="lazy"`, and at 600px per file it
+  // meant a megabyte before the roster could paint. At a card-sized 240px the whole set is
+  // a fraction of that, so the images no longer need rescuing from their own weight.
 
   // Two rules, in order: the team lead heads the roster regardless of whether a headshot
   // exists yet, then anyone still awaiting one sinks to the end of their own section so
@@ -99,19 +147,20 @@ export default function Members() {
           <h1 className="page-title">Members</h1>
         </div>
 
-        {sections.map((section) => (
+        {sections.map((section, sectionIndex) => (
           <section className="members__section block" key={section.title}>
             <h2 className="block-title">
               {section.title}
               <span className="block-count">{section.members.length}</span>
             </h2>
             <div className="members__grid">
-              {section.members.map((member) => {
+              {section.members.map((member, index) => {
                 const id = `${section.title}-${member.name}`;
                 return (
                   <MemberCard
                     key={id}
                     member={member}
+                    eager={sectionIndex === 0 && index < EAGER_CARDS}
                     isOpen={openCard === id}
                     onToggle={() => setOpenCard((prev) => (prev === id ? null : id))}
                   />

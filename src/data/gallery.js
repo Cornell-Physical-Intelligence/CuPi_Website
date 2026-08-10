@@ -1,24 +1,41 @@
-import { assetPath } from '../utils/assetPath';
+import { pictureFor } from '../utils/responsiveImage';
 
+// Each master in public/img/Gallery is served in two forms, both produced by
+// scripts/build-assets.mjs:
+//
+//   thumbs/  the tapestry tile — at most a third of the viewport, so it stops at 1280
+//   full/    the lightbox — 90vw x 85vh, which on a tall 2x display is ~2560 device px
+//
+// The masters themselves (up to 5.7MB of PNG) are never requested by the page. They stay
+// in the repo as the source the derivatives are cut from.
 export const GALLERY_IMAGES = [
-  { filename: 'PixelHands.png', author: 'Sophie', width: 750, height: 1128 },
-  { filename: 'HexapodLeg.jpeg', author: 'Hamilton', width: 4783, height: 2782 },
-  { filename: 'DragonFlyTop.png', author: 'Sophie', width: 1118, height: 1324 },
-  { filename: 'PosterSlide.png', author: 'Hamilton', width: 1346, height: 1440 },
-  { filename: 'GlitchDrone.png', author: 'Andre', width: 1024, height: 1024 },
-  { filename: 'PosterSketch.png', author: 'Hamilton', width: 1792, height: 2400 },
-  { filename: 'VTOL.png', author: 'Andre', width: 2644, height: 1314 },
-  { filename: 'HandsSketch.png', author: 'Sophie', width: 1670, height: 2591 },
-  { filename: 'MetalPoster.png', author: 'Sophie', width: 1792, height: 2215 },
-  { filename: 'Separated.png', author: 'Hamilton', width: 848, height: 721 },
-  { filename: 'PosterRed.png', author: 'Hamilton', width: 880, height: 1168 },
-  { filename: 'Spider.png', author: 'Sophie', width: 2016, height: 2112 }
+  { filename: 'PixelHands.png', name: 'PixelHands', author: 'Sophie' },
+  { filename: 'HexapodLeg.jpeg', name: 'HexapodLeg', author: 'Hamilton' },
+  { filename: 'DragonFlyTop.png', name: 'DragonFlyTop', author: 'Sophie' },
+  { filename: 'PosterSlide.png', name: 'PosterSlide', author: 'Hamilton' },
+  { filename: 'GlitchDrone.png', name: 'GlitchDrone', author: 'Andre' },
+  { filename: 'PosterSketch.png', name: 'PosterSketch', author: 'Hamilton' },
+  { filename: 'VTOL.png', name: 'VTOL', author: 'Andre' },
+  { filename: 'HandsSketch.png', name: 'HandsSketch', author: 'Sophie' },
+  { filename: 'MetalPoster.png', name: 'MetalPoster', author: 'Sophie' },
+  { filename: 'Separated.png', name: 'Separated', author: 'Hamilton' },
+  { filename: 'PosterRed.png', name: 'PosterRed', author: 'Hamilton' },
+  { filename: 'Spider.png', name: 'Spider', author: 'Sophie' },
 ];
 
-export const GALLERY_THUMB_WIDTHS = [640, 1280];
+// The tile's share of the viewport, matching the column counts in Gallery.css exactly.
+// Getting this wrong is expensive in one direction only: too large a claim and every
+// visitor downloads a file no display can resolve.
+export const GALLERY_TILE_SIZES =
+  '(min-width: 1600px) 25vw, (min-width: 900px) 33vw, (min-width: 480px) 50vw, 100vw';
 
-export const getGalleryThumbName = (filename, width) =>
-  `${filename.replace(/\.[^.]+$/, '')}-${width}.webp`;
+// The lightbox is bounded by both axes, and which one binds depends on the image. 90vw is
+// the honest upper bound; the height cap only ever makes the real box smaller.
+export const GALLERY_FULL_SIZES = '90vw';
 
-export const getGalleryThumbPath = (filename, width) =>
-  assetPath(`img/Gallery/thumbs/${getGalleryThumbName(filename, width)}`);
+// Aspect ratio comes from the encoded thumb rather than a hand-kept number, so a re-cut
+// master can never leave the tapestry reserving the wrong box.
+export const galleryAspect = (image) => {
+  const thumb = pictureFor('galleryThumb', image.name);
+  return thumb ? `${thumb.width}/${thumb.height}` : undefined;
+};

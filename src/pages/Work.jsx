@@ -10,19 +10,22 @@ import './Work.css';
 // `ratio` is per-area because the source footage differs: the arm clips are encoded
 // square, the drone clips 4:3. Forcing the drone pair into a square tile would crop the
 // gate-detection telemetry off the edges of the frame.
+//
+// The `-960` clips are the served re-encodes (see scripts/build-assets.mjs); the masters
+// they came from sit beside them in public/media and are never requested.
 const WORK_AREAS = [
   {
     title: 'Robotic Manipulation Tasks',
     ratio: '1 / 1',
     clips: [
       {
-        src: '/media/arm-ball.mp4',
-        poster: '/media/arm-ball.png',
+        src: '/media/arm-ball-960.mp4',
+        poster: 'arm-ball',
         label: 'Play: a 3D-printed arm picking up a ball',
       },
       {
-        src: '/media/arm-meat.mp4',
-        poster: '/media/arm-meat.png',
+        src: '/media/arm-meat-960.mp4',
+        poster: 'arm-meat',
         label: 'Play: a robot arm cutting on a processing line',
       },
     ],
@@ -37,13 +40,13 @@ const WORK_AREAS = [
     ratio: '4 / 3',
     clips: [
       {
-        src: '/media/drone-sim.mp4',
-        poster: '/media/drone-sim.png',
+        src: '/media/drone-sim-960.mp4',
+        poster: 'drone-sim',
         label: 'Play: a quadrotor flying a simulated race course',
       },
       {
-        src: '/media/drone-gates.mp4',
-        poster: '/media/drone-gates.png',
+        src: '/media/drone-gates-960.mp4',
+        poster: 'drone-gates',
         label: 'Play: an FPV replay showing gate detections and live telemetry',
       },
     ],

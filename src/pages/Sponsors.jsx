@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import SiteFooter from '../components/SiteFooter';
 import SponsorMark from '../components/SponsorMark';
+import ResponsiveImage from '../components/ResponsiveImage';
 import { assetPath } from '../utils/assetPath';
 import './Sponsors.css';
 
@@ -15,14 +16,21 @@ const TIERS = [
 // leave alone rather than invert. `emblem` marks a tall, compact mark rather than a
 // wordmark — matched on height it would look half the weight of its neighbours, so it runs
 // taller. Without a logo file a mark gets drawn from the name.
+// `art` names an entry in the generated image manifest; `logo` is a path used as-is, for
+// artwork that is already a vector and has nothing to gain from being re-encoded.
 const SPONSORS = [
-  { name: 'CU GeoData', tier: 'gold', logo: 'icons/CUGeoData_Logo.png' },
-  { name: 'Modovolo', tier: 'silver', logo: 'icons/Modovolo_Logo.png', emblem: true },
+  { name: 'CU GeoData', tier: 'gold', art: 'CUGeoData_Logo' },
+  { name: 'Modovolo', tier: 'silver', art: 'Modovolo_Logo', emblem: true },
   { name: 'Tantalus', tier: 'bronze' },
   // Wikimedia Commons, public domain — the shield is below the threshold of originality.
   // Still a UPS trademark, so it stays unmodified.
   { name: 'UPS', tier: 'bronze', logo: 'icons/UPS_Logo.svg', colour: true, emblem: true },
 ];
+
+// Marks are laid out by height, so the width they occupy varies per logo. These are the
+// widest either can be drawn at, which is all the browser needs to rule out the 2x file
+// on a 1x screen.
+const LOGO_SIZES = '(max-width: 640px) 40vw, 220px';
 
 const PACKET = 'docs/cupi-sponsorship-packet.pdf';
 const CONTACT = 'ab3233@cornell.edu';
@@ -65,12 +73,19 @@ export default function Sponsors() {
         {/* The wireframe is cropped at its base, so aligning that cut edge with the
             rule makes the leg read as rising out from behind the line. */}
         <div className="sponsors__masthead">
-          <img
-            draggable={false}
+          {/* Drawn to a height of 13.5vw capped at 205px, and it is 3.53 times as wide as
+              it is tall, so the width it occupies is 47.7vw until that cap bites at a
+              1518px viewport. */}
+          <ResponsiveImage
+            group="art"
+            name="HexapodLegWireframe"
+            sizes="(min-width: 1518px) 724px, 47.7vw"
             className="sponsors__art"
-            src={assetPath('img/HexapodLegWireframe.png')}
             alt=""
             aria-hidden="true"
+            draggable={false}
+            fetchPriority="low"
+            decoding="async"
           />
           <div className="page-head">
             <h1 className="page-title">Sponsors</h1>
@@ -103,25 +118,39 @@ export default function Sponsors() {
               <h2 className={`tier__name tier__name--${key}`}>{label}</h2>
               {members.length > 0 && (
                 <ul className="tier__list">
-                  {members.map(({ name, logo, colour, emblem }) => (
-                    <li className="tier__sponsor" key={name}>
-                      {/* No logo file on hand, so draw the lockup instead of dropping a
-                          bare line of text into a row of logos. */}
-                      {logo ? (
-                        <img
-                          draggable={false}
-                          className={[colour && 'is-colour', emblem && 'is-emblem']
-                            .filter(Boolean)
-                            .join(' ')}
-                          src={assetPath(logo)}
-                          alt={name}
-                          loading="lazy"
-                        />
-                      ) : (
-                        <SponsorMark name={name} />
-                      )}
-                    </li>
-                  ))}
+                  {members.map(({ name, logo, art, colour, emblem }) => {
+                    const markClass = [colour && 'is-colour', emblem && 'is-emblem']
+                      .filter(Boolean)
+                      .join(' ');
+                    return (
+                      <li className="tier__sponsor" key={name}>
+                        {/* No artwork on hand, so draw the lockup instead of dropping a
+                            bare line of text into a row of logos. */}
+                        {art && (
+                          <ResponsiveImage
+                            group="art"
+                            name={art}
+                            sizes={LOGO_SIZES}
+                            className={markClass}
+                            alt={name}
+                            draggable={false}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        )}
+                        {!art && logo && (
+                          <img
+                            draggable={false}
+                            className={markClass}
+                            src={assetPath(logo)}
+                            alt={name}
+                            loading="lazy"
+                          />
+                        )}
+                        {!art && !logo && <SponsorMark name={name} />}
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </section>

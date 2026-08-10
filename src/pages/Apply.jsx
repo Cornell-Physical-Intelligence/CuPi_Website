@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import SiteFooter from '../components/SiteFooter';
-import { assetPath } from '../utils/assetPath';
+import ResponsiveImage from '../components/ResponsiveImage';
 import './Apply.css';
 
 // The crab is most of what this page is, so it keeps the delayed loading label the frames
@@ -22,11 +22,15 @@ function CrabPicture() {
   return (
     <div className={`apply-page__logo-wrap ${hasLoaded ? 'is-loaded' : 'is-loading'}`}>
       {!hasLoaded && showLoading && <span className="apply-page__logo-loading">Crab Loading...</span>}
-      <img
-        draggable={false}
-        src={assetPath('img/CrabOnBeach.webp')}
+      {/* The crab is the page's largest contentful paint, so it keeps high priority — the
+          saving here is in what gets fetched, not when. Drawn at min(520px, 88vw, 62vh). */}
+      <ResponsiveImage
+        group="art"
+        name="CrabOnBeach"
+        sizes="(max-width: 590px) 88vw, 520px"
         alt="The CUPI crab on a beach"
         className="apply-page__logo"
+        draggable={false}
         onLoad={() => setHasLoaded(true)}
         onError={() => setHasLoaded(true)}
         fetchPriority="high"

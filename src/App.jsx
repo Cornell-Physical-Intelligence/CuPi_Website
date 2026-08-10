@@ -1,14 +1,35 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import Controls from './components/Controls';
-import Home from './pages/Home';
-import Work from './pages/Work';
-import Members from './pages/Members';
-import Sponsors from './pages/Sponsors';
-import Apply from './pages/Apply';
 import { P, applyParam } from './components/voronoiConfig';
+import { getPageFromPath, writePath } from './routes';
 import './App.css';
 
-// Hash-based routing, mirroring the old General-Website (no router dependency).
+// The four pages that are not the landing page are split out. One bundle meant a visitor
+// opening /apply — a page that is a picture of a crab and two sentences — downloaded and
+// parsed the Voronoi hero, the gallery, the roster, the sponsor wall and the report viewer
+// first. The build also writes a modulepreload for the right chunk into each route's HTML
+// (see vite.config.js), so a deep link fetches its page in parallel with the entry rather
+// than after it.
+//
+// Home stays in the entry chunk deliberately. Splitting it too was measured and reverted:
+// it is where most visits start, and behind Suspense the hero cannot draw until a second
+// module has been fetched *and* evaluated — the preload removes the extra request but not
+// the extra step, which showed up as a slower largest paint on the one page that can least
+// afford it. The rest of the site is a few kilobytes lighter for carrying it.
+import Home from './pages/Home';
+
+const Work = lazy(() => import('./pages/Work'));
+const Members = lazy(() => import('./pages/Members'));
+const Sponsors = lazy(() => import('./pages/Sponsors'));
+const Apply = lazy(() => import('./pages/Apply'));
+
+const PREFETCH = {
+  work: () => import('./pages/Work'),
+  members: () => import('./pages/Members'),
+  sponsors: () => import('./pages/Sponsors'),
+  apply: () => import('./pages/Apply'),
+};
+
 const NAV_ITEMS = [
   { label: 'Home', page: 'home' },
   { label: 'Work', page: 'work' },
@@ -16,35 +37,12 @@ const NAV_ITEMS = [
   { label: 'Sponsors', page: 'sponsors' },
   { label: 'Apply', page: 'apply' },
 ];
-const VALID_PAGES = ['home', 'work', 'members', 'sponsors', 'apply'];
-// Real paths rather than #fragments. The build writes an index.html into a folder per
-// route, so /work is a genuine document that Pages can serve and the router reads back
-// from the pathname.
-const getPageFromPath = () => {
-  const seg = window.location.pathname.replace(/^\/+|\/+$/g, '');
-  return VALID_PAGES.includes(seg) ? seg : 'home';
-};
-
-// Navigating lives at module scope (components must not assign to globals directly).
-const writePath = (page) => {
-  window.history.pushState({}, '', page === 'home' ? '/' : `/${page}`);
-};
-
-// Anything still linking to the old #work style URLs is rewritten in place, once, before
-// the first render, so those links keep working and no stray fragment is left in the bar.
-const legacyHash = window.location.hash.replace('#', '');
-if (VALID_PAGES.includes(legacyHash)) {
-  window.history.replaceState({}, '', legacyHash === 'home' ? '/' : `/${legacyHash}`);
-} else if (window.location.hash) {
-  window.history.replaceState({}, '', window.location.pathname);
-}
-
 // The live-tuning panel is a dev-only tool — Vite sets this false in production builds,
 // so the "Customize" button and panel never ship to visitors.
 const SHOW_CUSTOMIZE = import.meta.env.DEV;
 
-export default function App() {
-  const [currentPage, setCurrentPage] = useState(getPageFromPath);
+export default function App({ initialPage, InitialPage }) {
+  const [currentPage, setCurrentPage] = useState(initialPage ?? getPageFromPath);
   const [inverted, setInverted] = useState(P.invert);
   const [showControls, setShowControls] = useState(false);
   const titleApi = useRef(null);
@@ -65,9 +63,62 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [currentPage]);
 
+  // Warm the other routes so navigation is instant. The whole set is a few tens of
+  // kilobytes, so by the time anyone clicks, the chunk is in cache and the split costs
+  // nothing a visitor can feel.
+  //
+  // It waits for `load` before even asking to be scheduled. An idle callback alone is not
+  // late enough: `requestIdleCallback` fires in the gaps *during* loading too, and a
+  // dynamic import is a full-priority fetch, so prefetching from the first gap put five
+  // route chunks in front of the image the page was still trying to paint. Measured, that
+  // cost 200ms of LCP on the roster — a page got slower because of work done to make the
+  // next one faster.
+  useEffect(() => {
+    let idleId;
+    let timeoutId;
+
+    const warm = () => Object.values(PREFETCH).forEach((load) => load());
+    const schedule = () => {
+      if ('requestIdleCallback' in window) {
+        idleId = window.requestIdleCallback(warm, { timeout: 3000 });
+      } else {
+        timeoutId = window.setTimeout(warm, 300);
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      schedule();
+    } else {
+      window.addEventListener('load', schedule, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener('load', schedule);
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+      window.clearTimeout(timeoutId);
+    };
+  }, []);
+
   const navigate = (page) => {
     writePath(page);
     setCurrentPage(page);
+  };
+
+  // Only the hero and the sponsor lockups draw Playfair, so only those two documents
+  // preload it (see vite.config.js). Warming it on the way in — on the idle pass, say —
+  // would put the 23KB straight back on the pages that had just been spared it. Pointing
+  // at the link is the first moment the fetch is worth anything, and it still lands well
+  // before the click does.
+  const warmPlayfairFor = (page) => {
+    if (page !== 'home' && page !== 'sponsors') return;
+    if (document.querySelector('link[href*="playfair-display"]')) return;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'font';
+    link.type = 'font/woff2';
+    link.crossOrigin = 'anonymous';
+    link.href = '/fonts/playfair-display-700-latin.woff2';
+    document.head.appendChild(link);
   };
 
   const handleInvert = (value) => {
@@ -77,6 +128,11 @@ export default function App() {
   };
 
   const renderPage = () => {
+    // The landing route was resolved in main.jsx, so on the first paint it is a plain
+    // component and nothing suspends. Every later navigation goes through lazy(), by which
+    // point the prefetch has already put the chunk in cache.
+    if (currentPage === initialPage && InitialPage) return <InitialPage />;
+
     switch (currentPage) {
       case 'work':
         return <Work />;
@@ -104,6 +160,8 @@ export default function App() {
                 type="button"
                 className={`menu-item ${currentPage === page ? 'active' : ''}`}
                 onClick={() => navigate(page)}
+                onMouseEnter={() => warmPlayfairFor(page)}
+                onFocus={() => warmPlayfairFor(page)}
               >
                 {label}
               </button>
@@ -127,8 +185,13 @@ export default function App() {
         <Controls apiRef={titleApi} inverted={inverted} onInvertChange={handleInvert} />
       )}
 
-      {/* Everything the glass refracts lives inside #page-content. */}
-      <main id="page-content">{renderPage()}</main>
+      {/* Everything the glass refracts lives inside #page-content. The fallback is null
+          rather than a spinner: the split routes are prefetched during idle, so this
+          resolves in the same frame in every case except a cold click on a slow link, and
+          a flash of loading text would be the more noticeable of the two. */}
+      <main id="page-content">
+        <Suspense fallback={null}>{renderPage()}</Suspense>
+      </main>
     </div>
   );
 }

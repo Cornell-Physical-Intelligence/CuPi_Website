@@ -46,7 +46,16 @@ export const getReportCoverSet = (slug, ext) =>
 export const getReportCover = (slug) =>
   assetPath(`img/Reports/${slug}-cover-480.webp`);
 
-export const getReportPage = (slug, page) =>
-  assetPath(`img/Reports/${slug}/p${String(page).padStart(2, '0')}.webp`);
+// Page renders are addressed through the generated manifest rather than by path, because
+// each one exists at two widths in two formats and the viewer has to be handed the whole
+// set to choose from. The 1122px master stays the top tier — it is what the PDF was
+// rendered at, and re-rendering larger is the only way past it.
+export const getReportPageGroup = (slug) => `report:${slug}`;
+
+export const getReportPageName = (page) => `p${String(page).padStart(2, '0')}`;
+
+// The viewer caps a page at 860 CSS px and drops to full width once the column no longer
+// fits beside the scroll container's padding.
+export const REPORT_PAGE_SIZES = '(max-width: 940px) 100vw, 860px';
 
 export const getReportPdf = (slug) => assetPath(`docs/${slug}.pdf`);

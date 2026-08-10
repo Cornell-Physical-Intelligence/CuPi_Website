@@ -109,6 +109,15 @@
   cursor: pointer;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  /* Enter and exit, previously a <motion.div> with initial/animate/exit. Overlay holds the
+     element in the DOM for the length of this transition on the way out, and toggles
+     .is-entered to run it in either direction. */
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.gallery-lightbox.is-entered {
+  opacity: 1;
 }
 
 .gallery-lightbox__close {
@@ -135,6 +144,27 @@
   position: relative;
   max-width: 90vw;
   max-height: 90vh;
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.gallery-lightbox.is-entered .gallery-lightbox__content {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-lightbox,
+  .gallery-lightbox__content {
+    transition-duration: 0.01ms;
+  }
+
+  .gallery-lightbox__content {
+    transform: none;
+  }
 }
 
 .gallery-lightbox__content img {

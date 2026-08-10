@@ -1,10 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CountUp from './CountUp';
 import './MissionTiles.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
   { label: 'Members', value: 35 },
@@ -15,41 +11,34 @@ function MissionTiles({ played, onPlay }) {
   const statRefs = useRef([]);
   const blurbRef = useRef(null);
 
+  // The tiles rise into place on first scroll-in. The transition itself is in the
+  // stylesheet; all this does is decide when to add the class.
+  //
+  // `rootMargin: '0px 0px -15% 0px'` pulls the trigger line up to 15% above the viewport
+  // bottom, which is what ScrollTrigger's `top bottom-=15%` meant.
   useEffect(() => {
+    const elements = statRefs.current.filter(Boolean);
+    if (elements.length === 0) return undefined;
+
     if (played) {
-      statRefs.current.forEach(el => {
-        if (el) {
-          gsap.set(el, { opacity: 1, y: 0 });
-        }
-      });
-      return;
+      elements.forEach((el) => el.classList.add('is-instant', 'is-revealed'));
+      return undefined;
     }
 
-    const elements = statRefs.current;
-    const animations = elements.map((el) => {
-      if (!el) return null;
-
-      return gsap.fromTo(
-        el,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top bottom-=15%',
-            once: true,
-            onEnter: () => onPlay && onPlay()
-          }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-revealed');
+          observer.unobserve(entry.target);
+          onPlay?.();
         }
-      );
-    });
+      },
+      { rootMargin: '0px 0px -15% 0px' }
+    );
 
-    return () => {
-      animations.forEach((animation) => animation?.kill());
-    };
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, [played, onPlay]);
 
   // Finalize blurb box on scroll (dotted → solid, tag flash out)

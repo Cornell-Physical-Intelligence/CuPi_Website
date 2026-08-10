@@ -104,6 +104,32 @@
   text-align: center;
   width: clamp(220px, 32vw, 360px);
   will-change: transform, opacity;
+  /* Rises into place the first time it scrolls into view. This was a GSAP tween driven by
+     ScrollTrigger, which cost 44KB gzipped — a quarter of the entire JavaScript bundle, on
+     every page of the site, to move two numbers 40px. The curve below is easeOutCubic,
+     which is what GSAP's power2.out is, so the motion is the same one. */
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.6s cubic-bezier(0.215, 0.61, 0.355, 1),
+    transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.mission-stat.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Returning to the page mid-visit should not replay the entrance, so the revealed state is
+   also reachable without a transition. */
+.mission-stat.is-instant {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mission-stat {
+    transition: none;
+  }
 }
 
 .mission-stat__value {

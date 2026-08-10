@@ -7,10 +7,23 @@ Two sets, deliberately kept apart.
 crops can be regenerated without going back to anyone's Downloads folder — which is
 exactly the situation that lost Josh Lennon's original.
 
-`src/assets/people/` holds the **crops the site actually serves**, 600x680. Cards
-render at roughly 130 CSS px, so this still covers a 3x display with room to spare,
-and it is a quarter the weight of the 960x1088 set it replaced. Vite content-hashes
-these on build, so replacing one can never be served stale from a cache.
+`src/assets/people/` holds the **framing of record**, 600x680 WebP, one per roster
+`imageBase`. These are the crops every decision below is about, but the site no longer
+loads them: a card renders at roughly 130 CSS px, so 600px was between four and six times
+what any display could resolve, thirty-four times over — about a megabyte to draw a grid of
+thumbnails.
+
+`src/assets/people/sized/` holds **what the site actually serves**, generated from those
+crops by `npm run assets` (see `scripts/build-assets.mjs`). Each person gets 160, 240, 320
+and 480px wide, in AVIF and WebP; the roster offers the whole set in a `<picture>` and the
+browser takes the one its layout and pixel ratio call for — 240 or 320 in practice, a few
+kilobytes each. 480 is there so a 4x display still has something to ask for. They stay
+under `src/` rather than moving to `public/` so Vite keeps content-hashing them: replacing
+someone's headshot has to change its URL, or caches keep serving the old face.
+
+Regenerate after changing any crop:
+
+    npm run assets
 
 ## How the crops are framed
 
