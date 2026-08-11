@@ -17,12 +17,13 @@
   margin: 0;
 }
 
-/* The artwork is square but its opaque band is only the middle ~55%, the rest fading out
-   through the alpha channel, so the box runs larger than the crab looks. Capped against
-   the viewport height too, since this page is meant not to scroll. */
+/* The box takes the artwork's own ratio (1257x892) so `contain` never letterboxes the
+   crab smaller than it needs to be; its edges still fade out through the alpha channel,
+   so the box runs larger than the crab looks. The vh term keeps height at most ~62vh
+   (87vh / 1.41), since this page is meant not to scroll. */
 .apply-page__logo-wrap {
-  width: min(520px, 88vw, 62vh);
-  aspect-ratio: 1;
+  width: min(560px, 88vw, 87vh);
+  aspect-ratio: 1257 / 892;
   display: flex;
   align-items: center;
   justify-content: center;

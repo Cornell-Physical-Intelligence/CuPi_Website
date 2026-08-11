@@ -1355,24 +1355,24 @@
         {
           "src": "/img/CrabOnBeach-380.avif",
           "w": 380,
-          "h": 380
+          "h": 270
         },
         {
           "src": "/img/CrabOnBeach-760.avif",
           "w": 760,
-          "h": 760
+          "h": 539
         }
       ],
       "webp": [
         {
           "src": "/img/CrabOnBeach-380.webp",
           "w": 380,
-          "h": 380
+          "h": 270
         },
         {
           "src": "/img/CrabOnBeach-760.webp",
           "w": 760,
-          "h": 760
+          "h": 539
         }
       ]
     },
