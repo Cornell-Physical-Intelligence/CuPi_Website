@@ -17,16 +17,6 @@ import './Work.css';
 export default function Work() {
   return (
     <main className="alt-page">
-      <header className="work-intro">
-        <div className="page-head">
-          <h1 className="page-title">Robotics Projects</h1>
-        </div>
-        <p className="work-intro__summary">
-          Cornell Physical Intelligence (CUPI) builds intelligent robotic systems for
-          manipulation, autonomous perception, and navigation at Cornell University.
-        </p>
-      </header>
-
       <TechnicalReports />
 
       <section className="work-stack">

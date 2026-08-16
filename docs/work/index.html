@@ -161,15 +161,15 @@
       .seo-fallback__sections li { line-height: 1.7; }
       .seo-fallback__footer { padding-top: 20px; border-top: 1px solid #bbb; font-size: 14px; }
     </style>
-    <script type="module" crossorigin src="/assets/index-DC87qJxQ.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/SiteFooter-DmJesI6F.js">
-    <link rel="modulepreload" crossorigin href="/assets/ResponsiveImage-Cye6ampz.js">
-    <link rel="modulepreload" crossorigin href="/assets/Overlay-0O5A53Ki.js">
-    <link rel="modulepreload" crossorigin href="/assets/reportContent-Uchsc0cm.js">
-    <link rel="stylesheet" crossorigin href="/assets/SiteFooter-BibgR88k.css">
-    <link rel="stylesheet" crossorigin href="/assets/index-C9S8N4Ow.css">
-    <link rel="modulepreload" crossorigin href="/assets/Work-CVgiqQRr.js" />
-    <link rel="preload" as="style" href="/assets/Work-Zkk3WzOK.css" />
+    <script type="module" crossorigin src="/assets/index-CIXqPHMD.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/SiteFooter-DXoCo5pa.js">
+    <link rel="modulepreload" crossorigin href="/assets/ResponsiveImage-6kI3AycC.js">
+    <link rel="modulepreload" crossorigin href="/assets/Overlay-8pkcgOYM.js">
+    <link rel="modulepreload" crossorigin href="/assets/reportContent-CfzclD6g.js">
+    <link rel="stylesheet" crossorigin href="/assets/SiteFooter-CdZvJT9z.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-DrUJQoFN.css">
+    <link rel="modulepreload" crossorigin href="/assets/Work-Cc2mndhh.js" />
+    <link rel="preload" as="style" href="/assets/Work-D42Gqswj.css" />
   </head>
   <body>
     <div id="root"><!-- seo:fallback:start -->
@@ -196,19 +196,19 @@
         <section class="seo-fallback__related" aria-labelledby="seo-related-heading">
           <h2 id="seo-related-heading">CUPI technical reports</h2>
           <ul>
-            <li><a href="/work/vq1-deterministic-policy/">Passing Every Gate Without Learning: A Deterministic Policy for AI Grand Prix VQ1</a> — Clearing every gate of Anduril's first autonomous drone-racing qualifier with no learned components.</li>
-            <li><a href="/work/racing-without-a-map/">Racing Without a Map: Bearings-Only Guidance and Optical Looming for Autonomous Drone Racing</a> — A survey of roughly 400 works on drone control, perception, and guidance under blocked telemetry.</li>
+            <li><a href="/work/vq1-deterministic-policy/">Passing Every Gate Without Learning: A Deterministic Policy for AI Grand Prix VQ1</a> — Clearing every gate of the first qualifier in Anduril's autonomous drone racing competition, with no learned components.</li>
+            <li><a href="/work/racing-without-a-map/">Racing Without a Map: Bearings-Only Guidance and Optical Looming for Autonomous Drone Racing</a> — A meta analysis of roughly 400 papers on drone control, perception, and guidance, and what survives when a racing drone loses all telemetry.</li>
           </ul>
         </section>
         <div class="seo-fallback__sections">
           <section>
             <h2>Robotic Manipulation Tasks</h2>
-            <p>Our robotic-manipulation work runs a fine-tuned π0.5 policy on our own arm. π0.5 is the robotics company Physical Intelligence's open vision-language-action model, so we are not training from scratch: the released checkpoint brings broad manipulation priors from web and robot data, and our work is adapting it to the grippers, camera placement, and tasks in our lab.</p>
+            <p>The clips above are our fine-tuned π0.5 policy running on our own arm. π0.5 is Physical Intelligence's open vision-language-action model, so we are not training from scratch: the released checkpoint brings broad manipulation priors from web and robot data, and our work is adapting it to the grippers, camera placement, and tasks in our lab.</p>
 
           </section>
           <section>
             <h2>Autonomous Perception and Navigation</h2>
-            <p>We build the autonomy stack for the Anduril AI Grand Prix, an autonomous drone racing competition run with the Drone Champions League. We passed Virtual Qualifier 1 with a fully deterministic policy: no learned network anywhere in the loop, just dead reckoning against the released course map with visual gate corrections. Virtual Qualifier 2 blocks every pose and gate telemetry stream, leaving a monocular camera and IMU, so our successor work explores bearings-only guidance and optical looming without a surveyed map.</p>
+            <p>We build the autonomy stack for the Anduril AI Grand Prix, an autonomous drone racing competition run with the Drone Champions League. We passed Virtual Qualifier 1 with a fully deterministic policy: no learned network anywhere in the loop, just dead reckoning against the released course map with visual gate corrections. Virtual Qualifier 2 blocks every pose and gate telemetry stream, leaving a monocular camera and IMU, so the policy now guides on bearings alone and reads closing rate from optical looming.</p>
 
           </section>
         </div>

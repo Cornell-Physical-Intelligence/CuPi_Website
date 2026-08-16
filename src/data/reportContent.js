@@ -5,7 +5,7 @@ export const REPORT_CONTENT = [
     path: '/work/vq1-deterministic-policy/',
     cardTitle: 'Anduril AI-GP Qual 1',
     cardSubtitle:
-      "Clearing every gate of Anduril's first autonomous drone-racing qualifier with no learned components.",
+      "Clearing every gate of the first qualifier in Anduril's autonomous drone racing competition, with no learned components.",
     title:
       'Passing Every Gate Without Learning: A Deterministic Policy for AI Grand Prix VQ1',
     metaTitle: 'Deterministic AI Grand Prix VQ1 Policy | CUPI',
@@ -60,7 +60,7 @@ export const REPORT_CONTENT = [
     path: '/work/racing-without-a-map/',
     cardTitle: 'Racing Without a Map',
     cardSubtitle:
-      'A survey of roughly 400 works on drone control, perception, and guidance under blocked telemetry.',
+      'A meta analysis of roughly 400 papers on drone control, perception, and guidance, and what survives when a racing drone loses all telemetry.',
     title:
       'Racing Without a Map: Bearings-Only Guidance and Optical Looming for Autonomous Drone Racing',
     metaTitle: 'Racing Without a Map | CUPI Technical Report',

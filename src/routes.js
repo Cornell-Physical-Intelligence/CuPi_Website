@@ -21,7 +21,12 @@ export const getPageFromPath = () => {
 };
 
 export const writePath = (page) => {
-  window.history.pushState({}, '', getPageSeo(page).path);
+  const legacyPage = ['home', 'work', 'members', 'sponsors', 'apply'].includes(page);
+  window.history.pushState(
+    {},
+    '',
+    legacyPage ? (page === 'home' ? '/' : `/${page}`) : getPageSeo(page).path,
+  );
 };
 
 // Anything still linking to the old #work style URLs is rewritten in place, once, before
@@ -29,7 +34,7 @@ export const writePath = (page) => {
 export const normalizeLegacyHash = () => {
   const legacy = window.location.hash.replace('#', '');
   if (VALID_PAGES.includes(legacy)) {
-    window.history.replaceState({}, '', getPageSeo(legacy).path);
+    window.history.replaceState({}, '', legacy === 'home' ? '/' : `/${legacy}`);
   } else if (window.location.hash) {
     window.history.replaceState({}, '', window.location.pathname);
   }

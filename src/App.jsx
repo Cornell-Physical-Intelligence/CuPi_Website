@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import Controls from './components/Controls';
 import { P, applyParam } from './components/voronoiConfig';
 import { getPageFromPath, writePath } from './routes';
-import { applyPageSeo, getPageSeo } from './seo';
+import { applyPageSeo } from './seo';
 import './App.css';
 
 // The four pages that are not the landing page are split out. One bundle meant a visitor
@@ -113,22 +113,6 @@ export default function App({ initialPage, InitialPage }) {
     setCurrentPage(page);
   };
 
-  const handleNavClick = (event, page) => {
-    // Preserve opening in a new tab/window and every other normal link behaviour. Only
-    // an unmodified primary click becomes an in-place SPA transition.
-    if (
-      event.button !== 0 ||
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey
-    ) {
-      return;
-    }
-    event.preventDefault();
-    navigate(page);
-  };
-
   // Only the hero and the sponsor lockups draw Playfair, so only those two documents
   // preload it (see vite.config.js). Warming it on the way in — on the idle pass, say —
   // would put the 23KB straight back on the pages that had just been spared it. Pointing
@@ -177,25 +161,22 @@ export default function App({ initialPage, InitialPage }) {
   };
 
   const onHome = currentPage === 'home';
-  const activeNavPage = getPageSeo(currentPage).parentPage ?? currentPage;
-
   return (
     <div className={`app ${inverted ? 'app--light' : 'app--dark'}`}>
       <nav className="menu-bar">
         <div className="menu-glass">
           <div className="menu-content">
             {NAV_ITEMS.map(({ label, page }) => (
-              <a
+              <button
                 key={page}
-                href={getPageSeo(page).path}
-                className={`menu-item ${activeNavPage === page ? 'active' : ''}`}
-                aria-current={activeNavPage === page ? 'page' : undefined}
-                onClick={(event) => handleNavClick(event, page)}
+                type="button"
+                className={`menu-item ${currentPage === page ? 'active' : ''}`}
+                onClick={() => navigate(page)}
                 onMouseEnter={() => warmPlayfairFor(page)}
                 onFocus={() => warmPlayfairFor(page)}
               >
                 {label}
-              </a>
+              </button>
             ))}
           </div>
         </div>

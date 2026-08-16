@@ -2,7 +2,6 @@ import { useState } from 'react';
 import VoronoiTitle from '../components/VoronoiTitle';
 import MissionTiles from '../components/MissionTiles';
 import SubteamPanel from '../components/SubteamPanel';
-import LatestReports from '../components/LatestReports';
 import Gallery from '../components/Gallery';
 import SiteFooter from '../components/SiteFooter';
 
@@ -19,7 +18,7 @@ export default function Home({ titleApi }) {
             <span className="visually-hidden">Cornell Physical Intelligence (CUPI)</span>
             <VoronoiTitle text="CUPI" apiRef={titleApi} />
           </h1>
-          <p className="hero__subtitle">(Cornell Physical Intelligence at Cornell University)</p>
+          <p className="hero__subtitle">(Cornell University Physical Intelligence)</p>
         </div>
       </section>
 
@@ -29,8 +28,6 @@ export default function Home({ titleApi }) {
       />
 
       <SubteamPanel />
-
-      <LatestReports />
 
       <Gallery />
 

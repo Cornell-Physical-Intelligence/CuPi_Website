@@ -121,7 +121,6 @@
   transition: opacity 0.2s ease;
   opacity: 0.5;
   cursor: pointer;
-  text-decoration: none;
   /* No font-family: the root stack is the old site's, and the menu inherited it there. */
   padding: 0;
   min-width: 60px;

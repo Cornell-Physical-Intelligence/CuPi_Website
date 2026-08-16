@@ -86,7 +86,7 @@ export default function Apply() {
         <div className="apply-page">
           <CrabPicture />
           <p className="apply-page__thank-you">
-            Applications are currently closed. For questions about future recruitment, email{' '}
+            Unfortunately, applications are closed right now. If you&apos;re really curious, email{' '}
             <span className="apply-page__email-wrap">
               <button className="apply-page__email" onClick={handleEmailClick} type="button">
                 {CONTACT_EMAIL}

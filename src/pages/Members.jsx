@@ -98,13 +98,11 @@ function MemberCard({ member, isOpen, onToggle, eager }) {
           decoding="async"
         />
         {!hasPhoto(member) && <span className="member__nophoto">photo coming soon</span>}
-        {hasBio && (
-          <span className="member__bio">
-            <span className="member__bio-text">{bio}</span>
-          </span>
-        )}
+        <span className="member__bio">
+          <span className="member__bio-text">{bio}</span>
+        </span>
       </button>
-      <h3 className="member__name">{member.name}</h3>
+      <p className="member__name">{member.name}</p>
       {meta && (
         <p className={`member__meta${member.role === 'Team Lead' ? ' is-lead' : ''}`}>{meta}</p>
       )}
@@ -146,12 +144,8 @@ export default function Members() {
     <main className="alt-page">
       <div className="members">
         <div className="page-head">
-          <h1 className="page-title">CUPI Members</h1>
+          <h1 className="page-title">Members</h1>
         </div>
-        <p className="members__intro">
-          Meet the Cornell students and faculty behind Cornell Physical
-          Intelligence&apos;s multidisciplinary robotics teams.
-        </p>
 
         {sections.map((section, sectionIndex) => (
           <section className="members__section block" key={section.title}>

@@ -65,17 +65,12 @@ function MissionTiles({ played, onPlay }) {
     <section className="mission-tiles">
       <div className="mission-tiles__content">
         <div className="mission-tiles__blurb-wrapper" ref={blurbRef}>
-          <h2 className="mission-tiles__heading">About Cornell Physical Intelligence</h2>
           <p className="mission-tiles__blurb">
-            Cornell Physical Intelligence (CUPI), listed by Cornell as the{' '}
-            <a href="https://cornell.campusgroups.com/cupi/home/">
-              Cornell Physical Intelligence Club
-            </a>
-            , is a Cornell University student robotics organization. We create physical systems
-            that can intelligently reason and interact with their environments. The gap between
-            AI software and hardware needs to be closed seamlessly, and through our
-            multidisciplinary team, we pursue this symbiosis. We prioritize creative, ambitious,
-            and self-starting thinkers, because the problems worth solving here do not come with
+            At CUPI, we aim to create physical systems that can intelligently reason and
+            interact with their environments. The gap between AI software and hardware
+            needs to be closed seamlessly, and through our multidisciplinary team, we
+            pursue this symbiosis. We prioritize creative, ambitious, and self-starting
+            thinkers, because the problems worth solving here do not come with
             instructions.
           </p>
         </div>

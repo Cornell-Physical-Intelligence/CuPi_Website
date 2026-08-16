@@ -98,11 +98,7 @@ export default function TechnicalReports() {
                 </picture>
               </div>
               <div className="report-card__meta">
-                <h3 className="report-card__title">
-                  <a href={report.path}>
-                    {report.title}
-                  </a>
-                </h3>
+                <h3 className="report-card__title">{report.title}</h3>
                 <p className="report-card__subtitle">{report.subtitle}</p>
               </div>
             </article>

@@ -76,15 +76,6 @@
   animation: tag-flash-out 0.17s ease-out forwards;
 }
 
-.mission-tiles__heading {
-  margin: 0;
-  padding: clamp(14px, 2vw, 20px) clamp(9px, 1.5vw, 14px) 0;
-  color: var(--fg);
-  font-size: clamp(1rem, 2vw, 1.45rem);
-  font-weight: 500;
-  letter-spacing: -0.015em;
-}
-
 .mission-tiles__blurb {
   font-size: clamp(0.7rem, 1.4vw, 0.875rem);
   line-height: 1.7;
@@ -94,17 +85,7 @@
   /* Uniform, and tighter than it was: the old value left the rule floating well clear of
      the copy, and the top was inflated further still to clear a mark in the corner that no
      longer exists. The box now traces the text block. */
-  padding: clamp(7px, 1.2vw, 12px) clamp(9px, 1.5vw, 14px) clamp(9px, 1.5vw, 14px);
-}
-
-.mission-tiles__blurb a {
-  color: inherit;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-}
-
-.mission-tiles__blurb a:hover {
-  color: var(--fg);
+  padding: clamp(9px, 1.5vw, 14px);
 }
 
 .mission-tiles__stats {

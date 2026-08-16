@@ -14,9 +14,8 @@ export const WORK_AREAS = [
         label: 'Play: a robot arm cutting on a processing line',
       },
     ],
-    summary: `Our robotic-manipulation work runs a fine-tuned π0.5 policy on our own arm.
-      π0.5 is the robotics company Physical Intelligence's open vision-language-action
-      model, so we are not
+    summary: `The clips above are our fine-tuned π0.5 policy running on our own arm.
+      π0.5 is Physical Intelligence's open vision-language-action model, so we are not
       training from scratch: the released checkpoint brings broad manipulation priors
       from web and robot data, and our work is adapting it to the grippers, camera
       placement, and tasks in our lab.`,
@@ -41,8 +40,8 @@ export const WORK_AREAS = [
       Qualifier 1 with a fully deterministic policy: no learned network anywhere in the
       loop, just dead reckoning against the released course map with visual gate
       corrections. Virtual Qualifier 2 blocks every pose and gate telemetry stream,
-      leaving a monocular camera and IMU, so our successor work explores bearings-only
-      guidance and optical looming without a surveyed map.`,
+      leaving a monocular camera and IMU, so the policy now guides on bearings alone and
+      reads closing rate from optical looming.`,
     partner: {
       href: 'https://theaigrandprix.com/',
       src: 'icons/ai-gp-logo-orange.svg',

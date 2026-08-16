@@ -76,7 +76,7 @@ export default function Gallery() {
                 sizes={GALLERY_TILE_SIZES}
                 alt={`Concept art ${index + 1}`}
                 draggable={false}
-                loading="lazy"
+                loading={index < 6 ? 'eager' : 'lazy'}
                 decoding="async"
                 /* The tapestry is several screens below the hero, so nothing in it is ever
                    the largest contentful paint. Claiming high priority only let these
