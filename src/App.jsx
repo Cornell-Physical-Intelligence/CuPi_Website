@@ -23,12 +23,16 @@ const Work = lazy(() => import('./pages/Work'));
 const Members = lazy(() => import('./pages/Members'));
 const Sponsors = lazy(() => import('./pages/Sponsors'));
 const Apply = lazy(() => import('./pages/Apply'));
+const Vq1Report = lazy(() => import('./pages/Vq1Report'));
+const RacingReport = lazy(() => import('./pages/RacingReport'));
 
 const PREFETCH = {
   work: () => import('./pages/Work'),
   members: () => import('./pages/Members'),
   sponsors: () => import('./pages/Sponsors'),
   apply: () => import('./pages/Apply'),
+  vq1Report: () => import('./pages/Vq1Report'),
+  racingReport: () => import('./pages/RacingReport'),
 };
 
 const NAV_ITEMS = [
@@ -163,12 +167,17 @@ export default function App({ initialPage, InitialPage }) {
         return <Sponsors />;
       case 'apply':
         return <Apply />;
+      case 'vq1Report':
+        return <Vq1Report />;
+      case 'racingReport':
+        return <RacingReport />;
       default:
         return <Home titleApi={titleApi} />;
     }
   };
 
   const onHome = currentPage === 'home';
+  const activeNavPage = getPageSeo(currentPage).parentPage ?? currentPage;
 
   return (
     <div className={`app ${inverted ? 'app--light' : 'app--dark'}`}>
@@ -179,8 +188,8 @@ export default function App({ initialPage, InitialPage }) {
               <a
                 key={page}
                 href={getPageSeo(page).path}
-                className={`menu-item ${currentPage === page ? 'active' : ''}`}
-                aria-current={currentPage === page ? 'page' : undefined}
+                className={`menu-item ${activeNavPage === page ? 'active' : ''}`}
+                aria-current={activeNavPage === page ? 'page' : undefined}
                 onClick={(event) => handleNavClick(event, page)}
                 onMouseEnter={() => warmPlayfairFor(page)}
                 onFocus={() => warmPlayfairFor(page)}

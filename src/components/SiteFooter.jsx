@@ -51,7 +51,7 @@ export default function SiteFooter() {
         <div className="site-footer__copy">
           <p>
             <a href="/">Cornell Physical Intelligence (CUPI)</a> is a registered student
-            organization at Cornell University.
+            organization based at Cornell University in Ithaca, New York.
           </p>
           <p>
             <a
@@ -59,8 +59,12 @@ export default function SiteFooter() {
               target="_blank"
               rel="noreferrer"
             >
-              Official Cornell CampusGroups profile
+              Official Cornell listing: Cornell Physical Intelligence Club
             </a>
+          </p>
+          <p>
+            General inquiries:{' '}
+            <a href="mailto:cuphysint@cornell.edu">cuphysint@cornell.edu</a>
           </p>
           <p>
             Equal Education and Employment:{' '}

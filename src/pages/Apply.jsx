@@ -81,12 +81,12 @@ export default function Apply() {
 
   return (
     <main className="alt-page alt-page--apply">
-      <h1 className="visually-hidden">Join Cornell Physical Intelligence (CUPI)</h1>
+      <h1 className="visually-hidden">Cornell Physical Intelligence Applications</h1>
       <section className="alt-section alt-section--apply">
         <div className="apply-page">
           <CrabPicture />
           <p className="apply-page__thank-you">
-            Unfortunately, applications are closed right now. If you&apos;re really curious, email{' '}
+            Applications are currently closed. For questions about future recruitment, email{' '}
             <span className="apply-page__email-wrap">
               <button className="apply-page__email" onClick={handleEmailClick} type="button">
                 {CONTACT_EMAIL}

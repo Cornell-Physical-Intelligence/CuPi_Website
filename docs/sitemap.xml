@@ -2,17 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://cornellphysicalintelligence.com/</loc>
+    <lastmod>2026-08-16</lastmod>
   </url>
   <url>
     <loc>https://cornellphysicalintelligence.com/work/</loc>
+    <lastmod>2026-08-16</lastmod>
   </url>
   <url>
     <loc>https://cornellphysicalintelligence.com/members/</loc>
+    <lastmod>2026-08-16</lastmod>
   </url>
   <url>
     <loc>https://cornellphysicalintelligence.com/sponsors/</loc>
+    <lastmod>2026-08-16</lastmod>
   </url>
   <url>
     <loc>https://cornellphysicalintelligence.com/apply/</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://cornellphysicalintelligence.com/work/vq1-deterministic-policy/</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://cornellphysicalintelligence.com/work/racing-without-a-map/</loc>
+    <lastmod>2026-08-16</lastmod>
   </url>
 </urlset>

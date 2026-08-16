@@ -2,16 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Two shapes on purpose. Google's result pages put the favicon in a circular chip,
-         where the tab's rounded square read as a mismatched inset shape — so the search
-         crawler gets a disc. It prefers 48px-multiple bitmaps, hence the 192; browsers
-         resolve the later, tab-sized declarations instead (Safari the 32px PNG since it
-         ignores SVG icons, everything else the SVG). ?v=2 busts the cached disc-shaped
-         copy of favicon.svg that tabs held before the shapes were split. -->
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
-    <link rel="apple-touch-icon" href="/favicon-192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- seo:head:start -->
     <title>Page Not Found | Cornell Physical Intelligence</title>
@@ -29,121 +19,19 @@
     <meta name="twitter:title" content="Page Not Found | Cornell Physical Intelligence" />
     <meta name="twitter:description" content="The requested Cornell Physical Intelligence page could not be found." />
     <!-- seo:head:end -->
-
-    <!-- Playfair Display 700 is self-hosted because the hero blocks on it: VoronoiTitle
-         rasterises the glyph outline before it can build its sim, so this face sits on the
-         critical path. Via Google Fonts that meant two sequential cross-origin round trips
-         (stylesheet, then the woff2 URL it reveals) before the hero could start. Preloaded
-         from our own origin, the fetch begins during HTML parse instead. Latin subset only,
-         23KB. `crossorigin` is required even same-origin — fonts are fetched in CORS mode,
-         and without it the preload is discarded and the file fetched twice.
-         OFL-licensed; see public/fonts/PlayfairDisplay-OFL.txt. -->
     <style>
-      /* Inline rather than imported so the face is declared before the stylesheet
-         request resolves — the preload above is only useful if the @font-face that
-         claims it is already parsed. */
-      @font-face {
-        font-family: 'Playfair Display';
-        font-style: normal;
-        font-weight: 700;
-        font-display: swap;
-        src: url('/fonts/playfair-display-700-latin.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-          U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-          U+2212, U+2215, U+FEFF, U+FFFD;
-      }
+      html { color-scheme: light dark; font-family: system-ui, sans-serif; }
+      body { min-height: 100vh; margin: 0; display: grid; place-items: center; text-align: center; }
+      main { padding: 32px; }
+      h1 { margin: 0 0 12px; font-size: clamp(2rem, 7vw, 5rem); font-weight: 500; }
+      p { margin: 0; line-height: 1.6; }
+      a { color: inherit; text-underline-offset: 0.2em; }
     </style>
-
-    <!-- Questrial is self-hosted for the same reason Playfair is, and the reasoning above
-         applies twice over here: this was a render-blocking <link rel="stylesheet"> to
-         fonts.googleapis.com, an origin nothing had preconnected to. First paint waited on
-         a DNS lookup, a TCP handshake and a TLS negotiation to reach that stylesheet, and
-         only once it arrived did the browser learn the woff2 URL it then had to fetch from
-         a second origin. Two cold cross-origin round trips before a single glyph, on every
-         page of the site. Served from here, one preload starts during HTML parse. -->
-    <link
-      rel="preload"
-      href="/fonts/questrial-400-latin.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <style>
-      /* Inline for the same reason as Playfair: a preload only counts if the @font-face
-         claiming it has already been parsed. OFL-licensed; see public/fonts/Questrial-OFL.txt. */
-      @font-face {
-        font-family: 'Questrial';
-        font-style: normal;
-        font-weight: 400;
-        font-display: swap;
-        src: url('/fonts/questrial-400-latin.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-          U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-          U+2212, U+2215, U+FEFF, U+FFFD;
-      }
-    </style>
-    <style>
-      /* The build puts meaningful, crawlable HTML inside #root. React replaces this
-         resilient no-JavaScript version on its first render; until then it is a calm,
-         deliberately simple representation of the same page rather than a blank screen. */
-      .seo-fallback {
-        min-height: 100vh;
-        padding: clamp(24px, 6vw, 72px);
-        color: #141414;
-        background: #fff;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      }
-      .seo-fallback__header,
-      .seo-fallback__main,
-      .seo-fallback__footer {
-        width: min(900px, 100%);
-        margin-inline: auto;
-      }
-      .seo-fallback__header {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 24px;
-        flex-wrap: wrap;
-      }
-      .seo-fallback a { color: inherit; }
-      .seo-fallback__brand { font-weight: 700; text-decoration: none; }
-      .seo-fallback__nav { display: flex; gap: 16px; flex-wrap: wrap; }
-      .seo-fallback__main { padding-block: clamp(72px, 14vw, 160px); }
-      .seo-fallback__eyebrow { letter-spacing: .12em; text-transform: uppercase; }
-      .seo-fallback h1 { max-width: 780px; font-size: clamp(40px, 8vw, 86px); line-height: 1; }
-      .seo-fallback__intro { max-width: 720px; font-size: clamp(18px, 2.2vw, 24px); line-height: 1.55; }
-      .seo-fallback__highlights { margin-top: 32px; padding-left: 20px; line-height: 1.8; }
-      .seo-fallback__footer { padding-top: 20px; border-top: 1px solid #bbb; font-size: 14px; }
-    </style>
-    <link rel="modulepreload" crossorigin href="/assets/SiteFooter-ErGKq9rr.js">
-    <link rel="modulepreload" crossorigin href="/assets/Overlay-DKRplFgW.js">
-    <link rel="stylesheet" crossorigin href="/assets/SiteFooter-BibgR88k.css">
-    <link rel="stylesheet" crossorigin href="/assets/index-DkQCk8rq.css">
   </head>
   <body>
-    <div id="root"><!-- seo:fallback:start -->
-    <div class="seo-fallback">
-      <header class="seo-fallback__header">
-        <a class="seo-fallback__brand" href="/">Cornell Physical Intelligence (CUPI)</a>
-        <nav class="seo-fallback__nav" aria-label="Primary">
-          <a href="/">Home</a>
-          <a href="/work/">Work</a>
-          <a href="/members/">Members</a>
-          <a href="/sponsors/">Sponsors</a>
-          <a href="/apply/">Apply</a>
-        </nav>
-      </header>
-      <main class="seo-fallback__main">
-        <p class="seo-fallback__eyebrow">CUPI at Cornell University</p>
-        <h1>Page not found</h1>
-        <p class="seo-fallback__intro">The requested Cornell Physical Intelligence page could not be found.</p>
-      </main>
-      <footer class="seo-fallback__footer">
-        <p>Cornell Physical Intelligence (CUPI) is a registered student organization at Cornell University.</p>
-        <p><a href="https://cornell.campusgroups.com/cupi/home/">Official Cornell CampusGroups profile</a></p>
-      </footer>
-    </div>
-    <!-- seo:fallback:end --></div>
+    <main>
+      <h1>Page not found</h1>
+      <p>The requested page could not be found. <a href="/">Return to Cornell Physical Intelligence.</a></p>
+    </main>
   </body>
 </html>

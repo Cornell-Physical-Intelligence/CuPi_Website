@@ -42,6 +42,7 @@ export default function SubteamPanel() {
 
   return (
     <section className="subteam-section">
+      <h2 className="section-label">CUPI Subteams</h2>
       <article className="subteam-panel subteam-panel--stacked" ref={panelRef}>
         <div className="subteam-panel__inner">
           {SUBTEAMS.map((team) => {

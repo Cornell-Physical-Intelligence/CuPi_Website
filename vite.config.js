@@ -6,6 +6,7 @@ import {
   PAGE_SEO,
   SITE_ACRONYM,
   SITE_NAME,
+  SITE_URL,
   canonicalUrlForPage,
   getPageSeo,
   structuredDataForPage,
@@ -19,7 +20,9 @@ import {
 const DEFAULT_OUT_DIR = 'docs'
 
 // Routes the app answers to. Home is the root index and needs no folder of its own.
-const ROUTES = ['work', 'members', 'sponsors', 'apply']
+const ROUTES = Object.entries(PAGE_SEO)
+  .filter(([page, seo]) => page !== 'home' && !seo.noindex)
+  .map(([page]) => page)
 
 // GitHub Pages serves static files, so /work only resolves if a document actually lives
 // there. Copying the built index.html into a folder per route makes each URL a real page
@@ -42,7 +45,6 @@ const ROUTES = ['work', 'members', 'sponsors', 'apply']
 // route-specific is only whether the fetch is forced up front.
 const PLAYFAIR_ROUTES = new Set(['home', 'sponsors'])
 const PLAYFAIR_PRELOAD = /\n\s*<link\b[^>]*playfair-display[^>]*>/i
-const MODULE_SCRIPT = /\n\s*<script\b[^>]*type="module"[^>]*><\/script>/gi
 
 const escapeHtml = (value) =>
   String(value)
@@ -65,6 +67,12 @@ const seoHead = (page) => {
         2,
       ).replaceAll('<', '\\u003c')}</script>`
     : ''
+  const socialImage = seo.image
+    ? `
+    <meta property="og:image" content="${SITE_URL}${seo.image}" />
+    <meta property="og:image:alt" content="Cover of ${escapeHtml(seo.heading)}" />
+    <meta name="twitter:image" content="${SITE_URL}${seo.image}" />`
+    : ''
 
   return `<!-- seo:head:start -->
     <title>${escapeHtml(seo.title)}</title>
@@ -78,16 +86,16 @@ const seoHead = (page) => {
     <meta property="og:title" content="${escapeHtml(seo.title)}" />
     <meta property="og:description" content="${escapeHtml(seo.description)}" />
     <meta property="og:url" content="${url}" />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="${seo.image ? 'summary_large_image' : 'summary'}" />
     <meta name="twitter:title" content="${escapeHtml(seo.title)}" />
-    <meta name="twitter:description" content="${escapeHtml(seo.description)}" />${jsonLd}
+    <meta name="twitter:description" content="${escapeHtml(seo.description)}" />${socialImage}${jsonLd}
     <!-- seo:head:end -->`
 }
 
 const seoFallback = (page) => {
   const seo = getPageSeo(page)
   const nav = Object.entries(PAGE_SEO)
-    .filter(([, entry]) => !entry.noindex)
+    .filter(([, entry]) => !entry.noindex && !entry.parentPage)
     .map(
       ([key, entry]) =>
         `<a href="${entry.path}"${key === page ? ' aria-current="page"' : ''}>${escapeHtml(
@@ -99,6 +107,46 @@ const seoFallback = (page) => {
     ? `\n        <ul class="seo-fallback__highlights">\n${seo.highlights
         .map((item) => `          <li>${escapeHtml(item)}</li>`)
         .join('\n')}\n        </ul>`
+    : ''
+  const sections = seo.sections?.length
+    ? `
+        <div class="seo-fallback__sections">
+${seo.sections
+  .map(
+    (section) => `          <section>
+            <h2>${escapeHtml(section.heading)}</h2>
+${section.paragraphs.map((paragraph) => `            <p>${escapeHtml(paragraph)}</p>`).join('\n')}
+${section.bullets?.length ? `            <ul>\n${section.bullets.map((item) => `              <li>${escapeHtml(item)}</li>`).join('\n')}\n            </ul>` : ''}
+          </section>`,
+  )
+  .join('\n')}
+        </div>`
+    : ''
+  const reportLink = seo.report
+    ? `
+        <p>CUPI Technical Report · ${escapeHtml(seo.report.year)} · Updated <time datetime="${escapeHtml(
+          seo.report.lastModified,
+        )}">${escapeHtml(seo.report.lastModifiedLabel)}</time></p>
+        <p><a href="/docs/${seo.report.slug}.pdf">Read the full ${escapeHtml(
+          seo.report.pageCount,
+        )}-page technical report (PDF)</a></p>`
+    : ''
+  const childLinks = Object.values(PAGE_SEO).filter(
+    (entry) => !entry.noindex && entry.parentPage === page,
+  )
+  const relatedLinks = childLinks.length
+    ? `
+        <section class="seo-fallback__related" aria-labelledby="seo-related-heading">
+          <h2 id="seo-related-heading">CUPI technical reports</h2>
+          <ul>
+${childLinks
+  .map(
+    (entry) =>
+      `            <li><a href="${entry.path}">${escapeHtml(entry.navLabel)}</a></li>`,
+  )
+  .join('\n')}
+          </ul>
+        </section>`
     : ''
 
   return `<!-- seo:fallback:start -->
@@ -112,11 +160,12 @@ const seoFallback = (page) => {
       <main class="seo-fallback__main">
         <p class="seo-fallback__eyebrow">${SITE_ACRONYM} at Cornell University</p>
         <h1>${escapeHtml(seo.heading)}</h1>
-        <p class="seo-fallback__intro">${escapeHtml(seo.description)}</p>${highlights}
+        <p class="seo-fallback__intro">${escapeHtml(seo.description)}</p>${highlights}${relatedLinks}${reportLink}${sections}
       </main>
       <footer class="seo-fallback__footer">
-        <p>${SITE_NAME} (${SITE_ACRONYM}) is a registered student organization at Cornell University.</p>
-        <p><a href="https://cornell.campusgroups.com/cupi/home/">Official Cornell CampusGroups profile</a></p>
+        <p>${SITE_NAME} (${SITE_ACRONYM}) is a registered student organization based at Cornell University in Ithaca, New York.</p>
+        <p><a href="https://cornell.campusgroups.com/cupi/home/">Official Cornell listing: Cornell Physical Intelligence Club</a></p>
+        <p>General inquiries: <a href="mailto:cuphysint@cornell.edu">cuphysint@cornell.edu</a></p>
       </footer>
     </div>
     <!-- seo:fallback:end -->`
@@ -130,8 +179,47 @@ const renderSeoDocument = (html, page) =>
       seoFallback(page),
     )
 
+const sitemapDocument = () => `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${Object.entries(PAGE_SEO)
+  .filter(([, seo]) => !seo.noindex)
+  .map(
+    ([page, seo]) => `  <url>
+    <loc>${canonicalUrlForPage(page)}</loc>
+    <lastmod>${seo.lastModified}</lastmod>
+  </url>`,
+  )
+  .join('\n')}
+</urlset>
+`
+
+const notFoundDocument = () => `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    ${seoHead('notFound')}
+    <style>
+      html { color-scheme: light dark; font-family: system-ui, sans-serif; }
+      body { min-height: 100vh; margin: 0; display: grid; place-items: center; text-align: center; }
+      main { padding: 32px; }
+      h1 { margin: 0 0 12px; font-size: clamp(2rem, 7vw, 5rem); font-weight: 500; }
+      p { margin: 0; line-height: 1.6; }
+      a { color: inherit; text-underline-offset: 0.2em; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>${escapeHtml(getPageSeo('notFound').heading)}</h1>
+      <p>The requested page could not be found. <a href="/">Return to Cornell Physical Intelligence.</a></p>
+    </main>
+  </body>
+</html>
+`
+
 const pageFromDevPath = (path) => {
-  const normalized = path === '/index.html' ? '/' : path
+  const raw = path.replace(/index\.html$/, '') || '/'
+  const normalized = raw === '/' || raw.endsWith('/') ? raw : `${raw}/`
   return (
     Object.entries(PAGE_SEO).find(([, seo]) => seo.path === normalized)?.[0] ?? 'home'
   )
@@ -162,7 +250,7 @@ const emitRoutePages = () => {
     generateBundle(_options, bundle) {
       for (const chunk of Object.values(bundle)) {
         if (chunk.type !== 'chunk' || !chunk.facadeModuleId) continue
-        const match = chunk.facadeModuleId.match(/src\/pages\/([A-Za-z]+)\.jsx$/)
+        const match = chunk.facadeModuleId.match(/src\/pages\/([^/]+)\.jsx$/)
         if (!match) continue
         chunks[match[1].toLowerCase()] = {
           js: chunk.fileName,
@@ -179,7 +267,7 @@ const emitRoutePages = () => {
       // chunk injects its own <link> when it runs and two live stylesheets for one file is
       // a needless thing to reason about later.
       const hints = (route) => {
-        const entry = chunks[route]
+        const entry = chunks[route.toLowerCase()]
         if (!entry) return ''
         const lines = [`    <link rel="modulepreload" crossorigin href="/${entry.js}" />`]
         for (const css of entry.css) {
@@ -202,18 +290,14 @@ const emitRoutePages = () => {
 
       writeFileSync(join(outDir, 'index.html'), withHints('home'))
       for (const route of ROUTES) {
-        mkdirSync(join(outDir, route), { recursive: true })
-        writeFileSync(join(outDir, route, 'index.html'), withHints(route))
+        const routeDir = getPageSeo(route).path.replace(/^\/+|\/+$/g, '')
+        mkdirSync(join(outDir, routeDir), { recursive: true })
+        writeFileSync(join(outDir, routeDir, 'index.html'), withHints(route))
       }
-      // The 404 fallback can be reached as any URL, so it preloads nothing in particular.
-      // It is deliberately standalone: booting the SPA here would map an unknown path to
-      // Home and replace the honest not-found document with homepage content and schema.
-      writeFileSync(
-        join(outDir, '404.html'),
-        renderSeoDocument(base, 'notFound')
-          .replace(PLAYFAIR_PRELOAD, '')
-          .replace(MODULE_SCRIPT, ''),
-      )
+      writeFileSync(join(outDir, 'sitemap.xml'), sitemapDocument())
+      // A standalone 404 carries no app chunks, stylesheets, or fonts. It cannot replace
+      // itself with Home or spend bandwidth on assets that a not-found page never uses.
+      writeFileSync(join(outDir, '404.html'), notFoundDocument())
     },
   }
 }

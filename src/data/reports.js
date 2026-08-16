@@ -1,4 +1,5 @@
 import { assetPath } from '../utils/assetPath';
+import { REPORT_CONTENT } from './reportContent.js';
 
 // Technical reports, not publications: these are written and released by the team, not
 // accepted anywhere, and calling them publications overstated it.
@@ -7,29 +8,11 @@ import { assetPath } from '../utils/assetPath';
 // PDF at build-prep time. Pages are images rather than an embedded PDF so the viewer can
 // be styled and scrolled like the rest of the site instead of handing off to the
 // browser's built-in reader, which we can't theme and which degrades badly on mobile.
-export const REPORTS = [
-  {
-    slug: 'vq1-deterministic-policy',
-    // Card copy stays to two sentences, but has to define the competition: a visitor
-    // has no idea what the AI Grand Prix is. The full academic title lives on the
-    // report's own first page, one click away.
-    title: 'Anduril AI-GP Qual 1',
-    subtitle:
-      'Clearing every gate of the first qualifier in Anduril\'s autonomous drone racing competition, with no learned components.',
-    authors: 'AI-GP Autonomy Team',
-    year: 2026,
-    pageCount: 3,
-  },
-  {
-    slug: 'racing-without-a-map',
-    title: 'Racing Without a Map',
-    subtitle:
-      'A meta analysis of roughly 400 papers on drone control, perception, and guidance, and what survives when a racing drone loses all telemetry.',
-    authors: 'AI-GP Autonomy Team',
-    year: 2026,
-    pageCount: 16,
-  },
-];
+export const REPORTS = REPORT_CONTENT.map((report) => ({
+  ...report,
+  title: report.cardTitle,
+  subtitle: report.cardSubtitle,
+}));
 
 // Covers are rendered straight from the PDF at the three sizes the card can actually
 // need -- it is 200-240 CSS px wide, so 240/480/720 is exactly 1x/2x/3x and nothing is

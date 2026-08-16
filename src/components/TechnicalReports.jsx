@@ -99,7 +99,7 @@ export default function TechnicalReports() {
               </div>
               <div className="report-card__meta">
                 <h3 className="report-card__title">
-                  <a href={getReportPdf(report.slug)} target="_blank" rel="noreferrer">
+                  <a href={report.path}>
                     {report.title}
                   </a>
                 </h3>

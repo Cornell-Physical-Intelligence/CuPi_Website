@@ -1,6 +1,9 @@
+import { REPORT_BY_PAGE } from './data/reportContent.js';
+
 export const SITE_URL = 'https://cornellphysicalintelligence.com';
 export const SITE_NAME = 'Cornell Physical Intelligence';
 export const SITE_ACRONYM = 'CUPI';
+export const SITE_RELEASE_DATE = '2026-08-16';
 
 export const ORGANIZATION_DESCRIPTION =
   'Cornell Physical Intelligence (CUPI) is a registered student organization at Cornell University building robotic systems for manipulation, autonomous perception, and navigation.';
@@ -17,6 +20,7 @@ export const PAGE_SEO = {
       'Autonomous perception and navigation',
       'Multidisciplinary mechanical, electrical, and software engineering',
     ],
+    lastModified: SITE_RELEASE_DATE,
   },
   work: {
     path: '/work/',
@@ -30,6 +34,7 @@ export const PAGE_SEO = {
       'Autonomous drone perception and navigation',
       'CUPI technical reports and project results',
     ],
+    lastModified: SITE_RELEASE_DATE,
   },
   members: {
     path: '/members/',
@@ -37,12 +42,13 @@ export const PAGE_SEO = {
     title: 'CUPI Team | Cornell Physical Intelligence',
     heading: 'Cornell Physical Intelligence Members',
     description:
-      'Meet the Cornell students and faculty advisors behind Cornell Physical Intelligence (CUPI) and its multidisciplinary robotics teams.',
+      'Meet the Cornell students and faculty behind Cornell Physical Intelligence (CUPI) and its multidisciplinary robotics teams.',
     highlights: [
       'Mechanical, electrical, software, and business teams',
       'Cornell student researchers and builders',
-      'Faculty advisors supporting CUPI robotics work',
+      'Cornell faculty supporting CUPI robotics work',
     ],
+    lastModified: SITE_RELEASE_DATE,
   },
   sponsors: {
     path: '/sponsors/',
@@ -56,19 +62,47 @@ export const PAGE_SEO = {
       'Help fund robots, sensors, and computing',
       'Read the CUPI sponsorship packet',
     ],
+    lastModified: SITE_RELEASE_DATE,
   },
   apply: {
     path: '/apply/',
     navLabel: 'Apply',
-    title: 'Join CUPI | Cornell Physical Intelligence',
-    heading: 'Join Cornell Physical Intelligence',
+    title: 'CUPI Applications | Cornell Physical Intelligence',
+    heading: 'Cornell Physical Intelligence Applications',
     description:
-      'Learn how to join Cornell Physical Intelligence (CUPI), Cornell University’s multidisciplinary student robotics organization.',
+      'Check the current application status for Cornell Physical Intelligence (CUPI) and contact the team about future Cornell robotics opportunities.',
     highlights: [
-      'Build intelligent physical systems',
-      'Work across robotics, hardware, and AI',
-      'Check current CUPI application availability',
+      'Current CUPI applications are closed',
+      'Contact the team about future recruitment',
+      'Explore CUPI robotics projects and technical reports',
     ],
+    lastModified: SITE_RELEASE_DATE,
+  },
+  vq1Report: {
+    path: REPORT_BY_PAGE.vq1Report.path,
+    navLabel: REPORT_BY_PAGE.vq1Report.cardTitle,
+    title: REPORT_BY_PAGE.vq1Report.metaTitle,
+    heading: REPORT_BY_PAGE.vq1Report.title,
+    description: REPORT_BY_PAGE.vq1Report.description,
+    highlights: REPORT_BY_PAGE.vq1Report.highlights,
+    sections: REPORT_BY_PAGE.vq1Report.sections,
+    image: REPORT_BY_PAGE.vq1Report.image,
+    report: REPORT_BY_PAGE.vq1Report,
+    parentPage: 'work',
+    lastModified: REPORT_BY_PAGE.vq1Report.lastModified,
+  },
+  racingReport: {
+    path: REPORT_BY_PAGE.racingReport.path,
+    navLabel: REPORT_BY_PAGE.racingReport.cardTitle,
+    title: REPORT_BY_PAGE.racingReport.metaTitle,
+    heading: REPORT_BY_PAGE.racingReport.title,
+    description: REPORT_BY_PAGE.racingReport.description,
+    highlights: REPORT_BY_PAGE.racingReport.highlights,
+    sections: REPORT_BY_PAGE.racingReport.sections,
+    image: REPORT_BY_PAGE.racingReport.image,
+    report: REPORT_BY_PAGE.racingReport,
+    parentPage: 'work',
+    lastModified: REPORT_BY_PAGE.racingReport.lastModified,
   },
   notFound: {
     path: '/404.html',
@@ -78,6 +112,7 @@ export const PAGE_SEO = {
     description: 'The requested Cornell Physical Intelligence page could not be found.',
     highlights: [],
     noindex: true,
+    lastModified: SITE_RELEASE_DATE,
   },
 };
 
@@ -89,8 +124,13 @@ const organizationNode = {
   '@type': 'Organization',
   '@id': `${SITE_URL}/#organization`,
   name: SITE_NAME,
-  alternateName: SITE_ACRONYM,
+  alternateName: [
+    SITE_ACRONYM,
+    'Cornell Physical Intelligence Club',
+  ],
   url: `${SITE_URL}/`,
+  logo: `${SITE_URL}/favicon-192.png`,
+  email: 'cuphysint@cornell.edu',
   description: ORGANIZATION_DESCRIPTION,
   address: {
     '@type': 'PostalAddress',
@@ -133,9 +173,15 @@ export const structuredDataForPage = (page) => {
     inLanguage: 'en-US',
   };
 
+  if (seo.report) {
+    webPage.mainEntity = { '@id': `${url}#report` };
+    webPage.dateModified = seo.lastModified;
+  }
+
   const graph = page === 'home' ? [organizationNode, websiteNode, webPage] : [webPage];
 
   if (page !== 'home') {
+    const parent = seo.parentPage ? getPageSeo(seo.parentPage) : null;
     graph.push({
       '@type': 'BreadcrumbList',
       '@id': `${url}#breadcrumb`,
@@ -149,10 +195,43 @@ export const structuredDataForPage = (page) => {
         {
           '@type': 'ListItem',
           position: 2,
-          name: seo.navLabel,
-          item: url,
+          name: parent?.navLabel ?? seo.navLabel,
+          item: parent ? canonicalUrlForPage(seo.parentPage) : url,
         },
+        ...(parent
+          ? [{ '@type': 'ListItem', position: 3, name: seo.navLabel, item: url }]
+          : []),
       ],
+    });
+  }
+
+  if (seo.report) {
+    graph.push({
+      '@type': 'TechArticle',
+      '@id': `${url}#report`,
+      url,
+      headline: seo.heading,
+      description: seo.description,
+      image: `${SITE_URL}${seo.image}`,
+      author: {
+        '@type': 'Organization',
+        name: seo.report.authors,
+        parentOrganization: { '@id': `${SITE_URL}/#organization` },
+      },
+      publisher: {
+        '@type': 'Organization',
+        '@id': `${SITE_URL}/#organization`,
+        name: SITE_NAME,
+        url: `${SITE_URL}/`,
+        logo: `${SITE_URL}/favicon-192.png`,
+      },
+      dateModified: seo.lastModified,
+      inLanguage: 'en-US',
+      encoding: {
+        '@type': 'MediaObject',
+        contentUrl: `${SITE_URL}/docs/${seo.report.slug}.pdf`,
+        encodingFormat: 'application/pdf',
+      },
     });
   }
 
@@ -172,6 +251,19 @@ export const applyPageSeo = (page) => {
   const setContent = (selector, content) => {
     document.querySelector(selector)?.setAttribute('content', content);
   };
+  const upsertMeta = (attribute, key, content) => {
+    let meta = document.querySelector(`meta[${attribute}="${key}"]`);
+    if (!content) {
+      meta?.remove();
+      return;
+    }
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute(attribute, key);
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', content);
+  };
 
   document.title = seo.title;
   setContent('meta[name="description"]', seo.description);
@@ -180,6 +272,10 @@ export const applyPageSeo = (page) => {
   setContent('meta[property="og:url"]', url);
   setContent('meta[name="twitter:title"]', seo.title);
   setContent('meta[name="twitter:description"]', seo.description);
+  setContent('meta[name="twitter:card"]', seo.image ? 'summary_large_image' : 'summary');
+  upsertMeta('property', 'og:image', seo.image ? `${SITE_URL}${seo.image}` : null);
+  upsertMeta('property', 'og:image:alt', seo.image ? `Cover of ${seo.heading}` : null);
+  upsertMeta('name', 'twitter:image', seo.image ? `${SITE_URL}${seo.image}` : null);
   document.querySelector('link[rel="canonical"]')?.setAttribute('href', url);
 
   const data = structuredDataForPage(page);

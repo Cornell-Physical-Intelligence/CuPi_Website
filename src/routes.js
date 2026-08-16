@@ -1,18 +1,27 @@
 // Routing, kept apart from App so that main.jsx can read the current route and start
-// fetching its page before React exists.
+// fetching its page before React exists. Paths come from the SEO map so emitted static
+// documents, client routing, canonicals, and the sitemap cannot drift independently.
+import { PAGE_SEO, getPageSeo } from './seo';
 
-export const VALID_PAGES = ['home', 'work', 'members', 'sponsors', 'apply'];
+export const VALID_PAGES = Object.entries(PAGE_SEO)
+  .filter(([, seo]) => !seo.noindex)
+  .map(([page]) => page);
 
 // Real paths rather than #fragments. The build writes an index.html into a folder per
 // route, so /work is a genuine document that Pages can serve and the router reads back
 // from the pathname.
 export const getPageFromPath = () => {
-  const seg = window.location.pathname.replace(/^\/+|\/+$/g, '');
-  return VALID_PAGES.includes(seg) ? seg : 'home';
+  const raw = window.location.pathname.replace(/index\.html$/, '') || '/';
+  const path = raw === '/' || raw.endsWith('/') ? raw : `${raw}/`;
+  return (
+    Object.entries(PAGE_SEO).find(
+      ([, seo]) => !seo.noindex && seo.path === path,
+    )?.[0] ?? 'home'
+  );
 };
 
 export const writePath = (page) => {
-  window.history.pushState({}, '', page === 'home' ? '/' : `/${page}/`);
+  window.history.pushState({}, '', getPageSeo(page).path);
 };
 
 // Anything still linking to the old #work style URLs is rewritten in place, once, before
@@ -20,7 +29,7 @@ export const writePath = (page) => {
 export const normalizeLegacyHash = () => {
   const legacy = window.location.hash.replace('#', '');
   if (VALID_PAGES.includes(legacy)) {
-    window.history.replaceState({}, '', legacy === 'home' ? '/' : `/${legacy}/`);
+    window.history.replaceState({}, '', getPageSeo(legacy).path);
   } else if (window.location.hash) {
     window.history.replaceState({}, '', window.location.pathname);
   }
@@ -33,4 +42,6 @@ export const PAGE_LOADERS = {
   members: () => import('./pages/Members'),
   sponsors: () => import('./pages/Sponsors'),
   apply: () => import('./pages/Apply'),
+  vq1Report: () => import('./pages/Vq1Report'),
+  racingReport: () => import('./pages/RacingReport'),
 };

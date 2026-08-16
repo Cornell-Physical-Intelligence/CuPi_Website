@@ -73,6 +73,7 @@ export default function HoverVideo({ src, poster, label, ratio }) {
         sizes={POSTER_SIZES}
         className="hover-video__still"
         draggable={false}
+        loading="lazy"
         decoding="async"
         alt=""
         aria-hidden="true"
