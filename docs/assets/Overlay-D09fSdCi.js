@@ -1,0 +1,12 @@
+import{n as e}from"./SiteFooter-R_uNDa-b.js";import{r as t}from"./ResponsiveImage-DhL5Ikn6.js";var n=[{title:`Robotic Manipulation Tasks`,ratio:`1 / 1`,clips:[{src:`/media/arm-ball-960.mp4`,poster:`arm-ball`,label:`Play: a 3D-printed arm picking up a ball`},{src:`/media/arm-meat-960.mp4`,poster:`arm-meat`,label:`Play: a robot arm cutting on a processing line`}],summary:`Our robotic-manipulation work runs a fine-tuned π0.5 policy on our own arm.
+      π0.5 is the robotics company Physical Intelligence's open vision-language-action
+      model, so we are not
+      training from scratch: the released checkpoint brings broad manipulation priors
+      from web and robot data, and our work is adapting it to the grippers, camera
+      placement, and tasks in our lab.`},{title:`Autonomous Perception and Navigation`,ratio:`4 / 3`,clips:[{src:`/media/drone-sim-960.mp4`,poster:`drone-sim`,label:`Play: a quadrotor flying a simulated race course`},{src:`/media/drone-gates-960.mp4`,poster:`drone-gates`,label:`Play: an FPV replay showing gate detections and live telemetry`}],summary:`We build the autonomy stack for the Anduril AI Grand Prix, an autonomous
+      drone racing competition run with the Drone Champions League. We passed Virtual
+      Qualifier 1 with a fully deterministic policy: no learned network anywhere in the
+      loop, just dead reckoning against the released course map with visual gate
+      corrections. Virtual Qualifier 2 blocks every pose and gate telemetry stream,
+      leaving a monocular camera and IMU, so our successor work explores bearings-only
+      guidance and optical looming without a surveyed map.`,partner:{href:`https://theaigrandprix.com/`,src:`icons/ai-gp-logo-orange.svg`,alt:`AI Grand Prix`}}],r=e=>e.summary.replace(/\s+/g,` `).trim(),i=t(),a=e();function o({open:e,onClose:t,className:n=``,duration:r=200,children:o,...s}){let[c,l]=(0,i.useState)(!1),[u,d]=(0,i.useState)(!1),f=(0,i.useRef)(null);return(0,i.useEffect)(()=>{if(e){let e=requestAnimationFrame(()=>{l(!0),requestAnimationFrame(()=>d(!0))});return()=>cancelAnimationFrame(e)}if(c)return f.current=window.setTimeout(()=>{l(!1),d(!1)},r),()=>window.clearTimeout(f.current)},[e,c,r]),(0,i.useEffect)(()=>{if(!e)return;let n=e=>{e.key===`Escape`&&t?.()};return window.addEventListener(`keydown`,n),()=>window.removeEventListener(`keydown`,n)},[e,t]),!e&&!c?null:(0,a.jsx)(`div`,{className:`${n} ${e&&u?`is-entered`:``}`.trim(),onClick:t,...s,children:o})}export{n,r,o as t};

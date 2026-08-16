@@ -108,10 +108,11 @@ const seoFallback = (page) => {
         .map((item) => `          <li>${escapeHtml(item)}</li>`)
         .join('\n')}\n        </ul>`
     : ''
-  const sections = seo.sections?.length
+  const contentSections = seo.sections ?? seo.fallbackSections
+  const sections = contentSections?.length
     ? `
         <div class="seo-fallback__sections">
-${seo.sections
+${contentSections
   .map(
     (section) => `          <section>
             <h2>${escapeHtml(section.heading)}</h2>
@@ -142,7 +143,9 @@ ${section.bullets?.length ? `            <ul>\n${section.bullets.map((item) => `
 ${childLinks
   .map(
     (entry) =>
-      `            <li><a href="${entry.path}">${escapeHtml(entry.navLabel)}</a></li>`,
+      `            <li><a href="${entry.path}">${escapeHtml(entry.navLabel)}</a>${
+        entry.report?.cardSubtitle ? ` — ${escapeHtml(entry.report.cardSubtitle)}` : ''
+      }</li>`,
   )
   .join('\n')}
           </ul>

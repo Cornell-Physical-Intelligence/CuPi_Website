@@ -1,4 +1,6 @@
 import { REPORT_BY_PAGE } from './data/reportContent.js';
+import { SUBTEAMS } from './data/subteams.js';
+import { WORK_AREAS, normalizedWorkSummary } from './data/workAreas.js';
 
 export const SITE_URL = 'https://cornellphysicalintelligence.com';
 export const SITE_NAME = 'Cornell Physical Intelligence';
@@ -20,6 +22,19 @@ export const PAGE_SEO = {
       'Autonomous perception and navigation',
       'Multidisciplinary mechanical, electrical, and software engineering',
     ],
+    fallbackSections: [
+      {
+        heading: 'About Cornell Physical Intelligence',
+        paragraphs: [
+          'Cornell Physical Intelligence (CUPI), listed by Cornell as the Cornell Physical Intelligence Club, is a registered student organization at Cornell University. We create physical systems that can intelligently reason and interact with their environments. The gap between AI software and hardware needs to be closed seamlessly, and through our multidisciplinary team, we pursue this symbiosis. We prioritize creative, ambitious, and self-starting thinkers, because the problems worth solving here do not come with instructions.',
+        ],
+      },
+      {
+        heading: 'CUPI Subteams',
+        paragraphs: [],
+        bullets: SUBTEAMS.map((team) => `${team.title}: ${team.description}`),
+      },
+    ],
     lastModified: SITE_RELEASE_DATE,
   },
   work: {
@@ -34,6 +49,10 @@ export const PAGE_SEO = {
       'Autonomous drone perception and navigation',
       'CUPI technical reports and project results',
     ],
+    fallbackSections: WORK_AREAS.map((area) => ({
+      heading: area.title,
+      paragraphs: [normalizedWorkSummary(area)],
+    })),
     lastModified: SITE_RELEASE_DATE,
   },
   members: {
@@ -62,6 +81,20 @@ export const PAGE_SEO = {
       'Help fund robots, sensors, and computing',
       'Read the CUPI sponsorship packet',
     ],
+    fallbackSections: [
+      {
+        heading: 'Current CUPI sponsors',
+        paragraphs: [
+          'Cornell Physical Intelligence is supported by CU GeoData, Modovolo, Tantalus, and UPS.',
+        ],
+      },
+      {
+        heading: 'Sponsor CUPI robotics',
+        paragraphs: [
+          'Sponsorship helps fund the robots and computing used by Cornell Physical Intelligence. Prospective sponsors can read the CUPI sponsorship packet and contact the team at ab3233@cornell.edu.',
+        ],
+      },
+    ],
     lastModified: SITE_RELEASE_DATE,
   },
   apply: {
@@ -75,6 +108,14 @@ export const PAGE_SEO = {
       'Current CUPI applications are closed',
       'Contact the team about future recruitment',
       'Explore CUPI robotics projects and technical reports',
+    ],
+    fallbackSections: [
+      {
+        heading: 'Current application status',
+        paragraphs: [
+          'Applications are currently closed. For questions about future recruitment, contact ab3233@cornell.edu.',
+        ],
+      },
     ],
     lastModified: SITE_RELEASE_DATE,
   },

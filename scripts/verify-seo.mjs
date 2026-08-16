@@ -148,6 +148,25 @@ for (const [page, seo] of INDEXABLE_PAGES) {
       `${page} is missing its route module preload`,
     );
   }
+
+  for (const section of seo.fallbackSections ?? []) {
+    assert(
+      html.includes(`<h2>${escapeHtml(section.heading)}</h2>`),
+      `${page} static HTML is missing fallback section: ${section.heading}`,
+    );
+    for (const paragraph of section.paragraphs) {
+      assert(
+        html.includes(`<p>${escapeHtml(paragraph)}</p>`),
+        `${page} static HTML is missing fallback copy for: ${section.heading}`,
+      );
+    }
+    for (const item of section.bullets ?? []) {
+      assert(
+        html.includes(`<li>${escapeHtml(item)}</li>`),
+        `${page} static HTML is missing fallback list content for: ${section.heading}`,
+      );
+    }
+  }
 }
 
 const workHtml = readFileSync(fileForPage(PAGE_SEO.work), 'utf8');
