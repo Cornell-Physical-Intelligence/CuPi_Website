@@ -132,18 +132,26 @@ ${section.bullets?.length ? `            <ul>\n${section.bullets.map((item) => `
           seo.report.pageCount,
         )}-page technical report (PDF)</a></p>`
     : ''
+  const explicitRelatedLinks = (seo.relatedPages ?? [])
+    .map((relatedPage) => PAGE_SEO[relatedPage])
+    .filter((entry) => entry && !entry.noindex)
   const childLinks = Object.values(PAGE_SEO).filter(
     (entry) => !entry.noindex && entry.parentPage === page,
   )
-  const relatedLinks = childLinks.length
+  const relatedEntries = explicitRelatedLinks.length ? explicitRelatedLinks : childLinks
+  const relatedLinks = relatedEntries.length
     ? `
         <section class="seo-fallback__related" aria-labelledby="seo-related-heading">
-          <h2 id="seo-related-heading">CUPI technical reports</h2>
+          <h2 id="seo-related-heading">${escapeHtml(
+            seo.relatedHeading ?? 'CUPI technical reports',
+          )}</h2>
           <ul>
-${childLinks
+${relatedEntries
   .map(
     (entry) =>
-      `            <li><a href="${entry.path}">${escapeHtml(entry.navLabel)}</a>${
+      `            <li><a href="${entry.path}">${escapeHtml(
+        entry.report ? entry.heading : entry.navLabel,
+      )}</a>${
         entry.report?.cardSubtitle ? ` — ${escapeHtml(entry.report.cardSubtitle)}` : ''
       }</li>`,
   )
@@ -166,9 +174,10 @@ ${childLinks
         <p class="seo-fallback__intro">${escapeHtml(seo.description)}</p>${highlights}${relatedLinks}${reportLink}${sections}
       </main>
       <footer class="seo-fallback__footer">
-        <p>${SITE_NAME} (${SITE_ACRONYM}) is a registered student organization based at Cornell University in Ithaca, New York.</p>
+        <p>${SITE_NAME} (${SITE_ACRONYM}) is a Cornell University student robotics organization based in Ithaca, New York.</p>
         <p><a href="https://cornell.campusgroups.com/cupi/home/">Official Cornell listing: Cornell Physical Intelligence Club</a></p>
         <p>General inquiries: <a href="mailto:cuphysint@cornell.edu">cuphysint@cornell.edu</a></p>
+        <p><a href="https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment">Equal Education &amp; Employment</a></p>
       </footer>
     </div>
     <!-- seo:fallback:end -->`

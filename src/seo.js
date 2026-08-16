@@ -8,7 +8,7 @@ export const SITE_ACRONYM = 'CUPI';
 export const SITE_RELEASE_DATE = '2026-08-16';
 
 export const ORGANIZATION_DESCRIPTION =
-  'Cornell Physical Intelligence (CUPI) is a registered student organization at Cornell University building robotic systems for manipulation, autonomous perception, and navigation.';
+  'Cornell Physical Intelligence (CUPI) is a Cornell University student robotics organization building systems for manipulation, autonomous perception, and navigation.';
 
 export const PAGE_SEO = {
   home: {
@@ -22,11 +22,13 @@ export const PAGE_SEO = {
       'Autonomous perception and navigation',
       'Multidisciplinary mechanical, electrical, and software engineering',
     ],
+    relatedPages: ['vq1Report', 'racingReport'],
+    relatedHeading: 'Latest technical reports',
     fallbackSections: [
       {
         heading: 'About Cornell Physical Intelligence',
         paragraphs: [
-          'Cornell Physical Intelligence (CUPI), listed by Cornell as the Cornell Physical Intelligence Club, is a registered student organization at Cornell University. We create physical systems that can intelligently reason and interact with their environments. The gap between AI software and hardware needs to be closed seamlessly, and through our multidisciplinary team, we pursue this symbiosis. We prioritize creative, ambitious, and self-starting thinkers, because the problems worth solving here do not come with instructions.',
+          'Cornell Physical Intelligence (CUPI), listed by Cornell as the Cornell Physical Intelligence Club, is a Cornell University student robotics organization. We create physical systems that can intelligently reason and interact with their environments. The gap between AI software and hardware needs to be closed seamlessly, and through our multidisciplinary team, we pursue this symbiosis. We prioritize creative, ambitious, and self-starting thinkers, because the problems worth solving here do not come with instructions.',
         ],
       },
       {
@@ -193,7 +195,7 @@ const websiteNode = {
   '@id': `${SITE_URL}/#website`,
   url: `${SITE_URL}/`,
   name: SITE_NAME,
-  alternateName: SITE_ACRONYM,
+  alternateName: [SITE_ACRONYM, 'Cornell Physical Intelligence Club'],
   publisher: { '@id': `${SITE_URL}/#organization` },
   inLanguage: 'en-US',
 };

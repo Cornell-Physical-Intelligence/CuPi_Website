@@ -50,8 +50,8 @@ export default function SiteFooter() {
 
         <div className="site-footer__copy">
           <p>
-            <a href="/">Cornell Physical Intelligence (CUPI)</a> is a registered student
-            organization based at Cornell University in Ithaca, New York.
+            <a href="/">Cornell Physical Intelligence (CUPI)</a> is a Cornell University
+            student robotics organization based in Ithaca, New York.
           </p>
           <p>
             <a
@@ -67,13 +67,12 @@ export default function SiteFooter() {
             <a href="mailto:cuphysint@cornell.edu">cuphysint@cornell.edu</a>
           </p>
           <p>
-            Equal Education and Employment:{' '}
             <a
               href="https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment"
               target="_blank"
               rel="noreferrer"
             >
-              https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment
+              Equal Education &amp; Employment
             </a>
           </p>
         </div>

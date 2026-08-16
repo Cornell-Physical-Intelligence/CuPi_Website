@@ -77,6 +77,22 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   assert(heading === escapeHtml(seo.heading), `${page} static H1 does not match the SEO map`);
   assert(html.includes('name="robots" content="index, follow'), `${page} is not indexable`);
   assert(html.includes('href="/work/"'), `${page} is missing crawlable primary links`);
+  assert(
+    html.includes(
+      'Cornell Physical Intelligence (CUPI) is a Cornell University student robotics organization based in Ithaca, New York.',
+    ),
+    `${page} static footer has stale organization wording`,
+  );
+  assert(
+    html.includes(
+      'href="https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment">Equal Education &amp; Employment</a>',
+    ),
+    `${page} static footer is missing Cornell's EEEO link`,
+  );
+  assert(
+    !/registered student organization/i.test(html),
+    `${page} must not contradict Cornell's current registration status`,
+  );
 
   const data = JSON.parse(json);
   assert(Array.isArray(data['@graph']) && data['@graph'].length > 0, `${page} schema is empty`);
@@ -115,6 +131,13 @@ for (const [page, seo] of INDEXABLE_PAGES) {
       'The structured organization email must also be visible to readers',
     );
     assert(html.includes('Ithaca, New York'), 'The structured organization location must be visible');
+    const website = data['@graph'].find((node) => node['@type'] === 'WebSite');
+    for (const alternate of ['CUPI', 'Cornell Physical Intelligence Club']) {
+      assert(
+        website?.alternateName?.includes(alternate),
+        `WebSite schema is missing alternate name: ${alternate}`,
+      );
+    }
   }
 
   if (seo.report) {
@@ -169,6 +192,15 @@ for (const [page, seo] of INDEXABLE_PAGES) {
         `${page} static HTML is missing fallback list content for: ${section.heading}`,
       );
     }
+  }
+
+  for (const relatedPage of seo.relatedPages ?? []) {
+    const relatedSeo = PAGE_SEO[relatedPage];
+    assert(relatedSeo, `${page} references an unknown related page: ${relatedPage}`);
+    assert(
+      html.includes(`href="${relatedSeo.path}"`),
+      `${page} static HTML must link to related page: ${relatedPage}`,
+    );
   }
 }
 

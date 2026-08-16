@@ -71,12 +71,12 @@ function MissionTiles({ played, onPlay }) {
             <a href="https://cornell.campusgroups.com/cupi/home/">
               Cornell Physical Intelligence Club
             </a>
-            , is a registered student organization at Cornell University. We create physical
-            systems that can intelligently reason and interact with their environments. The
-            gap between AI software and hardware needs to be closed seamlessly, and through
-            our multidisciplinary team, we pursue this symbiosis. We prioritize creative,
-            ambitious, and self-starting thinkers, because the problems worth solving here
-            do not come with instructions.
+            , is a Cornell University student robotics organization. We create physical systems
+            that can intelligently reason and interact with their environments. The gap between
+            AI software and hardware needs to be closed seamlessly, and through our
+            multidisciplinary team, we pursue this symbiosis. We prioritize creative, ambitious,
+            and self-starting thinkers, because the problems worth solving here do not come with
+            instructions.
           </p>
         </div>
         <div className="mission-tiles__stats" aria-label="Team scale insights">
