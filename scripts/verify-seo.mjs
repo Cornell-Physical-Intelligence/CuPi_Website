@@ -84,6 +84,14 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   assert(webPage?.url === canonical, `${page} WebPage schema URL is incorrect`);
   assert(webPage?.['@id'] === `${canonical}#webpage`, `${page} WebPage schema ID is incorrect`);
 
+  if (page !== 'home') {
+    const routeChunkName = `${page[0].toUpperCase()}${page.slice(1)}`;
+    assert(
+      new RegExp(`rel="modulepreload"[^>]+/assets/${routeChunkName}-[^"/]+\\.js`).test(html),
+      `${page} is missing its route module preload`,
+    );
+  }
+
   if (page === 'home') {
     const organization = data['@graph'].find((node) => node['@type'] === 'Organization');
     assert(organization, 'Homepage schema is missing the organization');
@@ -141,11 +149,6 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     assert(
       html.includes(`<meta property="og:image" content="${SITE_URL}${seo.image}"`),
       `${page} is missing its Open Graph image`,
-    );
-    const routeChunkName = `${page[0].toUpperCase()}${page.slice(1)}`;
-    assert(
-      new RegExp(`rel="modulepreload"[^>]+/assets/${routeChunkName}-[^"/]+\\.js`).test(html),
-      `${page} is missing its route module preload`,
     );
   }
 
