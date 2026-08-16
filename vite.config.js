@@ -2,6 +2,14 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import {
+  PAGE_SEO,
+  SITE_ACRONYM,
+  SITE_NAME,
+  canonicalUrlForPage,
+  getPageSeo,
+  structuredDataForPage,
+} from './src/seo.js'
 
 // Pages for this repo serves the `main` branch's /docs folder, so this is where the
 // production build lands. It is read back from the resolved config rather than assumed,
@@ -34,6 +42,110 @@ const ROUTES = ['work', 'members', 'sponsors', 'apply']
 // route-specific is only whether the fetch is forced up front.
 const PLAYFAIR_ROUTES = new Set(['home', 'sponsors'])
 const PLAYFAIR_PRELOAD = /\n\s*<link\b[^>]*playfair-display[^>]*>/i
+const MODULE_SCRIPT = /\n\s*<script\b[^>]*type="module"[^>]*><\/script>/gi
+
+const escapeHtml = (value) =>
+  String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+
+const seoHead = (page) => {
+  const seo = getPageSeo(page)
+  const url = canonicalUrlForPage(page)
+  const robots = seo.noindex
+    ? 'noindex, follow'
+    : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+  const structuredData = structuredDataForPage(page)
+  const jsonLd = structuredData
+    ? `\n    <script id="seo-structured-data" type="application/ld+json">${JSON.stringify(
+        structuredData,
+        null,
+        2,
+      ).replaceAll('<', '\\u003c')}</script>`
+    : ''
+
+  return `<!-- seo:head:start -->
+    <title>${escapeHtml(seo.title)}</title>
+    <meta name="description" content="${escapeHtml(seo.description)}" />
+    <meta name="robots" content="${robots}" />
+    <meta name="application-name" content="${SITE_NAME}" />
+    <link rel="canonical" href="${url}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="${SITE_NAME}" />
+    <meta property="og:title" content="${escapeHtml(seo.title)}" />
+    <meta property="og:description" content="${escapeHtml(seo.description)}" />
+    <meta property="og:url" content="${url}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="${escapeHtml(seo.title)}" />
+    <meta name="twitter:description" content="${escapeHtml(seo.description)}" />${jsonLd}
+    <!-- seo:head:end -->`
+}
+
+const seoFallback = (page) => {
+  const seo = getPageSeo(page)
+  const nav = Object.entries(PAGE_SEO)
+    .filter(([, entry]) => !entry.noindex)
+    .map(
+      ([key, entry]) =>
+        `<a href="${entry.path}"${key === page ? ' aria-current="page"' : ''}>${escapeHtml(
+          entry.navLabel,
+        )}</a>`,
+    )
+    .join('\n          ')
+  const highlights = seo.highlights.length
+    ? `\n        <ul class="seo-fallback__highlights">\n${seo.highlights
+        .map((item) => `          <li>${escapeHtml(item)}</li>`)
+        .join('\n')}\n        </ul>`
+    : ''
+
+  return `<!-- seo:fallback:start -->
+    <div class="seo-fallback">
+      <header class="seo-fallback__header">
+        <a class="seo-fallback__brand" href="/">${SITE_NAME} (${SITE_ACRONYM})</a>
+        <nav class="seo-fallback__nav" aria-label="Primary">
+          ${nav}
+        </nav>
+      </header>
+      <main class="seo-fallback__main">
+        <p class="seo-fallback__eyebrow">${SITE_ACRONYM} at Cornell University</p>
+        <h1>${escapeHtml(seo.heading)}</h1>
+        <p class="seo-fallback__intro">${escapeHtml(seo.description)}</p>${highlights}
+      </main>
+      <footer class="seo-fallback__footer">
+        <p>${SITE_NAME} (${SITE_ACRONYM}) is a registered student organization at Cornell University.</p>
+        <p><a href="https://cornell.campusgroups.com/cupi/home/">Official Cornell CampusGroups profile</a></p>
+      </footer>
+    </div>
+    <!-- seo:fallback:end -->`
+}
+
+const renderSeoDocument = (html, page) =>
+  html
+    .replace(/<!-- seo:head:start -->[\s\S]*?<!-- seo:head:end -->/, seoHead(page))
+    .replace(
+      /<!-- seo:fallback:start -->[\s\S]*?<!-- seo:fallback:end -->/,
+      seoFallback(page),
+    )
+
+const pageFromDevPath = (path) => {
+  const normalized = path === '/index.html' ? '/' : path
+  return (
+    Object.entries(PAGE_SEO).find(([, seo]) => seo.path === normalized)?.[0] ?? 'home'
+  )
+}
+
+// The same renderer powers development and the route copies emitted below. This keeps
+// the browser's head, the committed static documents, and the client-side SEO map from
+// quietly drifting into three versions of the organization name.
+const seoDocuments = () => ({
+  name: 'seo-documents',
+  transformIndexHtml(html, context) {
+    return renderSeoDocument(html, pageFromDevPath(context.path))
+  },
+})
 
 const emitRoutePages = () => {
   // route -> { js, css[] }, filled in while the bundle still exists in memory.
@@ -83,7 +195,8 @@ const emitRoutePages = () => {
 
       const withHints = (route) => {
         const lines = hints(route)
-        const html = lines ? base.replace(CLOSING_HEAD, `${lines}$1</head>`) : base
+        const document = renderSeoDocument(base, route)
+        const html = lines ? document.replace(CLOSING_HEAD, `${lines}$1</head>`) : document
         return PLAYFAIR_ROUTES.has(route) ? html : html.replace(PLAYFAIR_PRELOAD, '')
       }
 
@@ -93,7 +206,14 @@ const emitRoutePages = () => {
         writeFileSync(join(outDir, route, 'index.html'), withHints(route))
       }
       // The 404 fallback can be reached as any URL, so it preloads nothing in particular.
-      writeFileSync(join(outDir, '404.html'), base)
+      // It is deliberately standalone: booting the SPA here would map an unknown path to
+      // Home and replace the honest not-found document with homepage content and schema.
+      writeFileSync(
+        join(outDir, '404.html'),
+        renderSeoDocument(base, 'notFound')
+          .replace(PLAYFAIR_PRELOAD, '')
+          .replace(MODULE_SCRIPT, ''),
+      )
     },
   }
 }
@@ -103,7 +223,7 @@ const emitRoutePages = () => {
 // domain at the root, not from a project subpath.
 export default defineConfig({
   base: '/',
-  plugins: [react(), emitRoutePages()],
+  plugins: [react(), seoDocuments(), emitRoutePages()],
   build: {
     outDir: DEFAULT_OUT_DIR,
     emptyOutDir: true,

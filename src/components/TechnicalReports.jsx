@@ -98,7 +98,11 @@ export default function TechnicalReports() {
                 </picture>
               </div>
               <div className="report-card__meta">
-                <h3 className="report-card__title">{report.title}</h3>
+                <h3 className="report-card__title">
+                  <a href={getReportPdf(report.slug)} target="_blank" rel="noreferrer">
+                    {report.title}
+                  </a>
+                </h3>
                 <p className="report-card__subtitle">{report.subtitle}</p>
               </div>
             </article>

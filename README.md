@@ -1,16 +1,27 @@
-# React + Vite
+# Cornell Physical Intelligence (CUPI)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the official website for [Cornell Physical Intelligence
+(CUPI)](https://cornellphysicalintelligence.com/), a registered student organization at
+Cornell University building robotic systems for manipulation, autonomous perception, and
+navigation.
 
-Currently, two official plugins are available:
+CUPI brings together mechanical, electrical, software, and business students to build
+intelligent physical systems. The site documents the team, robotics projects, technical
+reports, sponsors, and application information.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Development
 
-## React Compiler
+```bash
+npm ci
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Run `npm run build` to create the production site in `docs/`. GitHub Pages serves that
+folder from the `main` branch at the canonical domain above.
 
-## Expanding the ESLint configuration
+Useful checks:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npx eslint src vite.config.js
+npm run build
+```

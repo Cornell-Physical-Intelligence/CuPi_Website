@@ -1076,8 +1076,7 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
       ref={wrapRef}
       className={`vt-title ${ready ? 'is-ready' : ''}`.trim()}
       style={{ aspectRatio: String(aspect) }}
-      role="img"
-      aria-label={text}
+      aria-hidden="true"
     >
       <canvas ref={canvasRef} className="vt-title__canvas" aria-hidden="true" />
     </div>

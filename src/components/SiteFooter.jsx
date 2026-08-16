@@ -20,10 +20,24 @@ const SOCIALS = [
   },
 ];
 
+const SITE_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'Work', href: '/work/' },
+  { label: 'Members', href: '/members/' },
+  { label: 'Sponsors', href: '/sponsors/' },
+  { label: 'Apply', href: '/apply/' },
+];
+
 export default function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
+        <nav className="site-footer__links" aria-label="Footer">
+          {SITE_LINKS.map((link) => (
+            <a key={link.href} href={link.href}>{link.label}</a>
+          ))}
+        </nav>
+
         <div className="site-footer__socials" aria-label="CUPI social links">
           {SOCIALS.map((s) => (
             <a key={s.label} href={s.href} target="_blank" rel="noreferrer" aria-label={s.label}>
@@ -35,7 +49,19 @@ export default function SiteFooter() {
         </div>
 
         <div className="site-footer__copy">
-          <p>CUPI is a registered student organization of Cornell University.</p>
+          <p>
+            <a href="/">Cornell Physical Intelligence (CUPI)</a> is a registered student
+            organization at Cornell University.
+          </p>
+          <p>
+            <a
+              href="https://cornell.campusgroups.com/cupi/home/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Official Cornell CampusGroups profile
+            </a>
+          </p>
           <p>
             Equal Education and Employment:{' '}
             <a

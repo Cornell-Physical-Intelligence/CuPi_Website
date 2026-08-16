@@ -1,3 +1,17 @@
+/* Page identity and a compact summary above the report and project sections. */
+.work-intro {
+  width: min(960px, 100%);
+  margin: 0 auto;
+}
+
+.work-intro__summary {
+  max-width: 760px;
+  margin: clamp(16px, 2.4vw, 26px) 0 0;
+  color: rgba(var(--fg-rgb), 0.68);
+  font-size: clamp(0.8rem, 1.35vw, 0.95rem);
+  line-height: 1.65;
+}
+
 /* Work areas stacked one over another, each a small label over a pair of clips. */
 .work-stack {
   display: flex;

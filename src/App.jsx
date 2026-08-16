@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import Controls from './components/Controls';
 import { P, applyParam } from './components/voronoiConfig';
 import { getPageFromPath, writePath } from './routes';
+import { applyPageSeo, getPageSeo } from './seo';
 import './App.css';
 
 // The four pages that are not the landing page are split out. One bundle meant a visitor
@@ -63,6 +64,10 @@ export default function App({ initialPage, InitialPage }) {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [currentPage]);
 
+  useEffect(() => {
+    applyPageSeo(currentPage);
+  }, [currentPage]);
+
   // Warm the other routes so navigation is instant. The whole set is a few tens of
   // kilobytes, so by the time anyone clicks, the chunk is in cache and the split costs
   // nothing a visitor can feel.
@@ -102,6 +107,22 @@ export default function App({ initialPage, InitialPage }) {
   const navigate = (page) => {
     writePath(page);
     setCurrentPage(page);
+  };
+
+  const handleNavClick = (event, page) => {
+    // Preserve opening in a new tab/window and every other normal link behaviour. Only
+    // an unmodified primary click becomes an in-place SPA transition.
+    if (
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+    event.preventDefault();
+    navigate(page);
   };
 
   // Only the hero and the sponsor lockups draw Playfair, so only those two documents
@@ -155,16 +176,17 @@ export default function App({ initialPage, InitialPage }) {
         <div className="menu-glass">
           <div className="menu-content">
             {NAV_ITEMS.map(({ label, page }) => (
-              <button
+              <a
                 key={page}
-                type="button"
+                href={getPageSeo(page).path}
                 className={`menu-item ${currentPage === page ? 'active' : ''}`}
-                onClick={() => navigate(page)}
+                aria-current={currentPage === page ? 'page' : undefined}
+                onClick={(event) => handleNavClick(event, page)}
                 onMouseEnter={() => warmPlayfairFor(page)}
                 onFocus={() => warmPlayfairFor(page)}
               >
                 {label}
-              </button>
+              </a>
             ))}
           </div>
         </div>
@@ -189,9 +211,9 @@ export default function App({ initialPage, InitialPage }) {
           rather than a spinner: the split routes are prefetched during idle, so this
           resolves in the same frame in every case except a cold click on a slow link, and
           a flash of loading text would be the more noticeable of the two. */}
-      <main id="page-content">
+      <div id="page-content">
         <Suspense fallback={null}>{renderPage()}</Suspense>
-      </main>
+      </div>
     </div>
   );
 }

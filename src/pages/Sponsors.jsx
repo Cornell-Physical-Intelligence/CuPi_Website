@@ -88,12 +88,13 @@ export default function Sponsors() {
             decoding="async"
           />
           <div className="page-head">
-            <h1 className="page-title">Sponsors</h1>
+            <h1 className="page-title">CUPI Sponsors</h1>
           </div>
         </div>
 
         <p className="sponsors__lede">
-          CUPI builds the future of human robot interaction at Cornell. Robots and compute
+          Cornell Physical Intelligence (CUPI) builds the future of human-robot interaction
+          at Cornell University. Robots and compute
           are super expensive, so we are extremely grateful for our awesome sponsors! To
           become one, read the{' '}
           <a href={assetPath(PACKET)} target="_blank" rel="noreferrer">

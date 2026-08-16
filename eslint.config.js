@@ -7,7 +7,9 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 export default defineConfig([
   // Third-party code is vendored verbatim so it can be diffed against upstream; our
   // rules don't apply to it.
-  globalIgnores(['dist', 'src/components/vendor']),
+  // `docs` is Vite's committed production output for GitHub Pages. Lint the source that
+  // creates it, not React and other dependencies after they have been minified into it.
+  globalIgnores(['dist', 'docs', 'src/components/vendor']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [

@@ -40,6 +40,20 @@ body {
   min-height: 100vh;
 }
 
+/* Keep real semantic text available to assistive technology when the visible treatment
+   is a canvas or image. The text says exactly what the visual says; it is not extra copy. */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 /* Nothing here is a file to be carried off, so dragging an image only ever produces a
    ghost thumbnail stuck to the cursor. -webkit-user-drag covers Chrome and Safari; the
    draggable="false" attributes in the markup are what Firefox reads. */

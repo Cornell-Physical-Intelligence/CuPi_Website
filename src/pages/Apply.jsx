@@ -81,6 +81,7 @@ export default function Apply() {
 
   return (
     <main className="alt-page alt-page--apply">
+      <h1 className="visually-hidden">Join Cornell Physical Intelligence (CUPI)</h1>
       <section className="alt-section alt-section--apply">
         <div className="apply-page">
           <CrabPicture />

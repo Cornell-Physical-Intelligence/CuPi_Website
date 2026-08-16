@@ -66,12 +66,12 @@ function MissionTiles({ played, onPlay }) {
       <div className="mission-tiles__content">
         <div className="mission-tiles__blurb-wrapper" ref={blurbRef}>
           <p className="mission-tiles__blurb">
-            At CUPI, we aim to create physical systems that can intelligently reason and
-            interact with their environments. The gap between AI software and hardware
+            Cornell Physical Intelligence (CUPI) is a registered student organization at
+            Cornell University. We create physical systems that can intelligently reason
+            and interact with their environments. The gap between AI software and hardware
             needs to be closed seamlessly, and through our multidisciplinary team, we
             pursue this symbiosis. We prioritize creative, ambitious, and self-starting
-            thinkers, because the problems worth solving here do not come with
-            instructions.
+            thinkers, because the problems worth solving here do not come with instructions.
           </p>
         </div>
         <div className="mission-tiles__stats" aria-label="Team scale insights">

@@ -7,6 +7,14 @@
   margin: 0 auto clamp(48px, 8vh, 112px);
 }
 
+.members__intro {
+  max-width: 760px;
+  margin: clamp(16px, 2.4vw, 26px) 0 clamp(32px, 5vw, 56px);
+  color: rgba(var(--fg-rgb), 0.68);
+  font-size: clamp(0.8rem, 1.35vw, 0.95rem);
+  line-height: 1.65;
+}
+
 /* Tight tracks: 37 people should land in a couple of screens, not five. */
 .members__grid {
   display: grid;

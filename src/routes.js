@@ -12,7 +12,7 @@ export const getPageFromPath = () => {
 };
 
 export const writePath = (page) => {
-  window.history.pushState({}, '', page === 'home' ? '/' : `/${page}`);
+  window.history.pushState({}, '', page === 'home' ? '/' : `/${page}/`);
 };
 
 // Anything still linking to the old #work style URLs is rewritten in place, once, before
@@ -20,7 +20,7 @@ export const writePath = (page) => {
 export const normalizeLegacyHash = () => {
   const legacy = window.location.hash.replace('#', '');
   if (VALID_PAGES.includes(legacy)) {
-    window.history.replaceState({}, '', legacy === 'home' ? '/' : `/${legacy}`);
+    window.history.replaceState({}, '', legacy === 'home' ? '/' : `/${legacy}/`);
   } else if (window.location.hash) {
     window.history.replaceState({}, '', window.location.pathname);
   }
