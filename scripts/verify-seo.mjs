@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
+  ORGANIZATION_DESCRIPTION,
   PAGE_SEO,
   SITE_ALTERNATE_NAMES,
   SITE_URL,
@@ -100,6 +101,11 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     `${page} canonical`,
   );
   const heading = capture(html, /<h1>(.*?)<\/h1>/, `${page} static H1`);
+  const fallbackIntro = capture(
+    html,
+    /<p class="seo-fallback__intro">(.*?)<\/p>/,
+    `${page} static fallback intro`,
+  );
   const json = capture(
     html,
     /<script id="seo-structured-data" type="application\/ld\+json">([\s\S]*?)<\/script>/,
@@ -111,6 +117,10 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   assert(description.length >= 100, `${page} description is too short`);
   assert(canonical === canonicalUrlForPage(page), `${page} canonical is incorrect`);
   assert(heading === escapeHtml(seo.heading), `${page} static H1 does not match the SEO map`);
+  assert(
+    fallbackIntro === escapeHtml(seo.fallbackIntro ?? seo.description),
+    `${page} static fallback intro does not match the SEO map`,
+  );
   assert(html.includes('name="robots" content="index, follow'), `${page} is not indexable`);
   assert(html.includes('href="/work/"'), `${page} is missing crawlable primary links`);
   assert(
@@ -135,6 +145,7 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   const webPage = data['@graph'].find((node) => node['@type'] === 'WebPage');
   assert(webPage?.url === canonical, `${page} WebPage schema URL is incorrect`);
   assert(webPage?.['@id'] === `${canonical}#webpage`, `${page} WebPage schema ID is incorrect`);
+  assert(webPage?.description === seo.description, `${page} WebPage description is incorrect`);
 
   if (page !== 'home') {
     const routeChunkName = `${page[0].toUpperCase()}${page.slice(1)}`;
@@ -145,8 +156,20 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   }
 
   if (page === 'home') {
+    assert(
+      PAGE_SEO.home.description.startsWith('CUPI (Cornell Physical Intelligence)'),
+      'Homepage metadata must lead with the exact CUPI identity',
+    );
+    assert(
+      PAGE_SEO.home.fallbackIntro === ORGANIZATION_DESCRIPTION,
+      'Homepage static fallback copy must remain presentation-identical',
+    );
     const organization = data['@graph'].find((node) => node['@type'] === 'Organization');
     assert(organization, 'Homepage schema is missing the organization');
+    assert(
+      organization.description === ORGANIZATION_DESCRIPTION,
+      'Organization schema description must remain canonical and unchanged',
+    );
     assert(
       JSON.stringify(organization.alternateName) === JSON.stringify(SITE_ALTERNATE_NAMES),
       'Organization schema alternate names are missing or out of preference order',

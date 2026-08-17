@@ -21,7 +21,9 @@ export const PAGE_SEO = {
     navLabel: 'Home',
     title: 'CUPI | Cornell Physical Intelligence at Cornell University',
     heading: 'Cornell Physical Intelligence (CUPI)',
-    description: ORGANIZATION_DESCRIPTION,
+    description:
+      'CUPI (Cornell Physical Intelligence) is a Cornell University student robotics organization building systems for manipulation, autonomous perception, and navigation.',
+    fallbackIntro: ORGANIZATION_DESCRIPTION,
     highlights: [
       'Intelligent robotic manipulation',
       'Autonomous perception and navigation',

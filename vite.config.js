@@ -171,7 +171,7 @@ ${relatedEntries
       <main class="seo-fallback__main">
         <p class="seo-fallback__eyebrow">${SITE_ACRONYM} at Cornell University</p>
         <h1>${escapeHtml(seo.heading)}</h1>
-        <p class="seo-fallback__intro">${escapeHtml(seo.description)}</p>${highlights}${relatedLinks}${reportLink}${sections}
+        <p class="seo-fallback__intro">${escapeHtml(seo.fallbackIntro ?? seo.description)}</p>${highlights}${relatedLinks}${reportLink}${sections}
       </main>
       <footer class="seo-fallback__footer">
         <p>${SITE_NAME} (${SITE_ACRONYM}) is a Cornell University student robotics organization based in Ithaca, New York.</p>
