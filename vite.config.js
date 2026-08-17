@@ -177,7 +177,7 @@ ${relatedEntries
         <p>${SITE_NAME} (${SITE_ACRONYM}) is a Cornell University student robotics organization based in Ithaca, New York.</p>
         <p><a href="https://cornell.campusgroups.com/cupi/home/">Official Cornell listing: Cornell Physical Intelligence Club</a></p>
         <p>General inquiries: <a href="mailto:cuphysint@cornell.edu">cuphysint@cornell.edu</a></p>
-        <p><a href="https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment">Equal Education &amp; Employment</a></p>
+        <p><span data-nosnippet><a href="https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment">Equal Education &amp; Employment</a></span></p>
       </footer>
     </div>
     <!-- seo:fallback:end -->`

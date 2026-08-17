@@ -33,6 +33,14 @@ const escapeHtml = (value) =>
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;');
 
+const runtimeFooter = readFileSync('src/components/SiteFooter.jsx', 'utf8');
+assert(
+  /<div(?=[^>]*className="site-footer__copy")(?=[^>]*data-nosnippet="")[^>]*>/.test(
+    runtimeFooter,
+  ),
+  'The rendered footer boilerplate must be excluded from search snippets',
+);
+
 for (const [page, seo] of INDEXABLE_PAGES) {
   const file = fileForPage(seo);
   assert(existsSync(file), `${page} static document is missing at ${file}`);
@@ -113,9 +121,9 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   );
   assert(
     html.includes(
-      'href="https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment">Equal Education &amp; Employment</a>',
+      '<span data-nosnippet><a href="https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment">Equal Education &amp; Employment</a></span>',
     ),
-    `${page} static footer is missing Cornell's EEEO link`,
+    `${page} static footer must retain Cornell's EEEO link without exposing it as snippet copy`,
   );
   assert(
     !/registered student organization/i.test(html),

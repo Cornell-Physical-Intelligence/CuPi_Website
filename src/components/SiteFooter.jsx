@@ -34,7 +34,7 @@ export default function SiteFooter() {
           ))}
         </div>
 
-        <div className="site-footer__copy">
+        <div className="site-footer__copy" data-nosnippet="">
           <p>CUPI is a registered student organization of Cornell University.</p>
           <p>
             Equal Education and Employment:{' '}

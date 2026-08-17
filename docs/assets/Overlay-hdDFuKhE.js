@@ -1,4 +1,4 @@
-import{n as e}from"./SiteFooter-DXoCo5pa.js";import{r as t}from"./ResponsiveImage-6kI3AycC.js";var n=[{title:`Robotic Manipulation Tasks`,ratio:`1 / 1`,clips:[{src:`/media/arm-ball-960.mp4`,poster:`arm-ball`,label:`Play: a 3D-printed arm picking up a ball`},{src:`/media/arm-meat-960.mp4`,poster:`arm-meat`,label:`Play: a robot arm cutting on a processing line`}],summary:`The clips above are our fine-tuned π0.5 policy running on our own arm.
+import{n as e}from"./SiteFooter-DHGqGSIr.js";import{r as t}from"./ResponsiveImage-DyxRkGcQ.js";var n=[{title:`Robotic Manipulation Tasks`,ratio:`1 / 1`,clips:[{src:`/media/arm-ball-960.mp4`,poster:`arm-ball`,label:`Play: a 3D-printed arm picking up a ball`},{src:`/media/arm-meat-960.mp4`,poster:`arm-meat`,label:`Play: a robot arm cutting on a processing line`}],summary:`The clips above are our fine-tuned π0.5 policy running on our own arm.
       π0.5 is Physical Intelligence's open vision-language-action model, so we are not
       training from scratch: the released checkpoint brings broad manipulation priors
       from web and robot data, and our work is adapting it to the grippers, camera
