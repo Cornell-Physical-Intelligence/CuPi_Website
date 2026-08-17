@@ -200,6 +200,17 @@ export default function App({ initialPage, InitialPage, onFirstCommit }) {
                 className={`menu-item ${currentPage === page ? 'active' : ''}`}
                 aria-current={currentPage === page ? 'page' : undefined}
                 onClick={(event) => handleNavClick(event, page)}
+                onKeyDown={(event) => {
+                  // Native buttons reserve Space for activation rather than scrolling.
+                  // Retain that keyboard behavior after exposing the same control as a link.
+                  if (event.key === ' ') event.preventDefault();
+                }}
+                onKeyUp={(event) => {
+                  if (event.key === ' ') {
+                    event.preventDefault();
+                    navigate(page);
+                  }
+                }}
                 onMouseEnter={() => warmPlayfairFor(page)}
                 onFocus={() => warmPlayfairFor(page)}
               >
