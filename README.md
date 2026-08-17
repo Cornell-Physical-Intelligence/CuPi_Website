@@ -3,6 +3,8 @@
 This repository contains the official website for [Cornell Physical Intelligence
 (CUPI)](https://cornellphysicalintelligence.com/), a Cornell University student robotics
 organization building systems for manipulation, autonomous perception, and navigation.
+Cornell lists the organization as the [Cornell Physical Intelligence
+Club](https://cornell.campusgroups.com/cupi/home/).
 
 CUPI brings together mechanical, electrical, software, and business students to build
 intelligent physical systems. The site documents the team, robotics projects, technical
