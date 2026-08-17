@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useLayoutEffect, lazy, Suspense } from 're
 import Controls from './components/Controls';
 import { P, applyParam } from './components/voronoiConfig';
 import { getPageFromPath, writePath } from './routes';
-import { applyPageSeo } from './seo';
+import { applyPageSeo, getPageSeo } from './seo';
 import './App.css';
 
 // The four pages that are not the landing page are split out. One bundle meant a visitor
@@ -121,6 +121,25 @@ export default function App({ initialPage, InitialPage, onFirstCommit }) {
     setCurrentPage(page);
   };
 
+  // Keep the original in-place navigation for an ordinary click while exposing real
+  // hrefs to crawlers and to browser affordances such as Open in New Tab. Modified and
+  // non-primary clicks are deliberately left to the browser.
+  const handleNavClick = (event, page) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    navigate(page);
+  };
+
   // Only the hero and the sponsor lockups draw Playfair, so only those two documents
   // preload it (see vite.config.js). Warming it on the way in — on the idle pass, say —
   // would put the 23KB straight back on the pages that had just been spared it. Pointing
@@ -175,16 +194,17 @@ export default function App({ initialPage, InitialPage, onFirstCommit }) {
         <div className="menu-glass">
           <div className="menu-content">
             {NAV_ITEMS.map(({ label, page }) => (
-              <button
+              <a
                 key={page}
-                type="button"
+                href={getPageSeo(page).path}
                 className={`menu-item ${currentPage === page ? 'active' : ''}`}
-                onClick={() => navigate(page)}
+                aria-current={currentPage === page ? 'page' : undefined}
+                onClick={(event) => handleNavClick(event, page)}
                 onMouseEnter={() => warmPlayfairFor(page)}
                 onFocus={() => warmPlayfairFor(page)}
               >
                 {label}
-              </button>
+              </a>
             ))}
           </div>
         </div>

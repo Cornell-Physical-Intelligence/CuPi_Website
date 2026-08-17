@@ -48,14 +48,27 @@ export default function TechnicalReports() {
         <div className="reports-grid">
           {REPORTS.map((report) => (
             <article className="report-card" key={report.slug}>
-              <div
+              <a
                 className="report-card__cover"
-                role="button"
-                tabIndex={0}
+                href={report.path}
                 aria-label={`Open ${report.title}`}
-                onClick={() => setOpenReport(report)}
+                onClick={(event) => {
+                  if (
+                    event.defaultPrevented ||
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey
+                  ) {
+                    return;
+                  }
+
+                  event.preventDefault();
+                  setOpenReport(report);
+                }}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
+                  if (e.key === ' ') {
                     e.preventDefault();
                     setOpenReport(report);
                   }
@@ -96,7 +109,7 @@ export default function TechnicalReports() {
                     }}
                   />
                 </picture>
-              </div>
+              </a>
               <div className="report-card__meta">
                 <h3 className="report-card__title">{report.title}</h3>
                 <p className="report-card__subtitle">{report.subtitle}</p>

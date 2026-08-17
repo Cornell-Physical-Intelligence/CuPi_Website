@@ -1,6 +1,11 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { PAGE_SEO, SITE_URL, canonicalUrlForPage } from '../src/seo.js';
+import {
+  PAGE_SEO,
+  SITE_ALTERNATE_NAMES,
+  SITE_URL,
+  canonicalUrlForPage,
+} from '../src/seo.js';
 
 const INDEXABLE_PAGES = Object.entries(PAGE_SEO).filter(([, seo]) => !seo.noindex);
 
@@ -134,15 +139,10 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   if (page === 'home') {
     const organization = data['@graph'].find((node) => node['@type'] === 'Organization');
     assert(organization, 'Homepage schema is missing the organization');
-    for (const alternate of [
-      'CUPI',
-      'Cornell Physical Intelligence Club',
-    ]) {
-      assert(
-        organization.alternateName?.includes(alternate),
-        `Organization schema is missing alternate name: ${alternate}`,
-      );
-    }
+    assert(
+      JSON.stringify(organization.alternateName) === JSON.stringify(SITE_ALTERNATE_NAMES),
+      'Organization schema alternate names are missing or out of preference order',
+    );
     assert(
       organization.sameAs?.includes('https://cornell.campusgroups.com/cupi/home/'),
       'Organization schema must reference the official Cornell listing',
@@ -155,12 +155,10 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     );
     assert(html.includes('Ithaca, New York'), 'The structured organization location must be visible');
     const website = data['@graph'].find((node) => node['@type'] === 'WebSite');
-    for (const alternate of ['CUPI', 'Cornell Physical Intelligence Club']) {
-      assert(
-        website?.alternateName?.includes(alternate),
-        `WebSite schema is missing alternate name: ${alternate}`,
-      );
-    }
+    assert(
+      JSON.stringify(website?.alternateName) === JSON.stringify(SITE_ALTERNATE_NAMES),
+      'WebSite schema alternate names are missing or out of preference order',
+    );
   }
 
   if (seo.report) {

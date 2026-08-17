@@ -17,6 +17,7 @@ import './Work.css';
 export default function Work() {
   return (
     <main className="alt-page">
+      <h1 className="visually-hidden">Robotics Projects and Technical Reports</h1>
       <TechnicalReports />
 
       <section className="work-stack">

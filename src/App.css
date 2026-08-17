@@ -121,7 +121,10 @@
   transition: opacity 0.2s ease;
   opacity: 0.5;
   cursor: pointer;
-  /* No font-family: the root stack is the old site's, and the menu inherited it there. */
+  text-decoration: none;
+  /* The original menu was a native button, whose computed face in Chrome is Arial.
+     Keep that exact face after exposing the controls as crawlable links. */
+  font-family: Arial, sans-serif;
   padding: 0;
   min-width: 60px;
   z-index: 1;

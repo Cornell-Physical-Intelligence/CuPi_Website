@@ -6,6 +6,11 @@ export const SITE_URL = 'https://cornellphysicalintelligence.com';
 export const SITE_NAME = 'Cornell Physical Intelligence';
 export const SITE_ACRONYM = 'CUPI';
 export const SITE_RELEASE_DATE = '2026-08-16';
+export const SITE_ALTERNATE_NAMES = [
+  SITE_ACRONYM,
+  'Cornell University Physical Intelligence',
+  'Cornell Physical Intelligence Club',
+];
 
 export const ORGANIZATION_DESCRIPTION =
   'Cornell Physical Intelligence (CUPI) is a Cornell University student robotics organization building systems for manipulation, autonomous perception, and navigation.';
@@ -14,7 +19,7 @@ export const PAGE_SEO = {
   home: {
     path: '/',
     navLabel: 'Home',
-    title: 'Cornell Physical Intelligence (CUPI) | Cornell University',
+    title: 'CUPI | Cornell Physical Intelligence at Cornell University',
     heading: 'Cornell Physical Intelligence (CUPI)',
     description: ORGANIZATION_DESCRIPTION,
     highlights: [
@@ -167,10 +172,7 @@ const organizationNode = {
   '@type': 'Organization',
   '@id': `${SITE_URL}/#organization`,
   name: SITE_NAME,
-  alternateName: [
-    SITE_ACRONYM,
-    'Cornell Physical Intelligence Club',
-  ],
+  alternateName: SITE_ALTERNATE_NAMES,
   url: `${SITE_URL}/`,
   logo: `${SITE_URL}/favicon-192.png`,
   email: 'cuphysint@cornell.edu',
@@ -195,7 +197,7 @@ const websiteNode = {
   '@id': `${SITE_URL}/#website`,
   url: `${SITE_URL}/`,
   name: SITE_NAME,
-  alternateName: [SITE_ACRONYM, 'Cornell Physical Intelligence Club'],
+  alternateName: SITE_ALTERNATE_NAMES,
   publisher: { '@id': `${SITE_URL}/#organization` },
   inLanguage: 'en-US',
 };
