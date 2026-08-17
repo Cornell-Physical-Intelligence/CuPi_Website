@@ -8,6 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "verify:seo": "node scripts/verify-seo.mjs",
+    "verify:live-seo": "node scripts/verify-live-seo.mjs",
     "check": "npm run lint && npm run build && npm run verify:seo",
     "preview": "vite preview",
     "assets": "node scripts/build-assets.mjs"
