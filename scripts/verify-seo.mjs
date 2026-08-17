@@ -48,6 +48,29 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   );
   assert(count(html, /<h1>/g) === 1, `${page} static fallback must have one H1`);
   assert(
+    html.includes("root.setAttribute('data-cupi-booting', '')"),
+    `${page} must suppress the alternate fallback before a JavaScript first paint`,
+  );
+  assert(
+    html.includes('html[data-cupi-booting] .seo-fallback'),
+    `${page} is missing the pre-paint fallback guard`,
+  );
+  assert(
+    html.includes("window.addEventListener('unhandledrejection', onBootRejection"),
+    `${page} is missing fallback recovery when application startup fails`,
+  );
+  const entrySource = capture(
+    html,
+    /<script type="module"[^>]+src="(\/assets\/index-[^"]+\.js)"/,
+    `${page} entry script`,
+  );
+  const entryFile = join('docs', entrySource.replace(/^\/+/, ''));
+  assert(existsSync(entryFile), `${page} entry script is missing: ${entryFile}`);
+  assert(
+    readFileSync(entryFile, 'utf8').includes('data-cupi-booting'),
+    `${page} entry script does not release the pre-paint fallback guard`,
+  );
+  assert(
     count(html, /id="seo-structured-data"/g) === 1,
     `${page} must have exactly one structured-data graph`,
   );

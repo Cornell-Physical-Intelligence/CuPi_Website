@@ -109,6 +109,32 @@
 }</script>
     <!-- seo:head:end -->
 
+    <!-- The crawlable document below is a real no-JavaScript version of the page. Mark
+         JavaScript-capable loads before the body is parsed so that version cannot paint
+         as a second, temporary design while the application bundle starts. React clears
+         this marker in a layout effect after its first commit. A failed entry script or
+         rejected route import reveals the resilient fallback immediately; successful
+         loads never reveal it merely because a network is slow. -->
+    <script>
+      ;(() => {
+        const root = document.documentElement
+        const revealFallback = () => root.removeAttribute('data-cupi-booting')
+        const onBootError = (event) => {
+          if (event.target === window || event.target?.tagName === 'SCRIPT') revealFallback()
+        }
+        const onBootRejection = () => revealFallback()
+
+        root.setAttribute('data-cupi-booting', '')
+        window.addEventListener('error', onBootError, true)
+        window.addEventListener('unhandledrejection', onBootRejection, { once: true })
+        window.__cupiFinishBoot = () => {
+          window.removeEventListener('error', onBootError, true)
+          window.removeEventListener('unhandledrejection', onBootRejection)
+          revealFallback()
+        }
+      })()
+    </script>
+
     <!-- Playfair Display 700 is self-hosted because the hero blocks on it: VoronoiTitle
          rasterises the glyph outline before it can build its sim, so this face sits on the
          critical path. Via Google Fonts that meant two sequential cross-origin round trips
@@ -162,9 +188,14 @@
       }
     </style>
     <style>
-      /* The build puts meaningful, crawlable HTML inside #root. React replaces this
-         resilient no-JavaScript version on its first render; until then it is a calm,
-         deliberately simple representation of the same page rather than a blank screen. */
+      /* The build puts meaningful, crawlable HTML inside #root. It remains the visible,
+         resilient page when JavaScript is unavailable. On ordinary application loads the
+         synchronous marker above suppresses it before first paint; React then replaces it
+         with the real interface and removes the marker in the same commit. */
+      html[data-cupi-booting] .seo-fallback {
+        display: none;
+      }
+
       .seo-fallback {
         min-height: 100vh;
         padding: clamp(24px, 6vw, 72px);
@@ -203,7 +234,7 @@
       .seo-fallback__sections li { line-height: 1.7; }
       .seo-fallback__footer { padding-top: 20px; border-top: 1px solid #bbb; font-size: 14px; }
     </style>
-    <script type="module" crossorigin src="/assets/index-CIXqPHMD.js"></script>
+    <script type="module" crossorigin src="/assets/index-C4BFMvNS.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/SiteFooter-DXoCo5pa.js">
     <link rel="modulepreload" crossorigin href="/assets/ResponsiveImage-6kI3AycC.js">
     <link rel="modulepreload" crossorigin href="/assets/Overlay-8pkcgOYM.js">

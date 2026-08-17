@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, lazy, Suspense } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect, lazy, Suspense } from 'react';
 import Controls from './components/Controls';
 import { P, applyParam } from './components/voronoiConfig';
 import { getPageFromPath, writePath } from './routes';
@@ -46,11 +46,19 @@ const NAV_ITEMS = [
 // so the "Customize" button and panel never ship to visitors.
 const SHOW_CUSTOMIZE = import.meta.env.DEV;
 
-export default function App({ initialPage, InitialPage }) {
+export default function App({ initialPage, InitialPage, onFirstCommit }) {
   const [currentPage, setCurrentPage] = useState(initialPage ?? getPageFromPath);
   const [inverted, setInverted] = useState(P.invert);
   const [showControls, setShowControls] = useState(false);
   const titleApi = useRef(null);
+
+  // The static SEO document is suppressed before first paint on JavaScript-capable
+  // loads. This runs after React has committed the real page but before the browser
+  // paints that commit, so the alternate fallback design never appears between the
+  // blank canvas and the app.
+  useLayoutEffect(() => {
+    onFirstCommit?.();
+  }, [onFirstCommit]);
 
   // Keep the page chrome (background + text colours) in sync with the canvas theme.
   useEffect(() => {
