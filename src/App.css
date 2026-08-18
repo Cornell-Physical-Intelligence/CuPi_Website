@@ -36,37 +36,6 @@
   --ph2: rgba(20, 20, 20, 0.9);
 }
 
-/* Floating button that opens the effect tuning panel. */
-.controls-toggle {
-  position: fixed;
-  bottom: 18px;
-  right: 18px;
-  z-index: 1100;
-  appearance: none;
-  border: 1px solid var(--glass-border);
-  background: color-mix(in srgb, var(--page) 70%, transparent);
-  color: var(--fg);
-  font-family: 'Questrial', system-ui, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  padding: 8px 14px;
-  border-radius: 999px;
-  cursor: pointer;
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-  transition: background 0.15s ease, transform 0.06s ease, box-shadow 0.15s ease;
-}
-
-.controls-toggle:hover {
-  background: color-mix(in srgb, var(--page) 88%, transparent);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.24);
-}
-
-.controls-toggle:active {
-  transform: translateY(1px);
-}
-
 /* Positions the menu bar; .menu-glass below is the bar itself. */
 .menu-bar {
   position: fixed;

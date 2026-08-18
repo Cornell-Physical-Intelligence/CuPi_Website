@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect, useLayoutEffect, lazy, Suspense } from 'react';
-import Controls from './components/Controls';
 import { P, applyParam } from './components/voronoiConfig';
 import { getPageFromPath, writePath } from './routes';
 import { applyPageSeo, getPageSeo } from './seo';
@@ -45,6 +44,10 @@ const NAV_ITEMS = [
 // The live-tuning panel is a dev-only tool — Vite sets this false in production builds,
 // so the "Customize" button and panel never ship to visitors.
 const SHOW_CUSTOMIZE = import.meta.env.DEV;
+let Controls = null;
+if (SHOW_CUSTOMIZE) {
+  Controls = (await import('./components/Controls')).default;
+}
 
 export default function App({ initialPage, InitialPage, onFirstCommit }) {
   const [currentPage, setCurrentPage] = useState(initialPage ?? getPageFromPath);
