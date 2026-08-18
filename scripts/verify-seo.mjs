@@ -6,7 +6,7 @@ import {
   SITE_ALTERNATE_NAMES,
   SITE_URL,
   canonicalUrlForPage,
-} from '../src/seo.js';
+} from '../src/seoBuild.js';
 
 const INDEXABLE_PAGES = Object.entries(PAGE_SEO).filter(([, seo]) => !seo.noindex);
 

@@ -1,6 +1,4 @@
-import { REPORT_BY_PAGE } from './data/reportContent.js';
-import { SUBTEAMS } from './data/subteams.js';
-import { WORK_AREAS, normalizedWorkSummary } from './data/workAreas.js';
+import { REPORT_METADATA_BY_PAGE } from './data/reportMetadata.js';
 
 export const SITE_URL = 'https://cornellphysicalintelligence.com';
 export const SITE_NAME = 'Cornell Physical Intelligence';
@@ -24,27 +22,6 @@ export const PAGE_SEO = {
     heading: 'Cornell Physical Intelligence (CUPI)',
     description:
       'CUPI (Cornell Physical Intelligence) is a Cornell University student robotics organization building systems for manipulation, autonomous perception, and navigation.',
-    fallbackIntro: ORGANIZATION_DESCRIPTION,
-    highlights: [
-      'Intelligent robotic manipulation',
-      'Autonomous perception and navigation',
-      'Multidisciplinary mechanical, electrical, and software engineering',
-    ],
-    relatedPages: ['vq1Report', 'racingReport'],
-    relatedHeading: 'Latest technical reports',
-    fallbackSections: [
-      {
-        heading: 'About Cornell Physical Intelligence',
-        paragraphs: [
-          'Cornell Physical Intelligence (CUPI), listed by Cornell as the Cornell Physical Intelligence Club, is a Cornell University student robotics organization. We create physical systems that can intelligently reason and interact with their environments. The gap between AI software and hardware needs to be closed seamlessly, and through our multidisciplinary team, we pursue this symbiosis. We prioritize creative, ambitious, and self-starting thinkers, because the problems worth solving here do not come with instructions.',
-        ],
-      },
-      {
-        heading: 'CUPI Subteams',
-        paragraphs: [],
-        bullets: SUBTEAMS.map((team) => `${team.title}: ${team.description}`),
-      },
-    ],
     lastModified: HOME_LAST_MODIFIED,
   },
   work: {
@@ -54,15 +31,6 @@ export const PAGE_SEO = {
     heading: 'Robotics Projects and Technical Reports',
     description:
       'Explore Cornell Physical Intelligence (CUPI) robotics projects in manipulation, autonomous perception, navigation, and the Anduril AI Grand Prix.',
-    highlights: [
-      'Robotic manipulation with vision-language-action policies',
-      'Autonomous drone perception and navigation',
-      'CUPI technical reports and project results',
-    ],
-    fallbackSections: WORK_AREAS.map((area) => ({
-      heading: area.title,
-      paragraphs: [normalizedWorkSummary(area)],
-    })),
     lastModified: SITE_RELEASE_DATE,
   },
   members: {
@@ -72,11 +40,6 @@ export const PAGE_SEO = {
     heading: 'Cornell Physical Intelligence Members',
     description:
       'Meet the Cornell students and faculty behind Cornell Physical Intelligence (CUPI) and its multidisciplinary robotics teams.',
-    highlights: [
-      'Mechanical, electrical, software, and business teams',
-      'Cornell student researchers and builders',
-      'Cornell faculty supporting CUPI robotics work',
-    ],
     lastModified: SITE_RELEASE_DATE,
   },
   sponsors: {
@@ -86,25 +49,6 @@ export const PAGE_SEO = {
     heading: 'Sponsor Cornell Physical Intelligence',
     description:
       'Meet the organizations supporting Cornell Physical Intelligence (CUPI) and learn how to sponsor student robotics research at Cornell University.',
-    highlights: [
-      'Support student-led robotics at Cornell',
-      'Help fund robots, sensors, and computing',
-      'Read the CUPI sponsorship packet',
-    ],
-    fallbackSections: [
-      {
-        heading: 'Current CUPI sponsors',
-        paragraphs: [
-          'Cornell Physical Intelligence is supported by CU GeoData, Modovolo, Tantalus, and UPS.',
-        ],
-      },
-      {
-        heading: 'Sponsor CUPI robotics',
-        paragraphs: [
-          'Sponsorship helps fund the robots and computing used by Cornell Physical Intelligence. Prospective sponsors can read the CUPI sponsorship packet and contact the team at ab3233@cornell.edu.',
-        ],
-      },
-    ],
     lastModified: SITE_RELEASE_DATE,
   },
   apply: {
@@ -114,46 +58,29 @@ export const PAGE_SEO = {
     heading: 'Cornell Physical Intelligence Applications',
     description:
       'Check the current application status for Cornell Physical Intelligence (CUPI) and contact the team about future Cornell robotics opportunities.',
-    highlights: [
-      'Current CUPI applications are closed',
-      'Contact the team about future recruitment',
-      'Explore CUPI robotics projects and technical reports',
-    ],
-    fallbackSections: [
-      {
-        heading: 'Current application status',
-        paragraphs: [
-          'Applications are currently closed. For questions about future recruitment, contact ab3233@cornell.edu.',
-        ],
-      },
-    ],
     lastModified: SITE_RELEASE_DATE,
   },
   vq1Report: {
-    path: REPORT_BY_PAGE.vq1Report.path,
-    navLabel: REPORT_BY_PAGE.vq1Report.cardTitle,
-    title: REPORT_BY_PAGE.vq1Report.metaTitle,
-    heading: REPORT_BY_PAGE.vq1Report.title,
-    description: REPORT_BY_PAGE.vq1Report.description,
-    highlights: REPORT_BY_PAGE.vq1Report.highlights,
-    sections: REPORT_BY_PAGE.vq1Report.sections,
-    image: REPORT_BY_PAGE.vq1Report.image,
-    report: REPORT_BY_PAGE.vq1Report,
+    path: REPORT_METADATA_BY_PAGE.vq1Report.path,
+    navLabel: REPORT_METADATA_BY_PAGE.vq1Report.cardTitle,
+    title: REPORT_METADATA_BY_PAGE.vq1Report.metaTitle,
+    heading: REPORT_METADATA_BY_PAGE.vq1Report.title,
+    description: REPORT_METADATA_BY_PAGE.vq1Report.description,
+    image: REPORT_METADATA_BY_PAGE.vq1Report.image,
+    report: REPORT_METADATA_BY_PAGE.vq1Report,
     parentPage: 'work',
-    lastModified: REPORT_BY_PAGE.vq1Report.lastModified,
+    lastModified: REPORT_METADATA_BY_PAGE.vq1Report.lastModified,
   },
   racingReport: {
-    path: REPORT_BY_PAGE.racingReport.path,
-    navLabel: REPORT_BY_PAGE.racingReport.cardTitle,
-    title: REPORT_BY_PAGE.racingReport.metaTitle,
-    heading: REPORT_BY_PAGE.racingReport.title,
-    description: REPORT_BY_PAGE.racingReport.description,
-    highlights: REPORT_BY_PAGE.racingReport.highlights,
-    sections: REPORT_BY_PAGE.racingReport.sections,
-    image: REPORT_BY_PAGE.racingReport.image,
-    report: REPORT_BY_PAGE.racingReport,
+    path: REPORT_METADATA_BY_PAGE.racingReport.path,
+    navLabel: REPORT_METADATA_BY_PAGE.racingReport.cardTitle,
+    title: REPORT_METADATA_BY_PAGE.racingReport.metaTitle,
+    heading: REPORT_METADATA_BY_PAGE.racingReport.title,
+    description: REPORT_METADATA_BY_PAGE.racingReport.description,
+    image: REPORT_METADATA_BY_PAGE.racingReport.image,
+    report: REPORT_METADATA_BY_PAGE.racingReport,
     parentPage: 'work',
-    lastModified: REPORT_BY_PAGE.racingReport.lastModified,
+    lastModified: REPORT_METADATA_BY_PAGE.racingReport.lastModified,
   },
   notFound: {
     path: '/404.html',
@@ -161,7 +88,6 @@ export const PAGE_SEO = {
     title: 'Page Not Found | Cornell Physical Intelligence',
     heading: 'Page not found',
     description: 'The requested Cornell Physical Intelligence page could not be found.',
-    highlights: [],
     noindex: true,
     lastModified: SITE_RELEASE_DATE,
   },

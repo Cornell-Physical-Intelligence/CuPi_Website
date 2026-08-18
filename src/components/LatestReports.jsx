@@ -1,4 +1,4 @@
-import { REPORT_CONTENT } from '../data/reportContent';
+import { REPORT_METADATA } from '../data/reportMetadata';
 import './LatestReports.css';
 
 export default function LatestReports() {
@@ -16,7 +16,7 @@ export default function LatestReports() {
       </header>
 
       <div className="latest-reports__grid">
-        {REPORT_CONTENT.map((report) => (
+        {REPORT_METADATA.map((report) => (
           <article className="latest-report" key={report.slug}>
             <a className="latest-report__link" href={report.path}>
               <p className="latest-report__meta">

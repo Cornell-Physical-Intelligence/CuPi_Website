@@ -1,5 +1,5 @@
 import { assetPath } from '../utils/assetPath';
-import { REPORT_CONTENT } from './reportContent.js';
+import { REPORT_METADATA } from './reportMetadata.js';
 
 // Technical reports, not publications: these are written and released by the team, not
 // accepted anywhere, and calling them publications overstated it.
@@ -8,7 +8,7 @@ import { REPORT_CONTENT } from './reportContent.js';
 // PDF at build-prep time. Pages are images rather than an embedded PDF so the viewer can
 // be styled and scrolled like the rest of the site instead of handing off to the
 // browser's built-in reader, which we can't theme and which degrades badly on mobile.
-export const REPORTS = REPORT_CONTENT.map((report) => ({
+export const REPORTS = REPORT_METADATA.map((report) => ({
   ...report,
   title: report.cardTitle,
   subtitle: report.cardSubtitle,

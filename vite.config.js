@@ -10,7 +10,7 @@ import {
   canonicalUrlForPage,
   getPageSeo,
   structuredDataForPage,
-} from './src/seo.js'
+} from './src/seoBuild.js'
 
 // Pages for this repo serves the `main` branch's /docs folder, so this is where the
 // production build lands. It is read back from the resolved config rather than assumed,
