@@ -1,10 +1,10 @@
+import { readFileSync } from 'node:fs';
 import {
   PAGE_SEO,
   SITE_ALTERNATE_NAMES,
   SITE_URL,
   canonicalUrlForPage,
 } from '../src/seo.js';
-import sharp from 'sharp';
 
 const ORIGIN = (process.env.LIVE_SITE_ORIGIN ?? SITE_URL).replace(/\/$/, '');
 const INDEXABLE_PAGES = Object.entries(PAGE_SEO).filter(([, seo]) => !seo.noindex);
@@ -124,21 +124,10 @@ assert(
   faviconResponse.headers.get('content-type')?.includes('image/png'),
   'favicon did not return a PNG content type',
 );
-const liveFavicon = await sharp(Buffer.from(await faviconResponse.arrayBuffer()))
-  .ensureAlpha()
-  .raw()
-  .toBuffer({ resolveWithObject: true });
-const liveFaviconAlpha = (x, y) =>
-  liveFavicon.data[(y * liveFavicon.info.width + x) * 4 + 3];
+const liveFavicon = Buffer.from(await faviconResponse.arrayBuffer());
 assert(
-  liveFavicon.info.width === 192 &&
-    liveFavicon.info.height === 192 &&
-    liveFaviconAlpha(0, 0) === 0 &&
-    liveFaviconAlpha(20, 20) === 0 &&
-    liveFaviconAlpha(96, 0) > 0 &&
-    liveFaviconAlpha(0, 96) > 0 &&
-    liveFaviconAlpha(96, 96) === 255,
-  'live favicon does not retain the circular alpha silhouette',
+  liveFavicon.equals(readFileSync('docs/favicon-192.png')),
+  'live favicon bytes do not match the verified circular production asset',
 );
 
 const homeHtml = routeBodies.get('home');
