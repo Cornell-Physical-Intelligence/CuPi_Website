@@ -1,4 +1,5 @@
 import { pictureFor } from '../utils/responsiveImage';
+import sharedImageManifest from 'virtual:cupi-image-manifest/shared';
 
 // Each master in public/img/Gallery is served in two forms, both produced by
 // scripts/build-assets.mjs:
@@ -36,6 +37,6 @@ export const GALLERY_FULL_SIZES = '90vw';
 // Aspect ratio comes from the encoded thumb rather than a hand-kept number, so a re-cut
 // master can never leave the tapestry reserving the wrong box.
 export const galleryAspect = (image) => {
-  const thumb = pictureFor('galleryThumb', image.name);
+  const thumb = pictureFor(sharedImageManifest, 'galleryThumb', image.name);
   return thumb ? `${thumb.width}/${thumb.height}` : undefined;
 };

@@ -1,4 +1,5 @@
 import { pictureFor } from '../utils/responsiveImage';
+import sharedImageManifest from 'virtual:cupi-image-manifest/shared';
 
 /**
  * One <img>, offered in AVIF first and WebP second, at every size the pipeline produced.
@@ -14,6 +15,7 @@ import { pictureFor } from '../utils/responsiveImage';
  * to avoid.
  */
 export default function ResponsiveImage({
+  manifest = sharedImageManifest,
   group,
   name,
   sources,
@@ -26,7 +28,7 @@ export default function ResponsiveImage({
   // portraits live under src/ so that Vite content-hashes them, which means their URLs
   // only exist after the bundler has seen them, so that page assembles the same shape by
   // hand from an import.meta.glob and passes it in.
-  const picture = sources ?? pictureFor(group, name);
+  const picture = sources ?? pictureFor(manifest, group, name);
 
   if (!picture) {
     return fallback ? <img alt={alt} src={fallback} {...imgProps} /> : null;

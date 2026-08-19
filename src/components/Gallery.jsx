@@ -3,6 +3,7 @@ import Overlay from './Overlay';
 import ResponsiveImage from './ResponsiveImage';
 import { preloadPicture } from '../utils/preloadImages';
 import { pictureFor } from '../utils/responsiveImage';
+import sharedImageManifest from 'virtual:cupi-image-manifest/shared';
 import {
   GALLERY_IMAGES,
   GALLERY_FULL_SIZES,
@@ -38,7 +39,7 @@ export default function Gallery() {
   // on the tile. Handing the sources to the browser rather than naming a file keeps this
   // from warming a 2560px copy for a phone.
   const warmFullSize = (image) => {
-    const full = pictureFor('galleryFull', image.name);
+    const full = pictureFor(sharedImageManifest, 'galleryFull', image.name);
     if (full) preloadPicture({ ...full, sizes: GALLERY_FULL_SIZES });
   };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Overlay from './Overlay';
 import ResponsiveImage from './ResponsiveImage';
+import workImageManifest from 'virtual:cupi-image-manifest/work';
 import {
   REPORTS,
   REPORT_PAGE_SIZES,
@@ -184,6 +185,7 @@ export default function TechnicalReports() {
                   the browser defer the ones genuinely further down. */}
               {Array.from({ length: shown.pageCount }, (_, i) => (
                 <ResponsiveImage
+                  manifest={workImageManifest}
                   key={i}
                   group={getReportPageGroup(shown.slug)}
                   name={getReportPageName(i + 1)}

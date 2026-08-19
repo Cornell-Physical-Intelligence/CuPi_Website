@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import ResponsiveImage from './ResponsiveImage';
+import workImageManifest from 'virtual:cupi-image-manifest/work';
 import './HoverVideo.css';
 
 /**
@@ -68,6 +69,7 @@ export default function HoverVideo({ src, poster, label, ratio }) {
       }}
     >
       <ResponsiveImage
+        manifest={workImageManifest}
         group="poster"
         name={poster}
         sizes={POSTER_SIZES}

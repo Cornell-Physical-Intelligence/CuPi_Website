@@ -19,6 +19,74 @@ import {
 // touching the committed one.
 const DEFAULT_OUT_DIR = 'docs'
 
+// The asset pipeline keeps one canonical manifest, but no page outside Work needs its
+// video posters or nineteen report-page records. Compile a shared gallery/art view and a
+// Work-only view so those records do not join every route's initial module graph. The
+// small art group stays shared to avoid creating another critical request on two routes.
+const IMAGE_MANIFEST_PREFIX = 'virtual:cupi-image-manifest/'
+const RESOLVED_IMAGE_MANIFEST_PREFIX = `\0${IMAGE_MANIFEST_PREFIX}`
+const IMAGE_MANIFEST_GROUPS = {
+  shared: ['galleryThumb', 'galleryFull', 'art'],
+  work: ['poster', 'report:racing-without-a-map', 'report:vq1-deterministic-policy'],
+}
+const readImageManifest = () =>
+  JSON.parse(readFileSync(new URL('./src/data/generated/images.json', import.meta.url), 'utf8'))
+
+const imageManifestModules = () => ({
+  name: 'image-manifest-modules',
+
+  buildStart() {
+    const actual = Object.keys(readImageManifest()).sort()
+    const configured = Object.values(IMAGE_MANIFEST_GROUPS).flat()
+    const unique = [...new Set(configured)].sort()
+    if (
+      unique.length !== configured.length ||
+      JSON.stringify(unique) !== JSON.stringify(actual)
+    ) {
+      throw new Error('Image manifest families must cover every generated group exactly once')
+    }
+  },
+
+  resolveId(id) {
+    return id.startsWith(IMAGE_MANIFEST_PREFIX) ? `\0${id}` : null
+  },
+
+  load(id) {
+    if (!id.startsWith(RESOLVED_IMAGE_MANIFEST_PREFIX)) return null
+
+    const family = id.slice(RESOLVED_IMAGE_MANIFEST_PREFIX.length)
+    const groups = IMAGE_MANIFEST_GROUPS[family]
+    if (!groups) throw new Error(`Unknown image manifest family: ${family}`)
+
+    const manifest = readImageManifest()
+    const pictures = Object.fromEntries(
+      groups.map((group) => [
+        group,
+        Object.fromEntries(
+          Object.entries(manifest[group] ?? {}).map(([name, formats]) => {
+            const avif = formats.avif ?? []
+            const webp = formats.webp ?? []
+            const largest = webp.at(-1) ?? avif.at(-1)
+            return [
+              name,
+              largest
+                ? {
+                    avif: avif.map(({ src, w }) => `${src} ${w}w`).join(', '),
+                    webp: webp.map(({ src, w }) => `${src} ${w}w`).join(', '),
+                    src: largest.src,
+                    width: largest.w,
+                    height: largest.h,
+                  }
+                : null,
+            ]
+          }),
+        ),
+      ]),
+    )
+    return `export default ${JSON.stringify(pictures)}`
+  },
+})
+
 // Routes the app answers to. Home is the root index and needs no folder of its own.
 const ROUTES = Object.entries(PAGE_SEO)
   .filter(([page, seo]) => page !== 'home' && !seo.noindex)
@@ -319,7 +387,7 @@ const emitRoutePages = () => {
 // domain at the root, not from a project subpath.
 export default defineConfig({
   base: '/',
-  plugins: [react(), seoDocuments(), emitRoutePages()],
+  plugins: [imageManifestModules(), react(), seoDocuments(), emitRoutePages()],
   build: {
     outDir: DEFAULT_OUT_DIR,
     emptyOutDir: true,
