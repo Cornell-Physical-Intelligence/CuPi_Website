@@ -129,9 +129,13 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
     let sparkHead = 0;
     let image;
     let pixels;
+    let backgroundOut = Number.NaN;
     // Row-ordered [startIdx, endIdx] index pairs: the pixels diffuse() has to visit.
     let runs = null;
     let runCount = 0;
+    // renderField() needs the diffused area plus one pixel for its neighbour-gradient rim.
+    let renderRuns = null;
+    let renderRunCount = 0;
 
     const mouse = { x: 0, y: 0, active: false, inf: 0 };
 
@@ -189,6 +193,7 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
       buffer.height = simH;
       image = bctx.createImageData(simW, simH);
       pixels = image.data;
+      backgroundOut = Number.NaN;
 
       trail = new Float32Array(N);
       next = new Float32Array(N);
@@ -236,8 +241,7 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
     // applyMouseFood) gates on maskSim, so no write can land outside these runs. Both field
     // buffers start zeroed, so the pixels the runs skip hold zero and keep holding it across
     // the buffer swap.
-    function buildDiffuseRuns() {
-      const m = DIFFUSE_MARGIN;
+    function buildDilatedRuns(m) {
       const win = 2 * m + 1;
       const rowDil = new Uint8Array(N);
       for (let y = 0; y < simH; y++) {
@@ -280,12 +284,19 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
         }
       }
 
-      runCount = starts.length;
-      runs = new Int32Array(runCount * 2);
-      for (let r = 0; r < runCount; r++) {
-        runs[r * 2] = starts[r];
-        runs[r * 2 + 1] = ends[r];
+      const result = new Int32Array(starts.length * 2);
+      for (let r = 0; r < starts.length; r++) {
+        result[r * 2] = starts[r];
+        result[r * 2 + 1] = ends[r];
       }
+      return result;
+    }
+
+    function buildDiffuseRuns() {
+      runs = buildDilatedRuns(DIFFUSE_MARGIN);
+      runCount = runs.length / 2;
+      renderRuns = buildDilatedRuns(DIFFUSE_MARGIN + 1);
+      renderRunCount = renderRuns.length / 2;
     }
 
     // Distance (sim px) from each inside pixel to the glyph outline (0 at/outside it).
@@ -667,6 +678,32 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
       const lineHalf = P.lineHalf;
       const half = P.band * 0.5;
       const trailBoost = P.trailBoost;
+      const invert = P.invert;
+
+      // Pixels outside renderRuns are mathematically uniform: scaffold/trail and all four
+      // neighbours are zero. Paint that baseline once (and only repaint it when a live
+      // tuning change actually changes the value) instead of rewriting the empty rectangle
+      // every frame. Assigning through Uint8ClampedArray keeps byte rounding identical.
+      let baseCover;
+      let baseHalo;
+      if (useDist) {
+        baseCover = 1 - smoothstep(lineHalf - half, lineHalf + half, 99);
+        baseHalo = (1 - smoothstep(lineHalf, lineHalf + half * 4, 99)) * bloom;
+      } else {
+        baseCover = smoothstep(edgeLo, edgeHi, 0);
+        baseHalo = smoothstep(0.03, edgeLo, 0) * bloom;
+      }
+      const baseC = clamp(baseCover * 255 + baseHalo * 30, 0, 255);
+      const nextBackgroundOut = invert ? baseC : 255 - baseC;
+      if (!Object.is(backgroundOut, nextBackgroundOut)) {
+        for (let k = 0; k < pixels.length; k += 4) {
+          pixels[k] = nextBackgroundOut;
+          pixels[k + 1] = nextBackgroundOut;
+          pixels[k + 2] = nextBackgroundOut;
+          pixels[k + 3] = 255;
+        }
+        backgroundOut = nextBackgroundOut;
+      }
 
       // One-time reconstruction of the wall distance from the static Gaussian membrane:
       // scaffold = exp(-gap²/2σ)  ⟹  gap = √(-2σ·ln scaffold). scaffold never changes
@@ -681,9 +718,10 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
         }
       }
 
-      let k = 0;
-      for (let y = 0, idx = 0; y < simH; y++) {
-        for (let x = 0; x < simW; x++, idx++, k += 4) {
+      for (let r = 0; r < renderRunCount; r++) {
+        const end = renderRuns[r * 2 + 1];
+        const start = renderRuns[r * 2];
+        for (let idx = start, k = start * 4; idx <= end; idx++, k += 4) {
           let cover;
           let halo;
           if (useDist) {
@@ -703,8 +741,8 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
             // gentle outer glow that fades into the line edge (kept subtle, not crushed)
             halo = smoothstep(0.03, edgeLo, e) * bloom;
           }
-          const gx = x > 0 && x < simW - 1 ? Math.abs(trail[idx - 1] - trail[idx + 1]) * 0.018 : 0;
-          const gy = y > 0 && y < simH - 1 ? Math.abs(trail[idx - simW] - trail[idx + simW]) * 0.018 : 0;
+          const gx = Math.abs(trail[idx - 1] - trail[idx + 1]) * 0.018;
+          const gy = Math.abs(trail[idx - simW] - trail[idx + simW]) * 0.018;
           const rim = smoothstep(0.02, 0.26, gx + gy) * rimAmt;
           // darkness of the web before inversion; cover dominates so the half-coverage
           // crossing sits near 0.5 (128) — the pivot the contrast curve sharpens about
@@ -712,11 +750,10 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
           // c is high on the veins/strands, ~0 in the cells. Dark theme inverts → white
           // cells + dark web on a black page. Light theme (P.invert) keeps c → white
           // strands and a black letter fill on the white page — a clean colour inversion.
-          const out = P.invert ? c : 255 - c;
+          const out = invert ? c : 255 - c;
           pixels[k] = out;
           pixels[k + 1] = out;
           pixels[k + 2] = out;
-          pixels[k + 3] = 255;
         }
       }
       bctx.putImageData(image, 0, 0);
