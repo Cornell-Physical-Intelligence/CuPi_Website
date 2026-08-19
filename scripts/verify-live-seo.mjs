@@ -4,6 +4,7 @@ import {
   SITE_URL,
   canonicalUrlForPage,
 } from '../src/seo.js';
+import sharp from 'sharp';
 
 const ORIGIN = (process.env.LIVE_SITE_ORIGIN ?? SITE_URL).replace(/\/$/, '');
 const INDEXABLE_PAGES = Object.entries(PAGE_SEO).filter(([, seo]) => !seo.noindex);
@@ -106,7 +107,39 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     text.includes(`<link rel="canonical" href="${canonical}"`),
     `${page} has the wrong canonical URL`,
   );
+  const faviconLinks = text.match(/<link rel="icon"[^>]+>/g) ?? [];
+  assert(
+    faviconLinks.length === 1 &&
+      faviconLinks[0] ===
+        '<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />',
+    `${page} does not expose the single circular search-result favicon`,
+  );
 }
+
+const faviconResponse = await request(`${ORIGIN}/favicon-192.png`, {
+  headers: { accept: 'image/png' },
+});
+assert(faviconResponse.status === 200, `favicon returned HTTP ${faviconResponse.status}`);
+assert(
+  faviconResponse.headers.get('content-type')?.includes('image/png'),
+  'favicon did not return a PNG content type',
+);
+const liveFavicon = await sharp(Buffer.from(await faviconResponse.arrayBuffer()))
+  .ensureAlpha()
+  .raw()
+  .toBuffer({ resolveWithObject: true });
+const liveFaviconAlpha = (x, y) =>
+  liveFavicon.data[(y * liveFavicon.info.width + x) * 4 + 3];
+assert(
+  liveFavicon.info.width === 192 &&
+    liveFavicon.info.height === 192 &&
+    liveFaviconAlpha(0, 0) === 0 &&
+    liveFaviconAlpha(20, 20) === 0 &&
+    liveFaviconAlpha(96, 0) > 0 &&
+    liveFaviconAlpha(0, 96) > 0 &&
+    liveFaviconAlpha(96, 96) === 255,
+  'live favicon does not retain the circular alpha silhouette',
+);
 
 const homeHtml = routeBodies.get('home');
 const { response: googlebotResponse, text: googlebotHtml } = await fetchText(`${ORIGIN}/`, {

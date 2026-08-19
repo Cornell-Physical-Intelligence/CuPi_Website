@@ -2,15 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Two shapes on purpose. Google's result pages put the favicon in a circular chip,
-         where the tab's rounded square read as a mismatched inset shape — so the search
-         crawler gets a disc. It prefers 48px-multiple bitmaps, hence the 192; browsers
-         resolve the later, tab-sized declarations instead (Safari the 32px PNG since it
-         ignores SVG icons, everything else the SVG). ?v=2 busts the cached disc-shaped
-         copy of favicon.svg that tabs held before the shapes were split. -->
+    <!-- Declare one stable, 48px-multiple favicon so search crawlers and browsers cannot
+         choose different silhouettes. The transparent corners make the mark a true disc
+         inside Google's circular result treatment instead of a rounded square inside it. -->
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <link rel="apple-touch-icon" href="/favicon-192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- seo:head:start --><!-- seo:head:end -->

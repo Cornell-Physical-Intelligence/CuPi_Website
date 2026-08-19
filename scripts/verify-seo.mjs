@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import sharp from 'sharp';
 import {
   ORGANIZATION_DESCRIPTION,
   PAGE_SEO,
@@ -42,6 +43,52 @@ assert(
   'The rendered footer boilerplate must be excluded from search snippets',
 );
 
+const faviconPath = 'public/favicon-192.png';
+const favicon = await sharp(faviconPath)
+  .ensureAlpha()
+  .raw()
+  .toBuffer({ resolveWithObject: true });
+assert(
+  favicon.info.width === 192 && favicon.info.height === 192,
+  'The declared favicon must remain a square 192px search-result asset',
+);
+const faviconAlpha = (x, y) => favicon.data[(y * favicon.info.width + x) * 4 + 3];
+assert(
+  faviconAlpha(0, 0) === 0 &&
+    faviconAlpha(20, 20) === 0 &&
+    faviconAlpha(96, 0) > 0 &&
+    faviconAlpha(0, 96) > 0 &&
+    faviconAlpha(96, 96) === 255,
+  'The declared favicon must retain a circular alpha silhouette',
+);
+const legacyPngFavicon = await sharp('public/favicon-32.png')
+  .ensureAlpha()
+  .raw()
+  .toBuffer({ resolveWithObject: true });
+const legacyPngAlpha = (x, y) =>
+  legacyPngFavicon.data[(y * legacyPngFavicon.info.width + x) * 4 + 3];
+assert(
+  legacyPngFavicon.info.width === 32 &&
+    legacyPngFavicon.info.height === 32 &&
+    legacyPngAlpha(0, 0) === 0 &&
+    legacyPngAlpha(3, 3) === 0 &&
+    legacyPngAlpha(16, 0) > 0 &&
+    legacyPngAlpha(16, 16) === 255,
+  'The legacy 32px favicon URL must also retain a circular alpha silhouette',
+);
+const legacySvgFavicon = readFileSync('public/favicon.svg', 'utf8');
+assert(
+  legacySvgFavicon.includes('<circle cx="500" cy="500" r="500"/>') &&
+    !legacySvgFavicon.includes('<rect '),
+  'The legacy SVG favicon URL must also use the circular silhouette',
+);
+for (const faviconFile of ['favicon-32.png', 'favicon-192.png', 'favicon.svg']) {
+  assert(
+    readFileSync(join('public', faviconFile)).equals(readFileSync(join('docs', faviconFile))),
+    `${faviconFile} must be synchronized between the source and deployed build`,
+  );
+}
+
 for (const [page, seo] of INDEXABLE_PAGES) {
   const file = fileForPage(seo);
   assert(existsSync(file), `${page} static document is missing at ${file}`);
@@ -59,6 +106,13 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   assert(
     count(html, /<link rel="canonical"/g) === 1,
     `${page} must have exactly one canonical`,
+  );
+  assert(
+    count(html, /<link rel="icon"/g) === 1 &&
+      html.includes(
+        '<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />',
+      ),
+    `${page} must expose exactly one circular search-result favicon candidate`,
   );
   assert(count(html, /<h1>/g) === 1, `${page} static fallback must have one H1`);
   assert(
