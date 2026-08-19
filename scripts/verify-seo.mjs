@@ -178,6 +178,10 @@ for (const [page, seo] of INDEXABLE_PAGES) {
       organization.sameAs?.includes('https://cornell.campusgroups.com/cupi/home/'),
       'Organization schema must reference the official Cornell listing',
     );
+    assert(
+      organization.sameAs?.includes('https://www.youtube.com/@cornellphysicalintelligence'),
+      'Organization schema must reference the official CUPI YouTube channel',
+    );
     assert(organization.logo === `${SITE_URL}/favicon-192.png`, 'Organization logo is incorrect');
     assert(organization.email === 'cuphysint@cornell.edu', 'Organization email is incorrect');
     assert(

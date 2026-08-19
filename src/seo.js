@@ -4,7 +4,7 @@ export const SITE_URL = 'https://cornellphysicalintelligence.com';
 export const SITE_NAME = 'Cornell Physical Intelligence';
 export const SITE_ACRONYM = 'CUPI';
 export const SITE_RELEASE_DATE = '2026-08-16';
-export const HOME_LAST_MODIFIED = '2026-08-17';
+export const HOME_LAST_MODIFIED = '2026-08-19';
 export const SITE_ALTERNATE_NAMES = [
   SITE_ACRONYM,
   'Cornell University Physical Intelligence',
@@ -118,6 +118,7 @@ const organizationNode = {
     'https://github.com/Cornell-Physical-Intelligence',
     'https://www.instagram.com/cornellphysicalintelligence/',
     'https://www.linkedin.com/company/cu-physical-intelligence/',
+    'https://www.youtube.com/@cornellphysicalintelligence',
   ],
 };
 

@@ -135,6 +135,10 @@ assert(
   organization.sameAs?.includes('https://cornell.campusgroups.com/cupi/home/'),
   'Live Organization schema is missing the Cornell CampusGroups entity URL',
 );
+assert(
+  organization.sameAs?.includes('https://www.youtube.com/@cornellphysicalintelligence'),
+  'Live Organization schema is missing the official CUPI YouTube entity URL',
+);
 
 const { response: robotsResponse, text: robots } = await fetchText(`${ORIGIN}/robots.txt`);
 assert(robotsResponse.status === 200, `robots.txt returned HTTP ${robotsResponse.status}`);
