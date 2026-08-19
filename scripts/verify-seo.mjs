@@ -155,6 +155,23 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     );
   }
 
+  const applyLcpPreloads = count(
+    html,
+    /<link rel="preload" as="image" type="image\/avif" href="\/img\/CrabOnBeach-760\.avif"[^>]*>/g,
+  );
+  assert(
+    applyLcpPreloads === (page === 'apply' ? 1 : 0),
+    `${page} has an incorrect number of Apply LCP image preloads`,
+  );
+  if (page === 'apply') {
+    assert(
+      html.includes(
+        'imagesrcset="/img/CrabOnBeach-380.avif 380w, /img/CrabOnBeach-760.avif 760w" imagesizes="(max-width: 590px) 88vw, 520px" fetchpriority="high"',
+      ),
+      'Apply LCP preload must match the rendered responsive image candidates',
+    );
+  }
+
   if (page === 'home') {
     assert(
       PAGE_SEO.home.description.startsWith('CUPI (Cornell Physical Intelligence)'),

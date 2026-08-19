@@ -1,5 +1,7 @@
-// Regenerates every derivative the site actually serves, from the masters kept in the
-// repo. Run it after adding or replacing artwork:
+// Regenerates every derivative the site actually serves, from the masters kept under
+// asset-masters/. That directory deliberately sits outside public/, so Vite cannot copy
+// the 50+ MB source files into the production site. Run this after adding or replacing
+// artwork:
 //
 //     npm run assets
 //
@@ -243,8 +245,9 @@ const hasFfmpeg = () => {
 };
 
 const encodeClips = async () => {
-  const dir = join(ROOT, 'public/media');
-  const masters = (await listFiles(dir, /\.mp4$/i)).filter((f) => !/-\d+\.mp4$/.test(f));
+  const sourceDir = join(ROOT, 'asset-masters/media');
+  const outDir = join(ROOT, 'public/media');
+  const masters = await listFiles(sourceDir, /\.mp4$/i);
   if (masters.length === 0) return;
 
   if (!hasFfmpeg()) {
@@ -253,7 +256,7 @@ const encodeClips = async () => {
   }
 
   for (const source of masters) {
-    const output = join(dir, `${stem(source)}-${CLIP_WIDTH}.mp4`);
+    const output = join(outDir, `${stem(source)}-${CLIP_WIDTH}.mp4`);
     produced.add(output);
     if (!(await isStale(source, output))) {
       skipped += 1;
@@ -291,7 +294,10 @@ const run = async () => {
   // Two roles from one master. The grid tile is at most a third of the viewport, so it
   // tops out at 1280 for a 2x desktop; the lightbox fills 90vw/85vh, which on a tall
   // 2x display is ~2560 device px, and that is the only reason a >1280 file exists.
-  const galleryMasters = await listFiles(join(ROOT, 'public/img/Gallery'), /\.(png|jpe?g)$/i);
+  const galleryMasters = await listFiles(
+    join(ROOT, 'asset-masters/img/Gallery'),
+    /\.(png|jpe?g)$/i,
+  );
   for (const source of galleryMasters) {
     await emit({
       source,
@@ -315,7 +321,7 @@ const run = async () => {
   // --- Video posters --------------------------------------------------------------
   // The still is what every visitor pays for; the clip only downloads on hover. These
   // were shipping as PNG, which for photographic frames is close to worst case.
-  for (const source of await listFiles(join(ROOT, 'public/media'), /\.png$/i)) {
+  for (const source of await listFiles(join(ROOT, 'asset-masters/media'), /\.png$/i)) {
     await emit({
       source,
       outDir: join(ROOT, 'public/media'),
@@ -330,16 +336,16 @@ const run = async () => {
   // The viewer caps a page at 860 CSS px. 1122 is the master's own width and stays the
   // top tier: re-rendering the PDF larger is the only way past it, and 1122 already
   // covers a 2x display at ~1.3x linear.
-  const reportsDir = join(ROOT, 'public/img/Reports');
-  if (existsSync(reportsDir)) {
-    const folders = (await readdir(reportsDir, { withFileTypes: true }))
+  const reportMastersDir = join(ROOT, 'asset-masters/img/Reports');
+  if (existsSync(reportMastersDir)) {
+    const folders = (await readdir(reportMastersDir, { withFileTypes: true }))
       .filter((e) => e.isDirectory())
-      .map((e) => join(reportsDir, e.name));
+      .map((e) => join(reportMastersDir, e.name));
     for (const folder of folders) {
       for (const source of await listFiles(folder, /^p\d+\.webp$/i)) {
         await emit({
           source,
-          outDir: folder,
+          outDir: join(ROOT, 'public/img/Reports', basename(folder)),
           name: stem(source),
           sizes: [860, 1122],
           quality: PAGE,
@@ -368,17 +374,37 @@ const run = async () => {
 
   // --- One-off page art -----------------------------------------------------------
   const singles = [
-    { file: 'public/img/HexapodLegWireframe.png', sizes: [800, 1600], quality: FLAT },
-    { file: 'public/img/CrabOnBeach.webp', sizes: [380, 760], quality: ART },
-    { file: 'public/icons/CUGeoData_Logo.png', sizes: [493, 985], quality: FLAT },
-    { file: 'public/icons/Modovolo_Logo.png', sizes: [280, 500], quality: FLAT },
+    {
+      file: 'asset-masters/img/HexapodLegWireframe.png',
+      outDir: 'public/img',
+      sizes: [800, 1600],
+      quality: FLAT,
+    },
+    {
+      file: 'asset-masters/img/CrabOnBeach.webp',
+      outDir: 'public/img',
+      sizes: [380, 760],
+      quality: ART,
+    },
+    {
+      file: 'asset-masters/icons/CUGeoData_Logo.png',
+      outDir: 'public/icons',
+      sizes: [493, 985],
+      quality: FLAT,
+    },
+    {
+      file: 'asset-masters/icons/Modovolo_Logo.png',
+      outDir: 'public/icons',
+      sizes: [280, 500],
+      quality: FLAT,
+    },
   ];
-  for (const { file, sizes, quality } of singles) {
+  for (const { file, outDir, sizes, quality } of singles) {
     const source = join(ROOT, file);
     if (!existsSync(source)) continue;
     await emit({
       source,
-      outDir: dirname(source),
+      outDir: join(ROOT, outDir),
       name: stem(source),
       sizes,
       quality,

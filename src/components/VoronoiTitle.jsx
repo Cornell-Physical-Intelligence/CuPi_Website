@@ -70,6 +70,12 @@ const smoothstep = (a, b, x) => {
   x = clamp((x - a) / (b - a), 0, 1);
   return x * x * (3 - 2 * x);
 };
+const smoothstepBounded = (a, b, x) => {
+  if (x <= a) return 0;
+  if (x >= b) return 1;
+  const q = (x - a) / (b - a);
+  return q * q * (3 - 2 * q);
+};
 
 export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
   const wrapRef = useRef(null);
@@ -688,10 +694,13 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
       let baseHalo;
       if (useDist) {
         baseCover = 1 - smoothstep(lineHalf - half, lineHalf + half, 99);
-        baseHalo = (1 - smoothstep(lineHalf, lineHalf + half * 4, 99)) * bloom;
+        // The tuned production preset has no bloom. Avoid evaluating a smoothstep whose
+        // finite result would only be multiplied by zero; the emitted value remains +0.
+        baseHalo =
+          bloom === 0 ? 0 : (1 - smoothstep(lineHalf, lineHalf + half * 4, 99)) * bloom;
       } else {
         baseCover = smoothstep(edgeLo, edgeHi, 0);
-        baseHalo = smoothstep(0.03, edgeLo, 0) * bloom;
+        baseHalo = bloom === 0 ? 0 : smoothstep(0.03, edgeLo, 0) * bloom;
       }
       const baseC = clamp(baseCover * 255 + baseHalo * 30, 0, 255);
       const nextBackgroundOut = invert ? baseC : 255 - baseC;
@@ -729,9 +738,12 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
             const gapEff = dist[idx] - trail[idx] * trailBoost;
             // 1 inside the vein → 0 in the cell; the 50% crossing (the visible edge) sits
             // at lineHalf, and the ramp is over a *linear* field so the contour is smooth
-            cover = 1 - smoothstep(lineHalf - half, lineHalf + half, gapEff);
+            cover = 1 - smoothstepBounded(lineHalf - half, lineHalf + half, gapEff);
             // soft glow just outside the crisp line (mostly a tone the contrast keeps gentle)
-            halo = (1 - smoothstep(lineHalf, lineHalf + half * 4, gapEff)) * bloom;
+            halo =
+              bloom === 0
+                ? 0
+                : (1 - smoothstep(lineHalf, lineHalf + half * 4, gapEff)) * bloom;
           } else {
             const t = trail[idx] * 0.026 + scaffold[idx] * scaff;
             const e = t * exposure;
@@ -739,11 +751,11 @@ export default function VoronoiTitle({ text = 'CUPI', apiRef }) {
             // band so the upscale stays smooth (contrast re-crisps it at display res)
             cover = smoothstep(edgeLo, edgeHi, e);
             // gentle outer glow that fades into the line edge (kept subtle, not crushed)
-            halo = smoothstep(0.03, edgeLo, e) * bloom;
+            halo = bloom === 0 ? 0 : smoothstep(0.03, edgeLo, e) * bloom;
           }
           const gx = Math.abs(trail[idx - 1] - trail[idx + 1]) * 0.018;
           const gy = Math.abs(trail[idx - simW] - trail[idx + simW]) * 0.018;
-          const rim = smoothstep(0.02, 0.26, gx + gy) * rimAmt;
+          const rim = smoothstepBounded(0.02, 0.26, gx + gy) * rimAmt;
           // darkness of the web before inversion; cover dominates so the half-coverage
           // crossing sits near 0.5 (128) — the pivot the contrast curve sharpens about
           const c = clamp(cover * 255 + halo * 30 + rim * 46, 0, 255);

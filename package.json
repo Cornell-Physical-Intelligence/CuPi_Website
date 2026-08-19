@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "verify:assets": "node scripts/verify-production-assets.mjs",
+    "verify:fonts": "node scripts/verify-font-coverage.mjs",
     "verify:seo": "node scripts/verify-seo.mjs",
     "verify:live-seo": "node scripts/verify-live-seo.mjs",
-    "check": "npm run lint && npm run build && npm run verify:seo",
+    "check": "npm run lint && npm run build && npm run verify:assets && npm run verify:fonts && npm run verify:seo",
     "preview": "vite preview",
     "assets": "node scripts/build-assets.mjs"
   },
@@ -20,6 +22,7 @@
     "react-dom": "^19.2.6"
   },
   "devDependencies": {
+    "@babel/parser": "^7.29.7",
     "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
