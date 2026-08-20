@@ -43,7 +43,7 @@ assert(
   'The rendered footer boilerplate must be excluded from search snippets',
 );
 
-const faviconPath = 'public/favicon-192.png';
+const faviconPath = 'public/favicon-cupi.png';
 const favicon = await sharp(faviconPath)
   .ensureAlpha()
   .raw()
@@ -82,7 +82,12 @@ assert(
     !legacySvgFavicon.includes('<rect '),
   'The legacy SVG favicon URL must also use the circular silhouette',
 );
-for (const faviconFile of ['favicon-32.png', 'favicon-192.png', 'favicon.svg']) {
+for (const faviconFile of [
+  'favicon-32.png',
+  'favicon-192.png',
+  'favicon-cupi.png',
+  'favicon.svg',
+]) {
   assert(
     readFileSync(join('public', faviconFile)).equals(readFileSync(join('docs', faviconFile))),
     `${faviconFile} must be synchronized between the source and deployed build`,
@@ -110,9 +115,14 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   assert(
     count(html, /<link rel="icon"/g) === 1 &&
       html.includes(
-        '<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />',
+        '<link rel="icon" type="image/png" sizes="192x192" href="/favicon-cupi.png" />',
       ),
     `${page} must expose exactly one circular search-result favicon candidate`,
+  );
+  assert(
+    count(html, /<link rel="apple-touch-icon"/g) === 1 &&
+      html.includes('<link rel="apple-touch-icon" href="/favicon-cupi.png" />'),
+    `${page} must use the same stable circular asset for its touch icon`,
   );
   assert(count(html, /<h1>/g) === 1, `${page} static fallback must have one H1`);
   assert(
@@ -253,7 +263,7 @@ for (const [page, seo] of INDEXABLE_PAGES) {
       organization.sameAs?.includes('https://www.youtube.com/@cornellphysicalintelligence'),
       'Organization schema must reference the official CUPI YouTube channel',
     );
-    assert(organization.logo === `${SITE_URL}/favicon-192.png`, 'Organization logo is incorrect');
+    assert(organization.logo === `${SITE_URL}/favicon-cupi.png`, 'Organization logo is incorrect');
     assert(organization.email === 'cuphysint@cornell.edu', 'Organization email is incorrect');
     assert(
       html.includes('mailto:cuphysint@cornell.edu'),
@@ -273,7 +283,7 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     assert(
       article?.publisher?.['@id'] === `${SITE_URL}/#organization` &&
         article.publisher.name === 'Cornell Physical Intelligence' &&
-        article.publisher.logo === `${SITE_URL}/favicon-192.png`,
+        article.publisher.logo === `${SITE_URL}/favicon-cupi.png`,
       `${page} report schema publisher is incomplete`,
     );
     assert(

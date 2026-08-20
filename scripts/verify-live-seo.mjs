@@ -111,12 +111,18 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   assert(
     faviconLinks.length === 1 &&
       faviconLinks[0] ===
-        '<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />',
+        '<link rel="icon" type="image/png" sizes="192x192" href="/favicon-cupi.png" />',
     `${page} does not expose the single circular search-result favicon`,
+  );
+  const touchIconLinks = text.match(/<link rel="apple-touch-icon"[^>]+>/g) ?? [];
+  assert(
+    touchIconLinks.length === 1 &&
+      touchIconLinks[0] === '<link rel="apple-touch-icon" href="/favicon-cupi.png" />',
+    `${page} does not use the stable circular touch icon`,
   );
 }
 
-const faviconResponse = await request(`${ORIGIN}/favicon-192.png`, {
+const faviconResponse = await request(`${ORIGIN}/favicon-cupi.png`, {
   headers: { accept: 'image/png' },
 });
 assert(faviconResponse.status === 200, `favicon returned HTTP ${faviconResponse.status}`);
@@ -126,7 +132,7 @@ assert(
 );
 const liveFavicon = Buffer.from(await faviconResponse.arrayBuffer());
 assert(
-  liveFavicon.equals(readFileSync('docs/favicon-192.png')),
+  liveFavicon.equals(readFileSync('docs/favicon-cupi.png')),
   'live favicon bytes do not match the verified circular production asset',
 );
 

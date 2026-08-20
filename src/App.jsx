@@ -30,8 +30,6 @@ const PREFETCH = {
   members: () => import('./pages/Members'),
   sponsors: () => import('./pages/Sponsors'),
   apply: () => import('./pages/Apply'),
-  vq1Report: () => import('./pages/Vq1Report'),
-  racingReport: () => import('./pages/RacingReport'),
 };
 
 const NAV_ITEMS = [

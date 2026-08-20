@@ -103,7 +103,7 @@ const organizationNode = {
   name: SITE_NAME,
   alternateName: SITE_ALTERNATE_NAMES,
   url: `${SITE_URL}/`,
-  logo: `${SITE_URL}/favicon-192.png`,
+  logo: `${SITE_URL}/favicon-cupi.png`,
   email: 'cuphysint@cornell.edu',
   description: ORGANIZATION_DESCRIPTION,
   address: {
@@ -198,7 +198,7 @@ export const structuredDataForPage = (page) => {
         '@id': `${SITE_URL}/#organization`,
         name: SITE_NAME,
         url: `${SITE_URL}/`,
-        logo: `${SITE_URL}/favicon-192.png`,
+        logo: `${SITE_URL}/favicon-cupi.png`,
       },
       dateModified: seo.lastModified,
       inLanguage: 'en-US',
