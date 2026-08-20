@@ -124,6 +124,18 @@ for (const [page, seo] of INDEXABLE_PAGES) {
       html.includes('<link rel="apple-touch-icon" href="/favicon-cupi.png" />'),
     `${page} must use the same stable circular asset for its touch icon`,
   );
+  const stylePreloads = html.match(/<link rel="preload" as="style"[^>]*>/g) ?? [];
+  const expectedStylePreloads = ['work', 'members', 'sponsors', 'apply'].includes(page) ? 1 : 0;
+  assert(
+    stylePreloads.length === expectedStylePreloads,
+    `${page} has an incorrect number of route stylesheet preloads`,
+  );
+  for (const stylePreload of stylePreloads) {
+    assert(
+      /\scrossorigin(?:\s|=)/.test(stylePreload),
+      `${page} stylesheet preload must match the route stylesheet credentials mode`,
+    );
+  }
   assert(count(html, /<h1>/g) === 1, `${page} static fallback must have one H1`);
   assert(
     html.includes("root.setAttribute('data-cupi-booting', '')"),

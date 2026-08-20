@@ -120,6 +120,18 @@ for (const [page, seo] of INDEXABLE_PAGES) {
       touchIconLinks[0] === '<link rel="apple-touch-icon" href="/favicon-cupi.png" />',
     `${page} does not use the stable circular touch icon`,
   );
+  const stylePreloads = text.match(/<link rel="preload" as="style"[^>]*>/g) ?? [];
+  const expectedStylePreloads = ['work', 'members', 'sponsors', 'apply'].includes(page) ? 1 : 0;
+  assert(
+    stylePreloads.length === expectedStylePreloads,
+    `${page} has an incorrect number of live route stylesheet preloads`,
+  );
+  for (const stylePreload of stylePreloads) {
+    assert(
+      /\scrossorigin(?:\s|=)/.test(stylePreload),
+      `${page} live stylesheet preload has a mismatched credentials mode`,
+    );
+  }
 }
 
 const faviconResponse = await request(`${ORIGIN}/favicon-cupi.png`, {

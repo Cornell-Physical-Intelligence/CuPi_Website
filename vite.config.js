@@ -361,7 +361,7 @@ const emitRoutePages = () => {
         if (entry) {
           lines.push(`    <link rel="modulepreload" crossorigin href="/${entry.js}" />`)
           for (const css of entry.css) {
-            lines.push(`    <link rel="preload" as="style" href="/${css}" />`)
+            lines.push(`    <link rel="preload" as="style" crossorigin href="/${css}" />`)
           }
         }
         // Apply's crab is the route's LCP image, but React used to be the first thing
