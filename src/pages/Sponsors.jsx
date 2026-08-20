@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import SiteFooter from '../components/SiteFooter';
 import SponsorMark from '../components/SponsorMark';
 import ResponsiveImage from '../components/ResponsiveImage';
+import { SPONSOR_ART_PICTURES } from '../data/sponsorArt';
 import { assetPath } from '../utils/assetPath';
 import './Sponsors.css';
 
@@ -77,8 +78,7 @@ export default function Sponsors() {
               it is tall, so the width it occupies is 47.7vw until that cap bites at a
               1518px viewport. */}
           <ResponsiveImage
-            group="art"
-            name="HexapodLegWireframe"
+            sources={SPONSOR_ART_PICTURES.HexapodLegWireframe}
             sizes="(min-width: 1518px) 724px, 47.7vw"
             className="sponsors__art"
             alt=""
@@ -128,8 +128,7 @@ export default function Sponsors() {
                             bare line of text into a row of logos. */}
                         {art && (
                           <ResponsiveImage
-                            group="art"
-                            name={art}
+                            sources={SPONSOR_ART_PICTURES[art]}
                             sizes={LOGO_SIZES}
                             className={markClass}
                             alt={name}

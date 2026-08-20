@@ -2,13 +2,12 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import Overlay from './Overlay';
 import ResponsiveImage from './ResponsiveImage';
 import { preloadPicture } from '../utils/preloadImages';
-import { pictureFor } from '../utils/responsiveImage';
-import sharedImageManifest from 'virtual:cupi-image-manifest/shared';
 import {
   GALLERY_IMAGES,
   GALLERY_FULL_SIZES,
   GALLERY_TILE_SIZES,
   galleryAspect,
+  galleryPictureFor,
 } from '../data/gallery';
 import './Gallery.css';
 
@@ -35,7 +34,7 @@ const eagerThumbMaskFor = (viewportWidth, viewportHeight) => {
     let top = 0;
     run.forEach((index) => {
       if (top < viewportHeight) eagerMask |= 1 << index;
-      const thumb = pictureFor(sharedImageManifest, 'galleryThumb', GALLERY_IMAGES[index].name);
+      const thumb = galleryPictureFor(GALLERY_IMAGES[index], 'thumb');
       top += columnWidth * (thumb.height / thumb.width) + 2;
     });
   });
@@ -87,7 +86,7 @@ export default function Gallery() {
   // on the tile. Handing the sources to the browser rather than naming a file keeps this
   // from warming a 2560px copy for a phone.
   const warmFullSize = (image) => {
-    const full = pictureFor(sharedImageManifest, 'galleryFull', image.name);
+    const full = galleryPictureFor(image, 'full');
     if (full) preloadPicture({ ...full, sizes: GALLERY_FULL_SIZES });
   };
 
@@ -120,8 +119,7 @@ export default function Gallery() {
               }}
             >
               <ResponsiveImage
-                group="galleryThumb"
-                name={image.name}
+                sources={galleryPictureFor(image, 'thumb')}
                 sizes={GALLERY_TILE_SIZES}
                 alt={`Concept art ${index + 1}`}
                 draggable={false}
@@ -162,8 +160,7 @@ export default function Gallery() {
           {shown && (
             <>
               <ResponsiveImage
-                group="galleryFull"
-                name={shown.name}
+                sources={galleryPictureFor(shown, 'full')}
                 sizes={GALLERY_FULL_SIZES}
                 alt="Expanded view"
                 draggable={false}

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import SiteFooter from '../components/SiteFooter';
 import ResponsiveImage from '../components/ResponsiveImage';
+import { APPLY_ART_PICTURES } from '../data/applyArt';
 import './Apply.css';
 
 // The crab is most of what this page is, so it keeps the delayed loading label the frames
@@ -25,8 +26,7 @@ function CrabPicture() {
       {/* The crab is the page's largest contentful paint, so it keeps high priority — the
           saving here is in what gets fetched, not when. Drawn at min(520px, 88vw, 62vh). */}
       <ResponsiveImage
-        group="art"
-        name="CrabOnBeach"
+        sources={APPLY_ART_PICTURES.CrabOnBeach}
         sizes="(max-width: 590px) 88vw, 520px"
         alt="The CUPI crab on a beach"
         className="apply-page__logo"

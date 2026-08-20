@@ -1,7 +1,7 @@
-// Reads the manifest that scripts/build-assets.mjs writes. The widths in a srcset have to
-// be the widths of the files on disk — a wrong descriptor makes the browser pick the wrong
-// file and quietly download the wrong number of bytes — so callers receive a build-time
-// view of that generated manifest rather than restating them here.
+// The widths in a srcset have to be the widths of the files on disk — a wrong descriptor
+// makes the browser pick the wrong file and quietly download the wrong number of bytes.
+// The build validates every deterministic picture assembled here against the generated
+// asset manifest before it emits production files.
 
 /**
  * Everything a <picture> needs for one logical image.
@@ -24,3 +24,29 @@ export const pictureFor = (manifest, group, name) => {
 };
 
 export const hasPicture = (manifest, group, name) => Boolean(manifest?.[group]?.[name]);
+
+// Turn one format-neutral candidate list into the exact public object ResponsiveImage
+// consumes. Paths and dimensions are stored once; AVIF/WebP srcsets are deterministic.
+export const pictureFromCandidates = (candidates) => {
+  const last = candidates.at(-1);
+  if (!last) return null;
+
+  return {
+    avif: candidates.map(({ base, width }) => `${base}.avif ${width}w`).join(', '),
+    webp: candidates.map(({ base, width }) => `${base}.webp ${width}w`).join(', '),
+    src: `${last.base}.webp`,
+    width: last.width,
+    height: last.height,
+  };
+};
+
+// One-off page art is resized by width. Keeping the source dimensions and target widths
+// is enough to reconstruct every encoded candidate without shipping a generated manifest.
+export const pictureFromWidthTargets = ({ base, width, height, targets }) =>
+  pictureFromCandidates(
+    targets.map((target) => ({
+      base: `${base}-${target}`,
+      width: target,
+      height: target === width ? height : Math.round((height * target) / width),
+    })),
+  );

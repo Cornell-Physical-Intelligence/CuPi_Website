@@ -1,5 +1,4 @@
 import { pictureFor } from '../utils/responsiveImage';
-import sharedImageManifest from 'virtual:cupi-image-manifest/shared';
 
 /**
  * One <img>, offered in AVIF first and WebP second, at every size the pipeline produced.
@@ -15,7 +14,7 @@ import sharedImageManifest from 'virtual:cupi-image-manifest/shared';
  * to avoid.
  */
 export default function ResponsiveImage({
-  manifest = sharedImageManifest,
+  manifest,
   group,
   name,
   sources,

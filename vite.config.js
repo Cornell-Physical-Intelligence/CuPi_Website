@@ -2,6 +2,9 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { APPLY_ART_PICTURES } from './src/data/applyArt.js'
+import { GALLERY_IMAGES, galleryPictureFor } from './src/data/gallery.js'
+import { SPONSOR_ART_PICTURES } from './src/data/sponsorArt.js'
 import {
   PAGE_SEO,
   SITE_ACRONYM,
@@ -19,17 +22,17 @@ import {
 // touching the committed one.
 const DEFAULT_OUT_DIR = 'docs'
 
-// The asset pipeline keeps one canonical manifest, but no page outside Work needs its
-// video posters or nineteen report-page records. Compile a shared gallery/art view and a
-// Work-only poster view. Report pages follow one fixed slug/page/width pattern and are
-// addressed directly at runtime, so no route needs nineteen repetitive records. The small
-// art group stays shared to avoid creating another critical request on two routes.
+// The asset pipeline keeps one canonical manifest, but the browser only needs Work's
+// poster view. Gallery and one-off art paths follow deterministic resize rules and are
+// constructed from their single runtime source of truth; report pages follow a fixed
+// slug/page/width pattern. buildStart validates every direct record against the generated
+// manifest, so none of those repetitive AVIF/WebP paths need to ship as JavaScript.
 const IMAGE_MANIFEST_PREFIX = 'virtual:cupi-image-manifest/'
 const RESOLVED_IMAGE_MANIFEST_PREFIX = `\0${IMAGE_MANIFEST_PREFIX}`
 const IMAGE_MANIFEST_GROUPS = {
-  shared: ['galleryThumb', 'galleryFull', 'art'],
   work: ['poster'],
 }
+const DIRECT_RUNTIME_IMAGE_GROUPS = ['galleryThumb', 'galleryFull', 'art']
 const DIRECT_REPORTS = Object.values(PAGE_SEO)
   .filter((seo) => seo.report)
   .map((seo) => seo.report)
@@ -51,6 +54,7 @@ const imageManifestModules = () => ({
     const actual = Object.keys(manifest).sort()
     const configured = [
       ...Object.values(IMAGE_MANIFEST_GROUPS).flat(),
+      ...DIRECT_RUNTIME_IMAGE_GROUPS,
       ...DIRECT_IMAGE_MANIFEST_GROUPS,
     ]
     const unique = [...new Set(configured)].sort()
@@ -59,6 +63,43 @@ const imageManifestModules = () => ({
       JSON.stringify(unique) !== JSON.stringify(actual)
     ) {
       throw new Error('Image manifest families must cover every generated group exactly once')
+    }
+
+    const pictureFromManifest = (formats = {}) => {
+      const avif = formats.avif ?? []
+      const webp = formats.webp ?? []
+      const largest = webp.at(-1) ?? avif.at(-1)
+      return largest
+        ? {
+            avif: avif.map(({ src, w }) => `${src} ${w}w`).join(', '),
+            webp: webp.map(({ src, w }) => `${src} ${w}w`).join(', '),
+            src: largest.src,
+            width: largest.w,
+            height: largest.h,
+          }
+        : null
+    }
+    const assertDirectPicture = (group, name, expected) => {
+      const generated = pictureFromManifest(manifest[group]?.[name])
+      if (JSON.stringify(generated) !== JSON.stringify(expected)) {
+        throw new Error(`Deterministic image record changed for ${group}/${name}`)
+      }
+    }
+
+    for (const image of GALLERY_IMAGES) {
+      assertDirectPicture('galleryThumb', image.name, galleryPictureFor(image, 'thumb'))
+      assertDirectPicture('galleryFull', image.name, galleryPictureFor(image, 'full'))
+    }
+
+    const artPictures = { ...APPLY_ART_PICTURES, ...SPONSOR_ART_PICTURES }
+    if (
+      JSON.stringify(Object.keys(artPictures).sort()) !==
+      JSON.stringify(Object.keys(manifest.art ?? {}).sort())
+    ) {
+      throw new Error('Deterministic art records must cover every generated art image')
+    }
+    for (const [name, picture] of Object.entries(artPictures)) {
+      assertDirectPicture('art', name, picture)
     }
 
     for (const report of DIRECT_REPORTS) {
