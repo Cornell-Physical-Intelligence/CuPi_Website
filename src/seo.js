@@ -119,6 +119,7 @@ const organizationNode = {
     'https://www.instagram.com/cornellphysicalintelligence/',
     'https://www.linkedin.com/company/cu-physical-intelligence/',
     'https://www.youtube.com/@cornellphysicalintelligence',
+    'https://wiki.cornellphysicalintelligence.com/',
   ],
 };
 
