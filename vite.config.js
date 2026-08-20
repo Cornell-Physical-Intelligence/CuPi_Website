@@ -21,14 +21,25 @@ const DEFAULT_OUT_DIR = 'docs'
 
 // The asset pipeline keeps one canonical manifest, but no page outside Work needs its
 // video posters or nineteen report-page records. Compile a shared gallery/art view and a
-// Work-only view so those records do not join every route's initial module graph. The
-// small art group stays shared to avoid creating another critical request on two routes.
+// Work-only poster view. Report pages follow one fixed slug/page/width pattern and are
+// addressed directly at runtime, so no route needs nineteen repetitive records. The small
+// art group stays shared to avoid creating another critical request on two routes.
 const IMAGE_MANIFEST_PREFIX = 'virtual:cupi-image-manifest/'
 const RESOLVED_IMAGE_MANIFEST_PREFIX = `\0${IMAGE_MANIFEST_PREFIX}`
 const IMAGE_MANIFEST_GROUPS = {
   shared: ['galleryThumb', 'galleryFull', 'art'],
-  work: ['poster', 'report:racing-without-a-map', 'report:vq1-deterministic-policy'],
+  work: ['poster'],
 }
+const DIRECT_REPORTS = Object.values(PAGE_SEO)
+  .filter((seo) => seo.report)
+  .map((seo) => seo.report)
+const DIRECT_IMAGE_MANIFEST_GROUPS = DIRECT_REPORTS.map(
+  ({ slug }) => `report:${slug}`,
+)
+const REPORT_IMAGE_VARIANTS = [
+  { width: 860, height: 1113 },
+  { width: 1122, height: 1452 },
+]
 const readImageManifest = () =>
   JSON.parse(readFileSync(new URL('./src/data/generated/images.json', import.meta.url), 'utf8'))
 
@@ -36,14 +47,44 @@ const imageManifestModules = () => ({
   name: 'image-manifest-modules',
 
   buildStart() {
-    const actual = Object.keys(readImageManifest()).sort()
-    const configured = Object.values(IMAGE_MANIFEST_GROUPS).flat()
+    const manifest = readImageManifest()
+    const actual = Object.keys(manifest).sort()
+    const configured = [
+      ...Object.values(IMAGE_MANIFEST_GROUPS).flat(),
+      ...DIRECT_IMAGE_MANIFEST_GROUPS,
+    ]
     const unique = [...new Set(configured)].sort()
     if (
       unique.length !== configured.length ||
       JSON.stringify(unique) !== JSON.stringify(actual)
     ) {
       throw new Error('Image manifest families must cover every generated group exactly once')
+    }
+
+    for (const report of DIRECT_REPORTS) {
+      const group = manifest[`report:${report.slug}`] ?? {}
+      const expectedNames = Array.from(
+        { length: report.pageCount },
+        (_, index) => `p${String(index + 1).padStart(2, '0')}`,
+      )
+      if (JSON.stringify(Object.keys(group).sort()) !== JSON.stringify(expectedNames)) {
+        throw new Error(`Report image manifest is incomplete for ${report.slug}`)
+      }
+
+      for (const name of expectedNames) {
+        for (const format of ['avif', 'webp']) {
+          const expected = REPORT_IMAGE_VARIANTS.map(({ width, height }) => ({
+            src: `/img/Reports/${report.slug}/${name}-${width}.${format}`,
+            w: width,
+            h: height,
+          }))
+          if (JSON.stringify(group[name]?.[format]) !== JSON.stringify(expected)) {
+            throw new Error(
+              `Report image pattern changed for ${report.slug}/${name}.${format}`,
+            )
+          }
+        }
+      }
     }
   },
 

@@ -29,13 +29,25 @@ export const getReportCoverSet = (slug, ext) =>
 export const getReportCover = (slug) =>
   assetPath(`img/Reports/${slug}-cover-480.webp`);
 
-// Page renders are addressed through the generated manifest rather than by path, because
-// each one exists at two widths in two formats and the viewer has to be handed the whole
-// set to choose from. The 1122px master stays the top tier — it is what the PDF was
-// rendered at, and re-rendering larger is the only way past it.
-export const getReportPageGroup = (slug) => `report:${slug}`;
-
 export const getReportPageName = (page) => `p${String(page).padStart(2, '0')}`;
+
+// Every report page is produced by the same pipeline at the same two dimensions, so its
+// exact responsive-image record is deterministic from the report slug and page number.
+// Building it here avoids shipping nineteen repetitive manifest records merely to learn
+// paths the viewer already knows. The Vite build independently verifies this invariant
+// against the generated manifest before emitting production files.
+export const getReportPagePicture = (slug, page) => {
+  const name = getReportPageName(page);
+  const base = assetPath(`img/Reports/${slug}/${name}`);
+
+  return {
+    avif: `${base}-860.avif 860w, ${base}-1122.avif 1122w`,
+    webp: `${base}-860.webp 860w, ${base}-1122.webp 1122w`,
+    src: `${base}-1122.webp`,
+    width: 1122,
+    height: 1452,
+  };
+};
 
 // The viewer caps a page at 860 CSS px and drops to full width once the column no longer
 // fits beside the scroll container's padding.

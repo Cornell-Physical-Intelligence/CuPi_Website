@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import Overlay from './Overlay';
 import ResponsiveImage from './ResponsiveImage';
-import workImageManifest from 'virtual:cupi-image-manifest/work';
 import {
   REPORTS,
   REPORT_PAGE_SIZES,
   getReportCover,
   getReportCoverSet,
-  getReportPageGroup,
-  getReportPageName,
+  getReportPagePicture,
   getReportPdf,
 } from '../data/reports';
 import './TechnicalReports.css';
@@ -185,10 +183,8 @@ export default function TechnicalReports() {
                   the browser defer the ones genuinely further down. */}
               {Array.from({ length: shown.pageCount }, (_, i) => (
                 <ResponsiveImage
-                  manifest={workImageManifest}
                   key={i}
-                  group={getReportPageGroup(shown.slug)}
-                  name={getReportPageName(i + 1)}
+                  sources={getReportPagePicture(shown.slug, i + 1)}
                   sizes={REPORT_PAGE_SIZES}
                   className="report-viewer__page"
                   alt={`Page ${i + 1} of ${shown.pageCount}`}
