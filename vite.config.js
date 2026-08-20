@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -341,6 +341,10 @@ const emitRoutePages = () => {
 
     closeBundle() {
       const base = readFileSync(join(outDir, 'index.html'), 'utf8')
+      const heroWorkerFile = readdirSync(join(outDir, 'assets')).find((file) =>
+        /^voronoi\.worker-[^.]+\.js$/.test(file),
+      )
+      const heroWorker = heroWorkerFile ? `assets/${heroWorkerFile}` : ''
 
       // modulepreload for the script (fetch, parse, and hold it ready as a module) and a
       // plain preload for its stylesheet — warming it rather than linking it, because the
@@ -348,10 +352,17 @@ const emitRoutePages = () => {
       // a needless thing to reason about later.
       const hints = (route) => {
         const entry = chunks[route.toLowerCase()]
-        if (!entry) return ''
-        const lines = [`    <link rel="modulepreload" crossorigin href="/${entry.js}" />`]
-        for (const css of entry.css) {
-          lines.push(`    <link rel="preload" as="style" href="/${css}" />`)
+        const lines = []
+        if (route === 'home' && heroWorker) {
+          lines.push(
+            `    <link rel="modulepreload" crossorigin href="/${heroWorker}" />`,
+          )
+        }
+        if (entry) {
+          lines.push(`    <link rel="modulepreload" crossorigin href="/${entry.js}" />`)
+          for (const css of entry.css) {
+            lines.push(`    <link rel="preload" as="style" href="/${css}" />`)
+          }
         }
         // Apply's crab is the route's LCP image, but React used to be the first thing
         // that exposed its URL. Give the browser the exact same responsive AVIF candidates
