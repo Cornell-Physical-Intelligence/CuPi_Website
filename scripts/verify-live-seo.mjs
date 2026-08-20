@@ -109,10 +109,13 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   );
   const faviconLinks = text.match(/<link rel="icon"[^>]+>/g) ?? [];
   assert(
-    faviconLinks.length === 1 &&
+    faviconLinks.length === 2 &&
       faviconLinks[0] ===
-        '<link rel="icon" type="image/png" sizes="192x192" href="/favicon-cupi.png" />',
-    `${page} does not expose the single circular search-result favicon`,
+        '<link rel="icon" type="image/png" sizes="192x192" href="/favicon-cupi.png" />' &&
+      faviconLinks[1].startsWith(
+        '<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,',
+      ),
+    `${page} does not pair the circular search favicon with the inline squircle tab icon`,
   );
   const touchIconLinks = text.match(/<link rel="apple-touch-icon"[^>]+>/g) ?? [];
   assert(

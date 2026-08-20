@@ -2,10 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Declare one stable 192px favicon so search crawlers and browsers cannot
-         choose different silhouettes. The transparent corners make the mark a true disc
-         inside Google's circular result treatment instead of a rounded square inside it. -->
+    <!-- Two shapes, deliberately split. Google's result chip is circular, so search
+         gets the 192px disc — and every icon URL a crawler can fetch stays the disc,
+         because crawlers re-crawl and re-choose. The tab's squircle ships only as an
+         inline data URI: it has no URL, so no crawler can re-adopt it the way the old
+         /favicon.svg squircle ended up in result pages. Browsers resolve the later,
+         tab-sized declaration and show the squircle. -->
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-cupi.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEDklEQVR42s1X3St8Wxh+9tp7yGwixcWR4wJTiCTlH1A+UuiUUuZO+AMULtT5C0TDBeXXMSZyIXKjpJRSlDGJmkQxF3Mx+ZrREc3+eM7Fmb19zZg55fdznnprZn28z9rvetez1gsAEl7wB4BtAFEAJgB+kZkJn9sJDgsSAAgADgA/vpAwnf1IcAprJX8lOnQAxk8kNhIcTHACALoSDdovjIDF1SUDmAXwe2I/XufDv5skSbb9F2Q45zcJwN8AVHwPHqVEKJJ+AUkIIVBYWIh4PI6Hh4eMvObl5UFRFESjUbuNTErzkoUfOoSAEAILCwsIhUKora0FAMiynJLY6qurq8PV1RXm5+dtX5/hQ5IIIShJEsvKyhiPx7mzs0MhBB0OR9oEczgclGWZu7u7JMmKigoCoCzLScfLAP5MtbKxsTEcHR1hYmIC4XAYpmmmDb9pmiCJYDAIWZZRU1ODra2tzCNgrbSrq4sW7u/vubGxwb6+Pjs67+dJkkRJktjb28vV1VXe3NzY8zs7Oz+LwlsnQghmZWXx7OyMhmFwcnKS+/v7NAyD/f39VBSF2dnZVBTljVltg4ODJEm/38/p6WmapslgMEiHw5Fq8S9/FEUhAA4NDZEkl5aW7L6srKyMhSYnJ8cmWllZIUkODAy84bA/2lqFJRrFxcUIBAIoKipCW1sbtre3AQBVVVUYHBwEABiGYZtpmvaJkWUZJDE3N4fz83MAQHNzMzY3NxGJRNDQ0IDr6+sPx/LN/jQ1NZEkDcPg9fU1Dw4OuLy8zOfnZ2aKp6cn+nw+7u3tMRKJ0DAMkmRTU1OyXHibRKqq0u/3J3WsaVpGlgyBQICqqtpcSXPgtQ5UVFSwu7ubl5eX1DSNuq5nHAFd16lpGkOhEHt6euhyuVLqgEgmwU6nE7m5uSgsLMTo6Kgty5nCkvCRkRGoqgqn04mcnJykl5N4L6UkMTw8jPX1dbhcLvj9fni9XiiKAl3X05IbhgFFUbC4uIjDw0NUVlZibW0No6OjIJlUyj/oQH5+PltaWuj1enl3d0eXy8XT01M7OVPB6gsGgywvL+ft7S19Ph/b2tpYUFCQVAfE+9BJkoRYLAZVVdHY2Ai3243W1lZMTU1B13Xoug5N0+zf79sMw8DExAQ6OjrgdrtRX1+PvLw8RKPRlFvJVHJcWVnJ4+NjxmIxlpaW0uPxpE3AmZkZlpSU8P7+nicnJ3S5XJ9eRkqqCwUAnp+fcXFxgfb2doTDYYyPj+P29tbOFWusZZqmYXZ2FtFoFNXV1fB4PIjH4298fkj6VA+SVA+Urx6rpHMkhABJmKYJSZI+fZBYp8A6hlZefbaYjCPwsyAAPH4j/6MA4H9VPv0qWGWf/9sLk/9Fafbtxem3luf/AON9U67mNJ/QAAAAAElFTkSuQmCC" />
     <link rel="apple-touch-icon" href="/favicon-cupi.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- seo:head:start --><!-- seo:head:end -->

@@ -11,6 +11,9 @@ import {
 
 const INDEXABLE_PAGES = Object.entries(PAGE_SEO).filter(([, seo]) => !seo.noindex);
 
+const INLINE_TAB_ICON_PATTERN =
+  /<link rel="icon" type="image\/png" sizes="32x32" href="(data:image\/png;base64,[^"]+)" \/>/;
+
 const fileForPage = (seo) =>
   seo.path === '/'
     ? 'docs/index.html'
@@ -94,6 +97,35 @@ for (const faviconFile of [
   );
 }
 
+// The tab favicon is the rounded square, shipped only as an inline data URI so no
+// crawler can fetch it and re-adopt it for result pages: search must keep the disc.
+const sourceHead = readFileSync('index.html', 'utf8');
+const inlineTabIcon = capture(
+  sourceHead,
+  INLINE_TAB_ICON_PATTERN,
+  'inline squircle tab favicon in index.html',
+);
+const inlineTabIconLink = `<link rel="icon" type="image/png" sizes="32x32" href="${inlineTabIcon}" />`;
+const tabIcon = await sharp(
+  Buffer.from(inlineTabIcon.slice('data:image/png;base64,'.length), 'base64'),
+)
+  .ensureAlpha()
+  .raw()
+  .toBuffer({ resolveWithObject: true });
+assert(
+  tabIcon.info.width === 32 && tabIcon.info.height === 32,
+  'The inline tab favicon must remain a 32px bitmap',
+);
+const tabIconAlpha = (x, y) => tabIcon.data[(y * tabIcon.info.width + x) * 4 + 3];
+assert(
+  tabIconAlpha(0, 0) < 16 &&
+    tabIconAlpha(3, 3) === 255 &&
+    tabIconAlpha(1, 8) === 255 &&
+    tabIconAlpha(8, 1) === 255 &&
+    tabIconAlpha(16, 16) === 255,
+  'The inline tab favicon must retain the rounded-square silhouette',
+);
+
 for (const [page, seo] of INDEXABLE_PAGES) {
   const file = fileForPage(seo);
   assert(existsSync(file), `${page} static document is missing at ${file}`);
@@ -113,11 +145,12 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     `${page} must have exactly one canonical`,
   );
   assert(
-    count(html, /<link rel="icon"/g) === 1 &&
+    count(html, /<link rel="icon"/g) === 2 &&
       html.includes(
         '<link rel="icon" type="image/png" sizes="192x192" href="/favicon-cupi.png" />',
-      ),
-    `${page} must expose exactly one circular search-result favicon candidate`,
+      ) &&
+      html.includes(inlineTabIconLink),
+    `${page} must pair the circular search favicon with the inline squircle tab icon`,
   );
   assert(
     count(html, /<link rel="apple-touch-icon"/g) === 1 &&
