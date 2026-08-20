@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 import { APPLY_ART_PICTURES } from './src/data/applyArt.js'
 import { GALLERY_IMAGES, galleryPictureFor } from './src/data/gallery.js'
 import { SPONSOR_ART_PICTURES } from './src/data/sponsorArt.js'
+import { PROFESSORS, TEAM_SECTIONS } from './src/data/team.js'
 import {
   PAGE_SEO,
   SITE_ACRONYM,
@@ -29,6 +30,17 @@ const DEFAULT_OUT_DIR = 'docs'
 // manifest, so none of those repetitive AVIF/WebP paths need to ship as JavaScript.
 const IMAGE_MANIFEST_PREFIX = 'virtual:cupi-image-manifest/'
 const RESOLVED_IMAGE_MANIFEST_PREFIX = `\0${IMAGE_MANIFEST_PREFIX}`
+const PEOPLE_IMAGE_MANIFEST = 'virtual:cupi-people-image-manifest'
+const RESOLVED_PEOPLE_IMAGE_MANIFEST = `\0${PEOPLE_IMAGE_MANIFEST}`
+const PEOPLE_IMAGE_WIDTHS = [160, 240, 320, 480]
+const PEOPLE_IMAGE_FORMATS = ['avif', 'webp']
+const PEOPLE_IMAGE_NAMES = [
+  ...new Set([
+    ...TEAM_SECTIONS.flatMap(({ members }) => members),
+    ...PROFESSORS,
+  ].map(({ imageBase }) => imageBase).filter(Boolean)),
+  'Placeholder',
+].sort()
 const IMAGE_MANIFEST_GROUPS = {
   work: ['poster'],
 }
@@ -127,13 +139,79 @@ const imageManifestModules = () => ({
         }
       }
     }
+
+    const peopleFiles = readdirSync(
+      new URL('./src/assets/people/sized/', import.meta.url),
+    )
+    const variantsByName = new Map()
+    for (const file of peopleFiles) {
+      const match = file.match(/^(.+)-(\d+)\.(avif|webp)$/)
+      if (!match) throw new Error(`Unexpected portrait asset name: ${file}`)
+      const [, name, width, format] = match
+      const key = `${width}.${format}`
+      const variants = variantsByName.get(name) ?? new Set()
+      if (variants.has(key)) throw new Error(`Duplicate portrait variant: ${file}`)
+      variants.add(key)
+      variantsByName.set(name, variants)
+    }
+    const expectedVariants = PEOPLE_IMAGE_WIDTHS.flatMap((width) =>
+      PEOPLE_IMAGE_FORMATS.map((format) => `${width}.${format}`),
+    ).sort()
+    if (
+      JSON.stringify([...variantsByName.keys()].sort()) !==
+      JSON.stringify(PEOPLE_IMAGE_NAMES)
+    ) {
+      throw new Error('Portrait image families must match the current roster exactly')
+    }
+    for (const [name, variants] of variantsByName) {
+      if (JSON.stringify([...variants].sort()) !== JSON.stringify(expectedVariants)) {
+        throw new Error(`Portrait image variants are incomplete for ${name}`)
+      }
+    }
   },
 
   resolveId(id) {
+    if (id === PEOPLE_IMAGE_MANIFEST) return RESOLVED_PEOPLE_IMAGE_MANIFEST
     return id.startsWith(IMAGE_MANIFEST_PREFIX) ? `\0${id}` : null
   },
 
+  hotUpdate({ file, timestamp }) {
+    if (!/[\\/]src[\\/]assets[\\/]people[\\/]sized[\\/]/.test(file)) return
+    const module = this.environment.moduleGraph.getModuleById(
+      RESOLVED_PEOPLE_IMAGE_MANIFEST,
+    )
+    if (!module) return
+    this.environment.moduleGraph.invalidateModule(module, new Set(), timestamp, true)
+    return [module]
+  },
+
   load(id) {
+    if (id === RESOLVED_PEOPLE_IMAGE_MANIFEST) {
+      const files = readdirSync(
+        new URL('./src/assets/people/sized/', import.meta.url),
+      ).sort()
+      const names = [...new Set(files.map((file) => file.match(/^(.+)-\d+\./)?.[1]))]
+      const imports = []
+      let index = 0
+      const importFor = (name, width, format) => {
+        const local = `portrait${index++}`
+        imports.push(
+          `import ${local} from ${JSON.stringify(`/src/assets/people/sized/${name}-${width}.${format}?url`)}`,
+        )
+        return local
+      }
+      const pictures = names.map((name) => {
+        const formats = PEOPLE_IMAGE_FORMATS.map((format) => {
+          const variants = PEOPLE_IMAGE_WIDTHS.map((width) =>
+            importFor(name, width, format),
+          )
+          return `[${variants.join(',')}]`
+        })
+        return `${JSON.stringify(name)}:[${formats.join(',')}]`
+      })
+      return `${imports.join('\n')}\nexport default {${pictures.join(',')}}`
+    }
+
     if (!id.startsWith(RESOLVED_IMAGE_MANIFEST_PREFIX)) return null
 
     const family = id.slice(RESOLVED_IMAGE_MANIFEST_PREFIX.length)

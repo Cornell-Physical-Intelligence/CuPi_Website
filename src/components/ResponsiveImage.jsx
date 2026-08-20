@@ -25,8 +25,8 @@ export default function ResponsiveImage({
 }) {
   // Most callers name a group in the generated manifest. The roster is the exception: its
   // portraits live under src/ so that Vite content-hashes them, which means their URLs
-  // only exist after the bundler has seen them, so that page assembles the same shape by
-  // hand from an import.meta.glob and passes it in.
+  // only exist after the bundler has seen them. Its build-time virtual manifest exposes
+  // those URLs and the page passes the same picture shape in through `sources`.
   const picture = sources ?? pictureFor(manifest, group, name);
 
   if (!picture) {

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import SiteFooter from '../components/SiteFooter';
 import ResponsiveImage from '../components/ResponsiveImage';
 import { TEAM_SECTIONS, PROFESSORS, BIO_PLACEHOLDER } from '../data/team';
+import PHOTOS from 'virtual:cupi-people-image-manifest';
 import './Members.css';
 
 // Rebuilt rather than ported. The old roster spent a 230px card and a sliding drawer on
@@ -21,27 +22,9 @@ import './Members.css';
 // CSS px wide, so a 600px file was between four and six times the pixels any display could
 // resolve, thirty-four times over. The crops stay in the repo as the framing of record
 // (see photos/README.md) and are what scripts/build-assets.mjs cuts these from.
-const SIZED = import.meta.glob('../assets/people/sized/*.{avif,webp}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-});
-
-// '../assets/people/sized/Andre-320.avif' -> { Andre: { avif: [{ src, w }], webp: [...] } }
-const PHOTOS = {};
-for (const [path, src] of Object.entries(SIZED)) {
-  const file = path.split('/').pop();
-  const [, name, width, format] = file.match(/^(.+)-(\d+)\.(avif|webp)$/) ?? [];
-  if (!name) continue;
-  PHOTOS[name] ??= { avif: [], webp: [] };
-  PHOTOS[name][format].push({ src, w: Number(width) });
-}
-for (const entry of Object.values(PHOTOS)) {
-  entry.avif.sort((a, b) => a.w - b.w);
-  entry.webp.sort((a, b) => a.w - b.w);
-}
-
-const toSrcSet = (entries) => entries.map(({ src, w }) => `${src} ${w}w`).join(', ');
+const PORTRAIT_VARIANT_WIDTHS = [160, 240, 320, 480];
+const toSrcSet = (entries) =>
+  entries.map((src, index) => `${src} ${PORTRAIT_VARIANT_WIDTHS[index]}w`).join(', ');
 
 // Portraits are all one shape, so the box can be stated once rather than read per file.
 const PORTRAIT_WIDTH = 600;
@@ -54,10 +37,11 @@ const PORTRAIT_SIZES = '(max-width: 640px) 33vw, 160px';
 const sourcesFor = (member) => {
   const entry = PHOTOS[member.imageBase] ?? PHOTOS.Placeholder;
   if (!entry) return null;
+  const [avif, webp] = entry;
   return {
-    avif: toSrcSet(entry.avif),
-    webp: toSrcSet(entry.webp),
-    src: entry.webp[entry.webp.length - 1]?.src,
+    avif: toSrcSet(avif),
+    webp: toSrcSet(webp),
+    src: webp[webp.length - 1],
     width: PORTRAIT_WIDTH,
     height: PORTRAIT_HEIGHT,
   };
