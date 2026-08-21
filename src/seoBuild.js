@@ -125,7 +125,7 @@ const BUILD_ENRICHMENT = {
       {
         heading: 'What does the Cornell Physical Intelligence Club work on?',
         paragraphs: [
-          'CUPI builds physical systems that reason and interact with the world, including robotic manipulation, vision-language-action policies, and autonomous drone perception and navigation.',
+          'CUPI builds physical systems that reason and interact with the world, including robotic manipulation, vision-language-action policies, and autonomous drone perception and navigation. Physical intelligence, the field behind this work, is often called embodied AI: building robot systems that act in the physical world.',
         ],
       },
       {

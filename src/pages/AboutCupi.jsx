@@ -16,7 +16,9 @@ export default function AboutCupi() {
         <p>
           The team builds physical systems that can reason and interact with their
           environments — robotic manipulation, autonomous perception, and navigation —
-          so software intelligence and hardware are designed together.
+          so software intelligence and hardware are designed together. Physical
+          intelligence, the field behind this work, is often called embodied AI:
+          building robot systems that act in the physical world.
         </p>
         <section className="about-cupi__faq" aria-labelledby="about-cupi-faq">
           <h2 id="about-cupi-faq">CUPI Cornell FAQ</h2>
