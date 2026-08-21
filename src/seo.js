@@ -9,6 +9,8 @@ export const SITE_ALTERNATE_NAMES = [
   SITE_ACRONYM,
   'Cornell University Physical Intelligence',
   'Cornell Physical Intelligence Club',
+  'Cornell CUPI',
+  'CUPI Cornell',
 ];
 
 export const ORGANIZATION_DESCRIPTION =
@@ -59,6 +61,42 @@ export const PAGE_SEO = {
     description:
       'Check the current application status for Cornell Physical Intelligence (CUPI) and contact the team about future Cornell robotics opportunities.',
     lastModified: SITE_RELEASE_DATE,
+  },
+  aboutCupi: {
+    path: '/about-cupi/',
+    navLabel: 'About',
+    title: 'CUPI Cornell | Cornell Physical Intelligence Club',
+    heading: 'CUPI Cornell: Cornell Physical Intelligence',
+    description:
+      'CUPI Cornell — also called Cornell CUPI — is Cornell Physical Intelligence, the Cornell University student robotics club building manipulation, perception, and navigation systems.',
+    lastModified: '2026-08-21',
+    faqs: [
+      {
+        question: 'What is CUPI Cornell?',
+        answer:
+          'CUPI Cornell is Cornell Physical Intelligence (CUPI), a Cornell University student robotics organization in Ithaca, New York. Cornell lists the group as the Cornell Physical Intelligence Club.',
+      },
+      {
+        question: 'What is Cornell CUPI?',
+        answer:
+          'Cornell CUPI is the same organization as CUPI Cornell and Cornell Physical Intelligence: the student team at Cornell University that builds robots for manipulation, autonomous perception, and navigation.',
+      },
+      {
+        question: 'Is CUPI the Cornell Physical Intelligence Club?',
+        answer:
+          'Yes. CUPI is the short name for Cornell Physical Intelligence, which Cornell University lists as the Cornell Physical Intelligence Club.',
+      },
+      {
+        question: 'What does the Cornell Physical Intelligence Club work on?',
+        answer:
+          'CUPI builds physical systems that reason and interact with the world, including robotic manipulation, vision-language-action policies, and autonomous drone perception and navigation.',
+      },
+      {
+        question: 'How do you join CUPI Cornell?',
+        answer:
+          'Applications open periodically on the CUPI apply page. When they are closed, prospective members can email cuphysint@cornell.edu about future Cornell CUPI recruitment.',
+      },
+    ],
   },
   vq1Report: {
     path: REPORT_METADATA_BY_PAGE.vq1Report.path,
@@ -155,6 +193,23 @@ export const structuredDataForPage = (page) => {
   }
 
   const graph = page === 'home' ? [organizationNode, websiteNode, webPage] : [webPage];
+
+  if (seo.faqs?.length) {
+    graph.push({
+      '@type': 'FAQPage',
+      '@id': `${url}#faq`,
+      url,
+      mainEntity: seo.faqs.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+      inLanguage: 'en-US',
+    });
+  }
 
   if (page !== 'home') {
     const parent = seo.parentPage ? getPageSeo(seo.parentPage) : null;

@@ -47,6 +47,7 @@ export const PAGE_LOADERS = {
   members: () => import('./pages/Members'),
   sponsors: () => import('./pages/Sponsors'),
   apply: () => import('./pages/Apply'),
+  aboutCupi: () => import('./pages/AboutCupi'),
   vq1Report: () => import('./pages/Vq1Report'),
   racingReport: () => import('./pages/RacingReport'),
 };
