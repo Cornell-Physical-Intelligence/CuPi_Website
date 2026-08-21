@@ -22,6 +22,7 @@ const Work = lazy(() => import('./pages/Work'));
 const Members = lazy(() => import('./pages/Members'));
 const Sponsors = lazy(() => import('./pages/Sponsors'));
 const Apply = lazy(() => import('./pages/Apply'));
+const AboutCupi = lazy(() => import('./pages/AboutCupi'));
 const Vq1Report = lazy(() => import('./pages/Vq1Report'));
 const RacingReport = lazy(() => import('./pages/RacingReport'));
 
@@ -30,10 +31,12 @@ const PREFETCH = {
   members: () => import('./pages/Members'),
   sponsors: () => import('./pages/Sponsors'),
   apply: () => import('./pages/Apply'),
+  aboutCupi: () => import('./pages/AboutCupi'),
 };
 
 const NAV_ITEMS = [
   { label: 'Home', page: 'home' },
+  { label: 'About', page: 'aboutCupi' },
   { label: 'Work', page: 'work' },
   { label: 'Members', page: 'members' },
   { label: 'Sponsors', page: 'sponsors' },
@@ -179,6 +182,8 @@ export default function App({ initialPage, InitialPage, onFirstCommit }) {
         return <Sponsors />;
       case 'apply':
         return <Apply />;
+      case 'aboutCupi':
+        return <AboutCupi />;
       case 'vq1Report':
         return <Vq1Report />;
       case 'racingReport':
