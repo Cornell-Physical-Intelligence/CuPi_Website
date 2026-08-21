@@ -151,13 +151,16 @@ export const PAGE_SEO = Object.fromEntries(
 export const getPageSeo = (page) => PAGE_SEO[page] ?? PAGE_SEO.home;
 
 export {
+  DEFAULT_SOCIAL_IMAGE,
   HOME_LAST_MODIFIED,
   ORGANIZATION_DESCRIPTION,
+  ORGANIZATION_LINKS,
   SITE_ACRONYM,
   SITE_ALTERNATE_NAMES,
   SITE_NAME,
   SITE_RELEASE_DATE,
   SITE_URL,
   canonicalUrlForPage,
+  socialImageForPage,
   structuredDataForPage,
 } from './seo.js';

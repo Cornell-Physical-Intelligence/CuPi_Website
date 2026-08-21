@@ -17,6 +17,8 @@ export const REPORT_METADATA = [
     lastModifiedLabel: 'August 16, 2026',
     pageCount: 3,
     image: '/img/Reports/vq1-deterministic-policy-cover-720.webp',
+    imageWidth: 720,
+    imageHeight: 932,
   },
   {
     pageKey: 'racingReport',
@@ -36,6 +38,8 @@ export const REPORT_METADATA = [
     lastModifiedLabel: 'August 16, 2026',
     pageCount: 16,
     image: '/img/Reports/racing-without-a-map-cover-720.webp',
+    imageWidth: 720,
+    imageHeight: 932,
   },
 ];
 

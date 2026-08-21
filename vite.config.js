@@ -7,12 +7,14 @@ import { GALLERY_IMAGES, galleryPictureFor } from './src/data/gallery.js'
 import { SPONSOR_ART_PICTURES } from './src/data/sponsorArt.js'
 import { PROFESSORS, TEAM_SECTIONS } from './src/data/team.js'
 import {
+  ORGANIZATION_LINKS,
   PAGE_SEO,
   SITE_ACRONYM,
   SITE_NAME,
   SITE_URL,
   canonicalUrlForPage,
   getPageSeo,
+  socialImageForPage,
   structuredDataForPage,
 } from './src/seoBuild.js'
 
@@ -295,12 +297,15 @@ const seoHead = (page) => {
         2,
       ).replaceAll('<', '\\u003c')}</script>`
     : ''
-  const socialImage = seo.image
-    ? `
-    <meta property="og:image" content="${SITE_URL}${seo.image}" />
-    <meta property="og:image:alt" content="Cover of ${escapeHtml(seo.heading)}" />
-    <meta name="twitter:image" content="${SITE_URL}${seo.image}" />`
-    : ''
+  const socialImage = (() => {
+    const image = socialImageForPage(page)
+    return `
+    <meta property="og:image" content="${SITE_URL}${image.path}" />
+    <meta property="og:image:width" content="${image.width}" />
+    <meta property="og:image:height" content="${image.height}" />
+    <meta property="og:image:alt" content="${escapeHtml(image.alt)}" />
+    <meta name="twitter:image" content="${SITE_URL}${image.path}" />`
+  })()
 
   return `<!-- seo:head:start -->
     <title>${escapeHtml(seo.title)}</title>
@@ -314,7 +319,7 @@ const seoHead = (page) => {
     <meta property="og:title" content="${escapeHtml(seo.title)}" />
     <meta property="og:description" content="${escapeHtml(seo.description)}" />
     <meta property="og:url" content="${url}" />
-    <meta name="twitter:card" content="${seo.image ? 'summary_large_image' : 'summary'}" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(seo.title)}" />
     <meta name="twitter:description" content="${escapeHtml(seo.description)}" />${socialImage}${jsonLd}
     <!-- seo:head:end -->`
@@ -403,6 +408,11 @@ ${relatedEntries
       </main>
       <footer class="seo-fallback__footer">
         <p>${SITE_NAME} (${SITE_ACRONYM}) is a Cornell University student robotics organization based in Ithaca, New York.</p>
+        <nav class="seo-fallback__links" aria-label="CUPI elsewhere">
+${ORGANIZATION_LINKS.map(
+  ({ label, href }) => `          <a href="${href}">${escapeHtml(label)}</a>`,
+).join('\n')}
+        </nav>
         <p><a href="https://cornell.campusgroups.com/cupi/home/">Official Cornell listing: Cornell Physical Intelligence Club</a></p>
         <p>General inquiries: <a href="mailto:cuphysint@cornell.edu">cuphysint@cornell.edu</a></p>
         <p><span data-nosnippet><a href="https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment">Equal Education &amp; Employment</a></span></p>
