@@ -4,7 +4,7 @@ export const SITE_URL = 'https://cornellphysicalintelligence.com';
 export const SITE_NAME = 'Cornell Physical Intelligence';
 export const SITE_ACRONYM = 'CUPI';
 export const SITE_RELEASE_DATE = '2026-08-16';
-export const HOME_LAST_MODIFIED = '2026-08-19';
+export const HOME_LAST_MODIFIED = '2026-08-21';
 export const SITE_ALTERNATE_NAMES = [
   SITE_ACRONYM,
   'Cornell University Physical Intelligence',
@@ -15,6 +15,14 @@ export const SITE_ALTERNATE_NAMES = [
 
 export const ORGANIZATION_DESCRIPTION =
   'Cornell Physical Intelligence (CUPI) is a Cornell University student robotics organization building systems for manipulation, autonomous perception, and navigation.';
+
+// Reports ship their own cover; every other page shares the brand card at the site root.
+export const DEFAULT_SOCIAL_IMAGE = {
+  path: '/og-cupi.png',
+  width: 1200,
+  height: 630,
+  alt: `${SITE_NAME} (${SITE_ACRONYM})`,
+};
 
 export const PAGE_SEO = {
   home: {
@@ -33,7 +41,7 @@ export const PAGE_SEO = {
     heading: 'Robotics Projects and Technical Reports',
     description:
       'Explore Cornell Physical Intelligence (CUPI) robotics projects in manipulation, autonomous perception, navigation, and the Anduril AI Grand Prix.',
-    lastModified: SITE_RELEASE_DATE,
+    lastModified: '2026-08-21',
   },
   members: {
     path: '/members/',
@@ -42,7 +50,7 @@ export const PAGE_SEO = {
     heading: 'Cornell Physical Intelligence Members',
     description:
       'Meet the Cornell students and faculty behind Cornell Physical Intelligence (CUPI) and its multidisciplinary robotics teams.',
-    lastModified: SITE_RELEASE_DATE,
+    lastModified: '2026-08-21',
   },
   sponsors: {
     path: '/sponsors/',
@@ -51,7 +59,7 @@ export const PAGE_SEO = {
     heading: 'Sponsor Cornell Physical Intelligence',
     description:
       'Meet the organizations supporting Cornell Physical Intelligence (CUPI) and learn how to sponsor student robotics research at Cornell University.',
-    lastModified: SITE_RELEASE_DATE,
+    lastModified: '2026-08-21',
   },
   apply: {
     path: '/apply/',
@@ -60,7 +68,7 @@ export const PAGE_SEO = {
     heading: 'Cornell Physical Intelligence Applications',
     description:
       'Check the current application status for Cornell Physical Intelligence (CUPI) and contact the team about future Cornell robotics opportunities.',
-    lastModified: SITE_RELEASE_DATE,
+    lastModified: '2026-08-21',
   },
   aboutCupi: {
     path: '/about-cupi/',
@@ -135,6 +143,27 @@ export const getPageSeo = (page) => PAGE_SEO[page] ?? PAGE_SEO.home;
 
 export const canonicalUrlForPage = (page) => `${SITE_URL}${getPageSeo(page).path}`;
 
+export const socialImageForPage = (page) => {
+  const seo = getPageSeo(page);
+  return seo.image
+    ? {
+        path: seo.image,
+        width: seo.report.imageWidth,
+        height: seo.report.imageHeight,
+        alt: `Cover of ${seo.heading}`,
+      }
+    : DEFAULT_SOCIAL_IMAGE;
+};
+
+// Labeled profile links shared by the Organization entity graph and the static footer.
+export const ORGANIZATION_LINKS = [
+  { label: 'GitHub', href: 'https://github.com/Cornell-Physical-Intelligence' },
+  { label: 'Instagram', href: 'https://www.instagram.com/cornellphysicalintelligence/' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/cu-physical-intelligence/' },
+  { label: 'YouTube', href: 'https://www.youtube.com/@cornellphysicalintelligence' },
+  { label: 'CUPI Wiki', href: 'https://wiki.cornellphysicalintelligence.com/' },
+];
+
 const organizationNode = {
   '@type': 'Organization',
   '@id': `${SITE_URL}/#organization`,
@@ -153,11 +182,7 @@ const organizationNode = {
   },
   sameAs: [
     'https://cornell.campusgroups.com/cupi/home/',
-    'https://github.com/Cornell-Physical-Intelligence',
-    'https://www.instagram.com/cornellphysicalintelligence/',
-    'https://www.linkedin.com/company/cu-physical-intelligence/',
-    'https://www.youtube.com/@cornellphysicalintelligence',
-    'https://wiki.cornellphysicalintelligence.com/',
+    ...ORGANIZATION_LINKS.map(({ href }) => href),
   ],
 };
 
@@ -279,21 +304,9 @@ export const applyPageSeo = (page) => {
 
   const seo = getPageSeo(page);
   const url = canonicalUrlForPage(page);
+  const image = socialImageForPage(page);
   const setContent = (selector, content) => {
     document.querySelector(selector)?.setAttribute('content', content);
-  };
-  const upsertMeta = (attribute, key, content) => {
-    let meta = document.querySelector(`meta[${attribute}="${key}"]`);
-    if (!content) {
-      meta?.remove();
-      return;
-    }
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute(attribute, key);
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute('content', content);
   };
 
   document.title = seo.title;
@@ -303,10 +316,12 @@ export const applyPageSeo = (page) => {
   setContent('meta[property="og:url"]', url);
   setContent('meta[name="twitter:title"]', seo.title);
   setContent('meta[name="twitter:description"]', seo.description);
-  setContent('meta[name="twitter:card"]', seo.image ? 'summary_large_image' : 'summary');
-  upsertMeta('property', 'og:image', seo.image ? `${SITE_URL}${seo.image}` : null);
-  upsertMeta('property', 'og:image:alt', seo.image ? `Cover of ${seo.heading}` : null);
-  upsertMeta('name', 'twitter:image', seo.image ? `${SITE_URL}${seo.image}` : null);
+  setContent('meta[name="twitter:card"]', 'summary_large_image');
+  setContent('meta[property="og:image"]', `${SITE_URL}${image.path}`);
+  setContent('meta[property="og:image:width"]', String(image.width));
+  setContent('meta[property="og:image:height"]', String(image.height));
+  setContent('meta[property="og:image:alt"]', image.alt);
+  setContent('meta[name="twitter:image"]', `${SITE_URL}${image.path}`);
   document.querySelector('link[rel="canonical"]')?.setAttribute('href', url);
 
   const data = structuredDataForPage(page);
