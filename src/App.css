@@ -403,3 +403,52 @@ body.lightbox-open .menu-bar {
   color: inherit;
   text-underline-offset: 0.18em;
 }
+
+/* FAQ: answers for CUPI Cornell / Cornell CUPI. Kept in the shared stylesheet so the
+   route does not emit a separate CSS chunk. */
+.faq-page {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.4vw, 28px);
+}
+
+.faq-page__title {
+  margin: 0;
+  font-family: "Questrial", sans-serif;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.faq-page__lede,
+.faq-page p {
+  margin: 0;
+  font-family: "Questrial", sans-serif;
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.65;
+  color: rgba(var(--fg-rgb), 0.82);
+}
+
+.faq-page h2 {
+  margin: 0 0 8px;
+  font-family: "Questrial", sans-serif;
+  font-weight: 500;
+  font-size: clamp(17px, 2.2vw, 21px);
+}
+
+.faq-page section {
+  margin: 0 0 clamp(18px, 2.4vw, 28px);
+}
+
+.faq-page__links {
+  margin-top: 8px;
+}
+
+.faq-page a {
+  color: inherit;
+  text-underline-offset: 0.18em;
+}
