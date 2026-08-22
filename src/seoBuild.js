@@ -136,6 +136,73 @@ const BUILD_ENRICHMENT = {
       },
     ],
   },
+  faq: {
+    fallbackIntro:
+      'Answers to common questions about CUPI Cornell and Cornell CUPI: what Cornell Physical Intelligence builds, how its subteams are organized, and how to join or contact the team.',
+    highlights: [
+      'What CUPI Cornell builds and studies',
+      'How to join Cornell CUPI',
+      'Where to find CUPI reports and the team wiki',
+    ],
+    relatedPages: ['vq1Report', 'racingReport'],
+    relatedHeading: 'CUPI technical reports mentioned in this FAQ',
+    fallbackSections: [
+      {
+        heading: 'What is CUPI Cornell?',
+        paragraphs: [
+          'CUPI Cornell is Cornell Physical Intelligence (CUPI), a Cornell University student robotics organization based in Ithaca, New York. The team builds systems for robotic manipulation, autonomous perception, and navigation.',
+        ],
+      },
+      {
+        heading: 'Is Cornell CUPI an official Cornell club?',
+        paragraphs: [
+          'Yes. Cornell lists CUPI on its Campus Groups platform as the Cornell Physical Intelligence Club, at cornell.campusgroups.com/cupi/home/. The listing is where members manage membership and see club events.',
+        ],
+      },
+      {
+        heading: 'What does Cornell Physical Intelligence build?',
+        paragraphs: [
+          'CUPI builds physical systems that can reason and interact with their environments. The team works across robotic manipulation, autonomous perception, and navigation.',
+        ],
+      },
+      {
+        heading: 'What is the VQ1 deterministic policy report about?',
+        paragraphs: [
+          'It documents how CUPI cleared all six AI Grand Prix VQ1 gates with deterministic dead reckoning, monocular corrections, and no learned policy component.',
+        ],
+      },
+      {
+        heading: 'What is Racing Without a Map?',
+        paragraphs: [
+          'Racing Without a Map is a CUPI technical survey of camera-and-IMU drone racing, bearings-only guidance, optical looming, control-rate limits, and mapless system design.',
+        ],
+      },
+      {
+        heading: 'What subteams does CUPI have?',
+        paragraphs: [
+          'CUPI organizes work across four subteams: Mechanical, Electrical, Software, and Business & Marketing.',
+        ],
+      },
+      {
+        heading: 'How do I join Cornell CUPI?',
+        paragraphs: [
+          'Check the CUPI applications page for the current application status. When applications are closed, prospective members can email cuphysint@cornell.edu about future Cornell CUPI recruitment.',
+        ],
+      },
+      {
+        heading: 'Where is the CUPI wiki?',
+        paragraphs: [
+          'The team wiki is at wiki.cornellphysicalintelligence.com. It holds CUPI subteam documentation, project pages, and team processes, and members sign in with a cornell.edu Google account.',
+        ],
+      },
+      {
+        heading: 'How can I contact CUPI?',
+        paragraphs: [
+          'Email cuphysint@cornell.edu for general inquiries. Prospective sponsors and members can also reach the team through the Cornell Physical Intelligence Club listing on Campus Groups.',
+        ],
+      },
+    ],
+  },
   notFound: {
     highlights: [],
   },

@@ -36,6 +36,8 @@ export default function SiteFooter() {
 
         <p className="site-footer__about">
           <a href="/about-cupi/">About CUPI Cornell</a>
+          {" · "}
+          <a href="/faq/">CUPI FAQ</a>
         </p>
 
         <div className="site-footer__copy" data-nosnippet="">
