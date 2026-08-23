@@ -228,6 +228,11 @@ const organizationNode = {
   url: `${SITE_URL}/`,
   logo: `${SITE_URL}/favicon-cupi.png`,
   email: 'cuphysint@cornell.edu',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'General inquiries',
+    email: 'cuphysint@cornell.edu',
+  },
   description: ORGANIZATION_DESCRIPTION,
   address: {
     '@type': 'PostalAddress',

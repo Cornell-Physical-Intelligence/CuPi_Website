@@ -182,6 +182,12 @@ assert(
   organization.sameAs?.includes('https://www.youtube.com/@cornellphysicalintelligence'),
   'Live Organization schema is missing the official CUPI YouTube entity URL',
 );
+assert(
+  organization.contactPoint?.['@type'] === 'ContactPoint' &&
+    organization.contactPoint.contactType === 'General inquiries' &&
+    organization.contactPoint.email === organization.email,
+  'Live Organization contact point has drifted',
+);
 
 const { response: robotsResponse, text: robots } = await fetchText(`${ORIGIN}/robots.txt`);
 assert(robotsResponse.status === 200, `robots.txt returned HTTP ${robotsResponse.status}`);

@@ -1,0 +1,1 @@
+import{n as e}from"./SiteFooter-BsheUqJi.js";import{t}from"./ReportPage-g9jm-fXA.js";var n=e();function r(){return(0,n.jsx)(t,{slug:`racing-without-a-map`})}export{r as default};

@@ -45,6 +45,16 @@ assert(
   ),
   'The rendered footer boilerplate must be excluded from search snippets',
 );
+assert(
+  runtimeFooter.includes(
+    'Cornell Physical Intelligence (CUPI) is a Cornell University student robotics',
+  ) && runtimeFooter.includes('organization based in Ithaca, New York.'),
+  'The rendered footer must use the same truthful organization wording as the static fallback',
+);
+assert(
+  !/registered student organization/i.test(runtimeFooter),
+  'The rendered footer must not claim a registration status that is still pending',
+);
 
 const faviconPath = 'public/favicon-cupi.png';
 const favicon = await sharp(faviconPath)
@@ -310,6 +320,12 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     );
     assert(organization.logo === `${SITE_URL}/favicon-cupi.png`, 'Organization logo is incorrect');
     assert(organization.email === 'cuphysint@cornell.edu', 'Organization email is incorrect');
+    assert(
+      organization.contactPoint?.['@type'] === 'ContactPoint' &&
+        organization.contactPoint.contactType === 'General inquiries' &&
+        organization.contactPoint.email === organization.email,
+      'Organization contact point must match the public general-inquiries address',
+    );
     assert(
       html.includes('mailto:cuphysint@cornell.edu'),
       'The structured organization email must also be visible to readers',

@@ -41,7 +41,10 @@ export default function SiteFooter() {
         </p>
 
         <div className="site-footer__copy" data-nosnippet="">
-          <p>CUPI is a registered student organization of Cornell University.</p>
+          <p>
+            Cornell Physical Intelligence (CUPI) is a Cornell University student robotics
+            organization based in Ithaca, New York.
+          </p>
           <p>
             Equal Education and Employment:{' '}
             <a
