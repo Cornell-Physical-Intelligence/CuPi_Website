@@ -344,7 +344,8 @@ export const structuredDataForPage = (page) => {
         url: `${SITE_URL}/`,
         logo: `${SITE_URL}/favicon-cupi.png`,
       },
-      dateModified: seo.lastModified,
+      datePublished: seo.report.publishedAt,
+      dateModified: seo.report.modifiedAt,
       inLanguage: 'en-US',
       encoding: {
         '@type': 'MediaObject',

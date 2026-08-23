@@ -342,6 +342,12 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     const article = data['@graph'].find((node) => node['@type'] === 'TechArticle');
     assert(article?.headline === seo.heading, `${page} report schema headline is incorrect`);
     assert(
+      article?.datePublished === seo.report.publishedAt &&
+        article.dateModified === seo.report.modifiedAt &&
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(article.dateModified),
+      `${page} report schema dates must use the verified publication timestamp with a timezone`,
+    );
+    assert(
       article?.publisher?.['@id'] === `${SITE_URL}/#organization` &&
         article.publisher.name === 'Cornell Physical Intelligence' &&
         article.publisher.logo === `${SITE_URL}/favicon-cupi.png`,

@@ -189,6 +189,18 @@ assert(
   'Live Organization contact point has drifted',
 );
 
+for (const [page, seo] of INDEXABLE_PAGES.filter(([, entry]) => entry.report)) {
+  const reportSchema = readStructuredData(routeBodies.get(page));
+  const article = reportSchema['@graph']?.find((node) => node['@type'] === 'TechArticle');
+  assert(article, `${page} live schema is missing the TechArticle node`);
+  assert(
+    article.datePublished === seo.report.publishedAt &&
+      article.dateModified === seo.report.modifiedAt &&
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(article.dateModified),
+    `${page} live article dates are not the verified timezone-aware publication timestamp`,
+  );
+}
+
 const { response: robotsResponse, text: robots } = await fetchText(`${ORIGIN}/robots.txt`);
 assert(robotsResponse.status === 200, `robots.txt returned HTTP ${robotsResponse.status}`);
 assert(/(^|\n)Allow:\s*\/(\s|$)/i.test(robots), 'robots.txt does not allow the site');
