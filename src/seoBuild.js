@@ -61,7 +61,7 @@ const BUILD_ENRICHMENT = {
       {
         heading: 'Current CUPI sponsors',
         paragraphs: [
-          'Cornell Physical Intelligence is supported by CU GeoData, Modovolo, Tantalus, and UPS.',
+          'Cornell Physical Intelligence is supported by CU GeoData, Picogrid, Modovolo, Tantalus, and UPS.',
         ],
       },
       {

@@ -21,6 +21,8 @@ const TIERS = [
 // artwork that is already a vector and has nothing to gain from being re-encoded.
 const SPONSORS = [
   { name: 'CU GeoData', tier: 'gold', art: 'CUGeoData_Logo' },
+  // Picogrid's current identity uses this triangle; the older hexagon is retired.
+  { name: 'Picogrid', tier: 'gold', logo: 'icons/Picogrid_Logo.svg' },
   { name: 'Modovolo', tier: 'silver', art: 'Modovolo_Logo', emblem: true },
   { name: 'Tantalus', tier: 'bronze' },
   // Wikimedia Commons, public domain — the shield is below the threshold of originality.
