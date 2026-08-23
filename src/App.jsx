@@ -38,8 +38,6 @@ const PREFETCH = {
 
 const NAV_ITEMS = [
   { label: 'Home', page: 'home' },
-  { label: 'About', page: 'aboutCupi' },
-  { label: 'FAQ', page: 'faq' },
   { label: 'Work', page: 'work' },
   { label: 'Members', page: 'members' },
   { label: 'Sponsors', page: 'sponsors' },

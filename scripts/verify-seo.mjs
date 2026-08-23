@@ -39,6 +39,20 @@ const escapeHtml = (value) =>
     .replaceAll('"', '&quot;');
 
 const runtimeFooter = readFileSync('src/components/SiteFooter.jsx', 'utf8');
+const runtimeApp = readFileSync('src/App.jsx', 'utf8');
+const runtimeNavItems = capture(
+  runtimeApp,
+  /const NAV_ITEMS = \[([\s\S]*?)\];/,
+  'runtime navigation items',
+);
+const runtimeNavLabels = [...runtimeNavItems.matchAll(/label: '([^']+)'/g)].map(
+  (match) => match[1],
+);
+assert(
+  JSON.stringify(runtimeNavLabels) ===
+    JSON.stringify(['Home', 'Work', 'Members', 'Sponsors', 'Apply']),
+  'SEO changes must preserve the original five-item visible navigation',
+);
 assert(
   /<div(?=[^>]*className="site-footer__copy")(?=[^>]*data-nosnippet="")[^>]*>/.test(
     runtimeFooter,
@@ -46,14 +60,12 @@ assert(
   'The rendered footer boilerplate must be excluded from search snippets',
 );
 assert(
-  runtimeFooter.includes(
-    'Cornell Physical Intelligence (CUPI) is a Cornell University student robotics',
-  ) && runtimeFooter.includes('organization based in Ithaca, New York.'),
-  'The rendered footer must use the same truthful organization wording as the static fallback',
+  runtimeFooter.includes('CUPI is a registered student organization of Cornell University.'),
+  'SEO changes must preserve the original visible footer wording',
 );
 assert(
-  !/registered student organization/i.test(runtimeFooter),
-  'The rendered footer must not claim a registration status that is still pending',
+  !runtimeFooter.includes('href="/about-cupi/"') && !runtimeFooter.includes('href="/faq/"'),
+  'SEO-only pages must not add links to the visible footer',
 );
 
 const faviconPath = 'public/favicon-cupi.png';

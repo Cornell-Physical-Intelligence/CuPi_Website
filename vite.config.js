@@ -328,7 +328,12 @@ const seoHead = (page) => {
 const seoFallback = (page) => {
   const seo = getPageSeo(page)
   const nav = Object.entries(PAGE_SEO)
-    .filter(([, entry]) => !entry.noindex && !entry.parentPage)
+    .filter(
+      ([key, entry]) =>
+        !entry.noindex &&
+        !entry.parentPage &&
+        !['aboutCupi', 'faq'].includes(key),
+    )
     .map(
       ([key, entry]) =>
         `<a href="${entry.path}"${key === page ? ' aria-current="page"' : ''}>${escapeHtml(
