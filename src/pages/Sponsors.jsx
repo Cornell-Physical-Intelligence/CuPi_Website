@@ -18,10 +18,16 @@ const TIERS = [
 // wordmark — matched on height it would look half the weight of its neighbours, so it runs
 // taller. `wide` optically reduces an unusually broad wordmark. Without a logo file a mark
 // gets drawn from the name.
-// `art` names an entry in the generated image manifest; `logo` is a path used as-is, for
-// artwork that is already a vector and has nothing to gain from being re-encoded.
+// `art` names an entry in the generated image manifest; `logo` is a supplied asset path
+// used as-is when the source artwork should not be generated or re-encoded.
 const SPONSORS = [
-  { name: 'CU GeoData', tier: 'gold', art: 'CUGeoData_Logo' },
+  {
+    name: 'CU GeoData',
+    tier: 'gold',
+    logo: 'icons/CUGeoData_Emblem-256.png',
+    colour: true,
+    emblem: true,
+  },
   // Current Picogrid wordmark only; the older hexagon is retired.
   { name: 'Picogrid', tier: 'gold', logo: 'icons/Picogrid_Wordmark.svg', wide: true },
   { name: 'Modovolo', tier: 'silver', art: 'Modovolo_Logo', emblem: true },
