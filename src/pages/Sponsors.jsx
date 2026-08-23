@@ -23,7 +23,7 @@ const TIERS = [
 const SPONSORS = [
   { name: 'CU GeoData', tier: 'gold', art: 'CUGeoData_Logo' },
   // Current Picogrid wordmark only; the older hexagon is retired.
-  { name: 'Picogrid', tier: 'gold', logo: 'icons/Picogrid_Logo.svg', wide: true },
+  { name: 'Picogrid', tier: 'gold', logo: 'icons/Picogrid_Wordmark.svg', wide: true },
   { name: 'Modovolo', tier: 'silver', art: 'Modovolo_Logo', emblem: true },
   { name: 'Tantalus', tier: 'bronze' },
   // Wikimedia Commons, public domain — the shield is below the threshold of originality.
