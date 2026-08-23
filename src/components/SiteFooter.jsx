@@ -26,7 +26,13 @@ export default function SiteFooter() {
       <div className="site-footer__inner">
         <div className="site-footer__socials" aria-label="CUPI social links">
           {SOCIALS.map((s) => (
-            <a key={s.label} href={s.href} target="_blank" rel="noreferrer" aria-label={s.label}>
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="me noreferrer"
+              aria-label={s.label}
+            >
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d={s.path} />
               </svg>

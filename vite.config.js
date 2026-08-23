@@ -410,7 +410,7 @@ ${relatedEntries
         <p>${SITE_NAME} (${SITE_ACRONYM}) is a Cornell University student robotics organization based in Ithaca, New York.</p>
         <nav class="seo-fallback__links" aria-label="CUPI elsewhere">
 ${ORGANIZATION_LINKS.map(
-  ({ label, href }) => `          <a href="${href}">${escapeHtml(label)}</a>`,
+  ({ label, href }) => `          <a href="${href}" rel="me">${escapeHtml(label)}</a>`,
 ).join('\n')}
         </nav>
         <p><a href="https://cornell.campusgroups.com/cupi/home/">Official Cornell listing: Cornell Physical Intelligence Club</a></p>
