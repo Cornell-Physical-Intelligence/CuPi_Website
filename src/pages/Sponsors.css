@@ -190,6 +190,11 @@
   height: clamp(38px, 4.9vw, 58px);
 }
 
+/* Picogrid's extra-wide wordmark carries the same visual weight at a shorter height. */
+.tier__sponsor img.is-wide {
+  height: clamp(17px, 1.8vw, 22px);
+}
+
 /* Logos are dark artwork; invert on the dark theme so they don't vanish. */
 .app--dark .tier__sponsor img {
   filter: invert(1) hue-rotate(180deg);
@@ -200,4 +205,3 @@
 .app--dark .tier__sponsor img.is-colour {
   filter: none;
 }
-
