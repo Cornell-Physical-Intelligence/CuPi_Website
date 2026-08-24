@@ -24,9 +24,7 @@ const SPONSORS = [
   {
     name: 'CU GeoData',
     tier: 'gold',
-    logo: 'icons/CUGeoData_Emblem-256.png',
-    colour: true,
-    emblem: true,
+    logo: 'icons/CUGeoData_Wordmark.png',
   },
   // Current Picogrid wordmark only; the older hexagon is retired.
   { name: 'Picogrid', tier: 'gold', logo: 'icons/Picogrid_Wordmark.svg', wide: true },
