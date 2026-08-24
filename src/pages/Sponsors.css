@@ -205,3 +205,10 @@
 .app--dark .tier__sponsor img.is-colour {
   filter: none;
 }
+
+/* Onshape publishes the current green-and-white wordmark for its dark navigation.
+   Preserve that exact artwork on black; a monochrome pass keeps the same mark legible
+   when the site's optional white theme is active. */
+.app--light .tier__sponsor img.is-light-monochrome {
+  filter: brightness(0);
+}

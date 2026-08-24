@@ -14,7 +14,9 @@ const TIERS = [
 ];
 
 // `colour` marks artwork that carries its own brand colours, which the dark theme has to
-// leave alone rather than invert. `emblem` marks a tall, compact mark rather than a
+// leave alone rather than invert. `lightMonochrome` marks official artwork supplied for
+// a dark surface that needs a monochrome treatment on the optional light theme. `emblem`
+// marks a tall, compact mark rather than a
 // wordmark — matched on height it would look half the weight of its neighbours, so it runs
 // taller. `wide` optically reduces an unusually broad wordmark. Without a logo file a mark
 // gets drawn from the name.
@@ -29,6 +31,14 @@ const SPONSORS = [
   // Current Picogrid wordmark only; the older hexagon is retired.
   { name: 'Picogrid', tier: 'gold', logo: 'icons/Picogrid_Wordmark.svg', wide: true },
   { name: 'Modovolo', tier: 'silver', art: 'Modovolo_Logo', emblem: true },
+  // Current vector wordmark from Onshape's own production website.
+  {
+    name: 'Onshape',
+    tier: 'silver',
+    logo: 'icons/Onshape_Wordmark.svg',
+    colour: true,
+    lightMonochrome: true,
+  },
   { name: 'Tantalus', tier: 'bronze' },
   // Wikimedia Commons, public domain — the shield is below the threshold of originality.
   // Still a UPS trademark, so it stays unmodified.
@@ -125,9 +135,10 @@ export default function Sponsors() {
               <h2 className={`tier__name tier__name--${key}`}>{label}</h2>
               {members.length > 0 && (
                 <ul className="tier__list">
-                  {members.map(({ name, logo, art, colour, emblem, wide }) => {
+                  {members.map(({ name, logo, art, colour, lightMonochrome, emblem, wide }) => {
                     const markClass = [
                       colour && 'is-colour',
+                      lightMonochrome && 'is-light-monochrome',
                       emblem && 'is-emblem',
                       wide && 'is-wide',
                     ]
