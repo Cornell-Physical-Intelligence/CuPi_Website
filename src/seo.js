@@ -59,7 +59,7 @@ export const PAGE_SEO = {
     heading: 'Sponsor Cornell Physical Intelligence',
     description:
       'Meet the organizations supporting Cornell Physical Intelligence (CUPI) and learn how to sponsor student robotics research at Cornell University.',
-    lastModified: '2026-08-21',
+    lastModified: '2026-08-24',
   },
   apply: {
     path: '/apply/',
