@@ -22,7 +22,7 @@
    so the box runs larger than the crab looks. The vh term keeps height at most ~62vh
    (87vh / 1.41), since this page is meant not to scroll. */
 .apply-page__logo-wrap {
-  width: min(560px, 88vw, 87vh);
+  width: min(420px, 84vw, 44vh);
   aspect-ratio: 1257 / 892;
   display: flex;
   align-items: center;
@@ -99,4 +99,282 @@
 
 .apply-page__copied.is-visible {
   opacity: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   Interest form. The page scrolls now, so the section stops pinning content
+   to the viewport center and breathes instead. */
+
+.alt-section--apply {
+  padding: clamp(24px, 5vh, 56px) 0;
+}
+
+.ifz {
+  width: min(440px, 88vw);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: clamp(8px, 2vh, 18px);
+}
+
+.ifz-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ifz-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(var(--fg-rgb), 0.55);
+}
+
+.ifz-input {
+  width: 100%;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid rgba(var(--fg-rgb), 0.28);
+  border-radius: 8px;
+  padding: 11px 13px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.ifz-input::placeholder {
+  color: rgba(var(--fg-rgb), 0.35);
+}
+
+.ifz-input:focus-visible {
+  border-color: var(--fg);
+}
+
+.ifz-textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+/* Custom subteam listbox — the OS picker never appears. */
+.ifz-dd {
+  position: relative;
+}
+
+.ifz-dd__button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid rgba(var(--fg-rgb), 0.28);
+  border-radius: 8px;
+  padding: 11px 13px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.ifz-dd__button:focus-visible {
+  outline: none;
+  border-color: var(--fg);
+}
+
+.ifz-dd__chevron {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  opacity: 0.55;
+  transition: transform 0.15s ease;
+}
+
+.ifz-dd__button[aria-expanded='true'] .ifz-dd__chevron {
+  transform: rotate(180deg);
+}
+
+.ifz-dd__list {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 5px;
+  list-style: none;
+  background: var(--page, #fff);
+  border: 1px solid rgba(var(--fg-rgb), 0.22);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.ifz-dd__list [role='option'] {
+  padding: 9px 11px;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.ifz-dd__list [role='option']:hover,
+.ifz-dd__list [role='option']:focus-visible {
+  outline: none;
+  background: rgba(var(--fg-rgb), 0.08);
+}
+
+.ifz-dd__list [role='option'][aria-selected='true'] {
+  font-weight: 600;
+}
+
+/* Project file drop: a real target, not a decoration. */
+.ifz-drop {
+  width: 100%;
+  font: inherit;
+  font-size: 0.8rem;
+  color: rgba(var(--fg-rgb), 0.55);
+  background: transparent;
+  border: 1px dashed rgba(var(--fg-rgb), 0.3);
+  border-radius: 8px;
+  padding: 12px 13px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.ifz-drop:hover,
+.ifz-drop:focus-visible,
+.ifz-drop.is-over {
+  outline: none;
+  border-color: var(--fg);
+  color: var(--fg);
+}
+
+.ifz-drop.is-over {
+  background: rgba(var(--fg-rgb), 0.05);
+}
+
+.ifz-file {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(var(--fg-rgb), 0.28);
+  border-radius: 8px;
+  padding: 9px 9px 9px 13px;
+  font-size: 0.85rem;
+}
+
+.ifz-file__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ifz-file__size {
+  flex: none;
+  color: rgba(var(--fg-rgb), 0.5);
+  font-size: 0.75rem;
+}
+
+.ifz-file__remove {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  line-height: 1;
+  color: rgba(var(--fg-rgb), 0.6);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ifz-file__remove:hover,
+.ifz-file__remove:focus-visible {
+  outline: none;
+  color: var(--fg);
+  background: rgba(var(--fg-rgb), 0.08);
+}
+
+/* Off-screen, not display:none — autofill bots skip hidden fields. */
+.ifz-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ifz-error {
+  min-height: 1.2em;
+  margin: -4px 0 0;
+  font-size: 0.82rem;
+  text-align: center;
+  color: #b3261e;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.ifz-error.is-visible {
+  opacity: 1;
+}
+
+.ifz-submit {
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--page, #fff);
+  background: var(--fg);
+  border: 1px solid var(--fg);
+  border-radius: 999px;
+  padding: 13px 20px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+.ifz-submit:hover:not(:disabled),
+.ifz-submit:focus-visible {
+  outline: none;
+  background: transparent;
+  color: var(--fg);
+}
+
+.ifz-submit:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.ifz-fine {
+  margin: -4px 0 0;
+  font-size: 0.72rem;
+  text-align: center;
+  color: rgba(var(--fg-rgb), 0.45);
+}
+
+.ifz--done {
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.ifz-done__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.ifz-done__note {
+  margin: 0;
+  max-width: 40ch;
+  font-size: 0.85rem;
+  color: rgba(var(--fg-rgb), 0.6);
 }
