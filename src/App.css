@@ -225,12 +225,6 @@
   padding-bottom: clamp(12px, 1.8vw, 18px);
 }
 
-.alt-page--apply {
-  height: 100vh;
-  min-height: unset;
-  overflow: hidden;
-}
-
 .alt-section {
   width: min(960px, 100%);
   margin: 0 auto;

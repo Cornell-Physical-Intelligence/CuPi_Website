@@ -55,52 +55,6 @@
   opacity: 0;
 }
 
-.apply-page__thank-you {
-  max-width: 520px;
-  text-align: center;
-  font-size: clamp(0.8rem, 1.45vw, 0.92rem);
-  line-height: 1.6;
-  color: rgba(var(--fg-rgb), 0.6);
-  margin: 0;
-  font-weight: 300;
-  padding: 0 20px;
-}
-
-.apply-page__email-wrap {
-  display: inline-block;
-  position: relative;
-}
-
-.apply-page__email {
-  color: var(--fg);
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  line-height: inherit;
-  vertical-align: baseline;
-  cursor: pointer;
-}
-
-/* Absolutely placed so the confirmation can't reflow the sentence it hangs under. */
-.apply-page__copied {
-  font-size: 0.7em;
-  color: rgba(var(--fg-rgb), 0.85);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  line-height: 1.2;
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  pointer-events: none;
-}
-
-.apply-page__copied.is-visible {
-  opacity: 1;
-}
-
 /* ---------------------------------------------------------------------------
    Interest form. The page scrolls now, so the section stops pinning content
    to the viewport center and breathes instead. */
@@ -115,6 +69,8 @@
   flex-direction: column;
   gap: 16px;
   margin-top: clamp(8px, 2vh, 18px);
+  /* The alt section centres text; a form reads left. */
+  text-align: left;
 }
 
 .ifz-field {
@@ -151,9 +107,75 @@
   border-color: var(--fg);
 }
 
-.ifz-textarea {
+/* One box: the textarea and the drop target are the same surface, with the
+   attach affordance living inside its bottom edge. */
+.ifz-projectbox {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(var(--fg-rgb), 0.28);
+  border-radius: 8px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.ifz-projectbox:focus-within {
+  border-color: var(--fg);
+}
+
+.ifz-projectbox.is-over {
+  border-color: var(--fg);
+  border-style: dashed;
+  background: rgba(var(--fg-rgb), 0.05);
+}
+
+.ifz-projectbox__text {
+  width: 100%;
   min-height: 88px;
   resize: vertical;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--fg);
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 11px 13px 6px;
+}
+
+.ifz-projectbox__text::placeholder {
+  color: rgba(var(--fg-rgb), 0.35);
+}
+
+.ifz-attach {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  font: inherit;
+  font-size: 0.74rem;
+  color: rgba(var(--fg-rgb), 0.5);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 13px 10px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.ifz-attach svg {
+  width: 13px;
+  height: 13px;
+  flex: none;
+}
+
+.ifz-attach:hover,
+.ifz-attach:focus-visible {
+  outline: none;
+  color: var(--fg);
+}
+
+.ifz-projectbox .ifz-file {
+  border: none;
+  border-top: 1px solid rgba(var(--fg-rgb), 0.14);
+  border-radius: 0 0 8px 8px;
 }
 
 /* Custom subteam listbox — the OS picker never appears. */
@@ -226,33 +248,6 @@
 
 .ifz-dd__list [role='option'][aria-selected='true'] {
   font-weight: 600;
-}
-
-/* Project file drop: a real target, not a decoration. */
-.ifz-drop {
-  width: 100%;
-  font: inherit;
-  font-size: 0.8rem;
-  color: rgba(var(--fg-rgb), 0.55);
-  background: transparent;
-  border: 1px dashed rgba(var(--fg-rgb), 0.3);
-  border-radius: 8px;
-  padding: 12px 13px;
-  cursor: pointer;
-  text-align: center;
-  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
-}
-
-.ifz-drop:hover,
-.ifz-drop:focus-visible,
-.ifz-drop.is-over {
-  outline: none;
-  border-color: var(--fg);
-  color: var(--fg);
-}
-
-.ifz-drop.is-over {
-  background: rgba(var(--fg-rgb), 0.05);
 }
 
 .ifz-file {

@@ -148,10 +148,10 @@ function SubteamSelect({ value, onChange }) {
   );
 }
 
-// Text and a file both answer the project question: the drop zone takes a
-// drag, a click, or a keyboard activation, and everything is checked here
-// before a byte is uploaded.
-function ProjectFileDrop({ file, onFile, onProblem }) {
+// One box answers the project question: type in it, drag a file onto it, or
+// tap the attach line to browse. Every file is checked here before a byte is
+// uploaded.
+function ProjectBox({ project, onProject, file, onFile, onProblem }) {
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef(null);
 
@@ -169,37 +169,52 @@ function ProjectFileDrop({ file, onFile, onProblem }) {
     onFile(candidate);
   };
 
-  if (file) {
-    return (
-      <div className="ifz-file">
-        <span className="ifz-file__name">{file.name}</span>
-        <span className="ifz-file__size">{Math.max(1, Math.round(file.size / 1024))} KB</span>
-        <button type="button" className="ifz-file__remove" aria-label={`Remove ${file.name}`} onClick={() => onFile(null)}>
-          ×
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <>
-      <button
-        type="button"
-        className={`ifz-drop ${dragOver ? 'is-over' : ''}`}
-        onClick={() => inputRef.current?.click()}
-        onDragOver={(event) => {
-          event.preventDefault();
-          setDragOver(true);
-        }}
-        onDragLeave={() => setDragOver(false)}
-        onDrop={(event) => {
-          event.preventDefault();
-          setDragOver(false);
-          accept(event.dataTransfer?.files?.[0]);
-        }}
-      >
-        Drop a photo or PDF of it here, or click to browse
-      </button>
+    <div
+      className={`ifz-projectbox ${dragOver ? 'is-over' : ''}`}
+      onDragOver={(event) => {
+        event.preventDefault();
+        setDragOver(true);
+      }}
+      onDragLeave={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setDragOver(false);
+      }}
+      onDrop={(event) => {
+        event.preventDefault();
+        setDragOver(false);
+        accept(event.dataTransfer?.files?.[0]);
+      }}
+    >
+      <textarea
+        id="interest-project"
+        className="ifz-projectbox__text"
+        value={project}
+        onChange={(event) => onProject(event.target.value)}
+        maxLength={1000}
+        placeholder="Tell us about it, or drop a photo or PDF right here..."
+      />
+      {file ? (
+        <div className="ifz-file">
+          <span className="ifz-file__name">{file.name}</span>
+          <span className="ifz-file__size">{Math.max(1, Math.round(file.size / 1024))} KB</span>
+          <button type="button" className="ifz-file__remove" aria-label={`Remove ${file.name}`} onClick={() => onFile(null)}>
+            ×
+          </button>
+        </div>
+      ) : (
+        <button type="button" className="ifz-attach" onClick={() => inputRef.current?.click()}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="m16 6-8.4 8.6a2 2 0 0 0 2.8 2.8L18.8 9a4 4 0 1 0-5.6-5.7l-8.4 8.6a6 6 0 1 0 8.5 8.5l8.4-8.6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            />
+          </svg>
+          Attach a photo or PDF
+        </button>
+      )}
       <input
         ref={inputRef}
         type="file"
@@ -210,7 +225,7 @@ function ProjectFileDrop({ file, onFile, onProblem }) {
           event.target.value = '';
         }}
       />
-    </>
+    </div>
   );
 }
 
@@ -322,15 +337,7 @@ function InterestForm() {
         <label className="ifz-label" htmlFor="interest-project">
           What&apos;s the coolest project you&apos;ve done?
         </label>
-        <textarea
-          id="interest-project"
-          className="ifz-input ifz-textarea"
-          value={project}
-          onChange={(event) => setProject(event.target.value)}
-          maxLength={1000}
-          placeholder="Tell us about it..."
-        />
-        <ProjectFileDrop file={file} onFile={setFile} onProblem={setError} />
+        <ProjectBox project={project} onProject={setProject} file={file} onFile={setFile} onProblem={setError} />
       </div>
       {/* Honeypot: humans never see it, autofill and bots do. */}
       <input
@@ -360,10 +367,6 @@ export default function Apply() {
       <section className="alt-section alt-section--apply">
         <div className="apply-page">
           <CrabPicture />
-          <p className="apply-page__thank-you">
-            Applications are closed right now, but the interest list is open. Tell us who you are and we will reach out
-            when recruiting starts.
-          </p>
           <InterestForm />
         </div>
       </section>
