@@ -21,7 +21,7 @@ export const DEFAULT_SOCIAL_IMAGE = {
   path: '/og-cupi.png',
   width: 1200,
   height: 630,
-  alt: `${SITE_NAME} (${SITE_ACRONYM})`,
+  alt: `The CUPI crab drawing above the name ${SITE_NAME}`,
 };
 
 export const PAGE_SEO = {
