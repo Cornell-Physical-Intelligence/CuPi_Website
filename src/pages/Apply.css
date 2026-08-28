@@ -46,6 +46,32 @@
   text-align: left;
 }
 
+/* Everything above the button lives in a collapsible rail. On success the
+   grid row goes 1fr -> 0fr after a beat (the delay lets the button's check
+   register first), so the button glides up instead of the page jumping. */
+.ifz-away {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows 0.55s cubic-bezier(0.4, 0, 0.2, 1) 0.5s,
+    opacity 0.4s ease 0.5s;
+}
+
+.ifz-away__in {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ifz--done .ifz-away {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .ifz-field {
   display: flex;
   flex-direction: column;
@@ -293,6 +319,10 @@
 /* A hint of volume: top-lit gradient, an edge a step darker than the fill,
    and a faint inner highlight. All from the fg channel, so both themes hold. */
 .ifz-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   font: inherit;
   font-size: 0.72rem;
   letter-spacing: 0.16em;
@@ -330,22 +360,57 @@
   cursor: default;
 }
 
-.ifz--done {
-  align-items: center;
+/* Success: the button is the confirmation. Full opacity even while disabled,
+   check pops in, and the note settles under it once the rail has cleared. */
+.ifz--done .ifz-submit:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.ifz-check {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  animation: ifz-check-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes ifz-check-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ifz-done-note {
+  margin: 0;
   text-align: center;
-  gap: 6px;
-}
-
-.ifz-done__title {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--fg);
-}
-
-.ifz-done__note {
-  margin: 0;
-  max-width: 40ch;
   font-size: 0.85rem;
   color: rgba(var(--fg-rgb), 0.6);
+  animation: ifz-note-in 0.45s ease 1s both;
+}
+
+@keyframes ifz-note-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ifz-away {
+    transition: none;
+  }
+  .ifz-check,
+  .ifz-done-note {
+    animation-duration: 0.01s;
+    animation-delay: 0s;
+  }
 }

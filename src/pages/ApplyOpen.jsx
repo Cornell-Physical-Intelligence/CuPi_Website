@@ -257,76 +257,91 @@ function InterestForm() {
     }
   };
 
-  if (status === 'done') {
-    return (
-      <div className="ifz ifz--done" role="status">
-        <p className="ifz-done__title">You&apos;re on the list.</p>
-        <p className="ifz-done__note">We read every one of these. Keep an eye on your inbox when recruiting opens.</p>
-      </div>
-    );
-  }
+  const done = status === 'done';
 
+  // Success never swaps the layout out from under the visitor: the submit
+  // button itself becomes the confirmation, holds a beat, and everything
+  // above it slides away (the delays live in the CSS).
   return (
-    <form className="ifz" onSubmit={submit} noValidate>
-      <div className="ifz-field">
-        <label className="ifz-label" htmlFor="interest-name">
-          Name
-        </label>
-        <input
-          id="interest-name"
-          className="ifz-input"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          autoComplete="name"
-          maxLength={100}
-          required
-        />
+    <form className={`ifz ${done ? 'ifz--done' : ''}`} onSubmit={submit} noValidate>
+      <div className="ifz-away" inert={done || undefined} aria-hidden={done}>
+        <div className="ifz-away__in">
+          <p className="apply-page__intro">Fill in the information below to display interest in applying to CUPI.</p>
+          <div className="ifz-field">
+            <label className="ifz-label" htmlFor="interest-name">
+              Name
+            </label>
+            <input
+              id="interest-name"
+              className="ifz-input"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              autoComplete="name"
+              maxLength={100}
+              required
+            />
+          </div>
+          <div className="ifz-field">
+            <label className="ifz-label" htmlFor="interest-email">
+              Email
+            </label>
+            <input
+              id="interest-email"
+              className="ifz-input"
+              type="email"
+              inputMode="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              autoComplete="email"
+              placeholder="netid@cornell.edu"
+              maxLength={200}
+              required
+            />
+          </div>
+          <div className="ifz-field">
+            <span className="ifz-label" id="interest-subteam-label">
+              Subteam of interest
+            </span>
+            <SubteamSelect value={subteam} onChange={setSubteam} />
+          </div>
+          <div className="ifz-field">
+            <label className="ifz-label" htmlFor="interest-project">
+              What&apos;s the coolest project you&apos;ve done?
+            </label>
+            <ProjectBox project={project} onProject={setProject} file={file} onFile={setFile} onProblem={setError} />
+          </div>
+          {/* Honeypot: humans never see it, autofill and bots do. */}
+          <input
+            ref={honeypotRef}
+            className="ifz-honeypot"
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
+          <p className={`ifz-error ${error ? 'is-visible' : ''}`} role="alert" aria-live="polite">
+            {error}
+          </p>
+        </div>
       </div>
-      <div className="ifz-field">
-        <label className="ifz-label" htmlFor="interest-email">
-          Email
-        </label>
-        <input
-          id="interest-email"
-          className="ifz-input"
-          type="email"
-          inputMode="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          autoComplete="email"
-          placeholder="netid@cornell.edu"
-          maxLength={200}
-          required
-        />
-      </div>
-      <div className="ifz-field">
-        <span className="ifz-label" id="interest-subteam-label">
-          Subteam of interest
-        </span>
-        <SubteamSelect value={subteam} onChange={setSubteam} />
-      </div>
-      <div className="ifz-field">
-        <label className="ifz-label" htmlFor="interest-project">
-          What&apos;s the coolest project you&apos;ve done?
-        </label>
-        <ProjectBox project={project} onProject={setProject} file={file} onFile={setFile} onProblem={setError} />
-      </div>
-      {/* Honeypot: humans never see it, autofill and bots do. */}
-      <input
-        ref={honeypotRef}
-        className="ifz-honeypot"
-        type="text"
-        name="website"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-      />
-      <p className={`ifz-error ${error ? 'is-visible' : ''}`} role="alert" aria-live="polite">
-        {error}
-      </p>
-      <button className="ifz-submit" type="submit" disabled={status === 'sending'}>
-        {status === 'sending' ? 'Sending...' : 'Join the interest list'}
+      <button className="ifz-submit" type="submit" disabled={status !== 'idle'} aria-live="polite">
+        {done ? (
+          <>
+            <svg className="ifz-check" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            You&apos;re on the list
+          </>
+        ) : status === 'sending' ? (
+          'Sending...'
+        ) : (
+          'Join the interest list'
+        )}
       </button>
+      {done && (
+        <p className="ifz-done-note">We read every one of these. Keep an eye on your inbox when recruiting opens.</p>
+      )}
     </form>
   );
 }
@@ -337,7 +352,6 @@ export default function ApplyOpen() {
       <h1 className="visually-hidden">Cornell Physical Intelligence Applications</h1>
       <section className="alt-section alt-section--apply">
         <div className="apply-page">
-          <p className="apply-page__intro">Fill in the information below to display interest in applying to CUPI.</p>
           <InterestForm />
         </div>
       </section>
