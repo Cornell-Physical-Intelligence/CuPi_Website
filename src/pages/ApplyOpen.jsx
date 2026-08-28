@@ -217,11 +217,12 @@ function InterestForm() {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
+  // Set when the server says this address already joined: holds the earlier
+  // date so the visitor can decide whether to replace it.
+  const [duplicate, setDuplicate] = useState(null);
   const honeypotRef = useRef(null);
 
-  const submit = async (event) => {
-    event.preventDefault();
-    if (status === 'sending') return;
+  const send = async (confirmUpdate) => {
     const cleanName = name.trim();
     const cleanEmail = email.trim();
     if (!cleanName) {
@@ -242,6 +243,7 @@ function InterestForm() {
         project: project.trim(),
         file: file ? { name: file.name, type: file.type, data: await readAsBase64(file) } : null,
         website: honeypotRef.current?.value || '',
+        ...(confirmUpdate ? { confirmUpdate: true } : {}),
       };
       const res = await fetch(`${INTEREST_API}/api/interest`, {
         method: 'POST',
@@ -249,12 +251,25 @@ function InterestForm() {
         body: JSON.stringify(payload),
       });
       const out = await res.json().catch(() => ({}));
+      // Already on the list: ask before overwriting what they sent before.
+      if (res.status === 409 && out.exists) {
+        setStatus('idle');
+        setDuplicate({ submitted: out.submitted });
+        return;
+      }
       if (!res.ok) throw new Error(out.error || 'Something went wrong.');
+      setDuplicate(null);
       setStatus('done');
     } catch (problem) {
       setStatus('idle');
       setError(`${problem.message || 'Something went wrong.'} You can also email ${CONTACT_EMAIL}.`);
     }
+  };
+
+  const submit = (event) => {
+    event.preventDefault();
+    if (status === 'sending') return;
+    send(false);
   };
 
   const done = status === 'done';
@@ -325,7 +340,26 @@ function InterestForm() {
           </p>
         </div>
       </div>
-      <button className="ifz-submit" type="submit" disabled={status !== 'idle'} aria-live="polite">
+      {duplicate && (
+        <div className="ifz-dupe" role="alertdialog" aria-label="Already on the list">
+          <p className="ifz-dupe__text">
+            You already joined the interest list with this email
+            {duplicate.submitted
+              ? ` on ${new Date(duplicate.submitted).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`
+              : ''}
+            . Sending this replaces your earlier answers.
+          </p>
+          <div className="ifz-dupe__actions">
+            <button type="button" className="ifz-dupe__cancel" onClick={() => setDuplicate(null)}>
+              Cancel
+            </button>
+            <button type="button" className="ifz-dupe__ok" onClick={() => send(true)} disabled={status === 'sending'}>
+              {status === 'sending' ? 'Replacing...' : 'OK, replace it'}
+            </button>
+          </div>
+        </div>
+      )}
+      <button className="ifz-submit" type="submit" disabled={status !== 'idle' || Boolean(duplicate)} aria-live="polite">
         {done ? (
           <>
             <svg className="ifz-check" viewBox="0 0 24 24" aria-hidden="true">

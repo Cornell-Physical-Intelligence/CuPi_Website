@@ -302,6 +302,73 @@
   pointer-events: none;
 }
 
+/* Resubmitting used to overwrite silently. Now it asks first, in place. */
+.ifz-dupe {
+  border: 1px solid rgba(var(--fg-rgb), 0.28);
+  border-radius: 8px;
+  padding: 13px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: ifz-note-in 0.25s ease both;
+}
+
+.ifz-dupe__text {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(var(--fg-rgb), 0.75);
+}
+
+.ifz-dupe__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.ifz-dupe__cancel,
+.ifz-dupe__ok {
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+.ifz-dupe__cancel {
+  color: rgba(var(--fg-rgb), 0.6);
+  background: transparent;
+  border: 1px solid rgba(var(--fg-rgb), 0.28);
+}
+
+.ifz-dupe__cancel:hover,
+.ifz-dupe__cancel:focus-visible {
+  outline: none;
+  color: var(--fg);
+  border-color: var(--fg);
+}
+
+.ifz-dupe__ok {
+  color: var(--page, #fff);
+  background: var(--fg);
+  border: 1px solid var(--fg);
+}
+
+.ifz-dupe__ok:hover:not(:disabled),
+.ifz-dupe__ok:focus-visible {
+  outline: none;
+  opacity: 0.85;
+}
+
+.ifz-dupe__ok:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
 .ifz-error {
   min-height: 1.2em;
   margin: -4px 0 0;
