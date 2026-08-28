@@ -192,17 +192,21 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     );
   }
   assert(count(html, /<h1>/g) === 1, `${page} static fallback must have one H1`);
+  // The crawlable fallback must be invisible to anyone whose browser runs scripts,
+  // and that must not depend on any script of ours running. It is hidden by a plain
+  // rule and revealed only inside <noscript>.
   assert(
-    html.includes("root.setAttribute('data-cupi-booting', '')"),
-    `${page} must suppress the alternate fallback before a JavaScript first paint`,
+    /\.seo-fallback\s*\{\s*display:\s*none;?\s*\}/.test(html),
+    `${page} must hide the crawlable fallback unconditionally`,
+  );
+  const noscriptBlock = html.match(/<noscript>[\s\S]*?<\/noscript>/)?.[0] ?? '';
+  assert(
+    /\.seo-fallback\s*\{\s*display:\s*block;?\s*\}/.test(noscriptBlock),
+    `${page} must reveal the fallback only for browsers without scripting`,
   );
   assert(
-    html.includes('html[data-cupi-booting] .seo-fallback'),
-    `${page} is missing the pre-paint fallback guard`,
-  );
-  assert(
-    html.includes("window.addEventListener('unhandledrejection', onBootRejection"),
-    `${page} is missing fallback recovery when application startup fails`,
+    !html.includes('data-cupi-booting'),
+    `${page} still carries the retired script-driven fallback guard, which could expose it`,
   );
   const entrySource = capture(
     html,
@@ -211,10 +215,6 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   );
   const entryFile = join('docs', entrySource.replace(/^\/+/, ''));
   assert(existsSync(entryFile), `${page} entry script is missing: ${entryFile}`);
-  assert(
-    readFileSync(entryFile, 'utf8').includes('data-cupi-booting'),
-    `${page} entry script does not release the pre-paint fallback guard`,
-  );
   assert(
     count(html, /id="seo-structured-data"/g) === 1,
     `${page} must have exactly one structured-data graph`,

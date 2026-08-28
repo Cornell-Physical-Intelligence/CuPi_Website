@@ -106,32 +106,6 @@
 }</script>
     <!-- seo:head:end -->
 
-    <!-- The crawlable document below is a real no-JavaScript version of the page. Mark
-         JavaScript-capable loads before the body is parsed so that version cannot paint
-         as a second, temporary design while the application bundle starts. React clears
-         this marker in a layout effect after its first commit. A failed entry script or
-         rejected route import reveals the resilient fallback immediately; successful
-         loads never reveal it merely because a network is slow. -->
-    <script>
-      ;(() => {
-        const root = document.documentElement
-        const revealFallback = () => root.removeAttribute('data-cupi-booting')
-        const onBootError = (event) => {
-          if (event.target === window || event.target?.tagName === 'SCRIPT') revealFallback()
-        }
-        const onBootRejection = () => revealFallback()
-
-        root.setAttribute('data-cupi-booting', '')
-        window.addEventListener('error', onBootError, true)
-        window.addEventListener('unhandledrejection', onBootRejection, { once: true })
-        window.__cupiFinishBoot = () => {
-          window.removeEventListener('error', onBootError, true)
-          window.removeEventListener('unhandledrejection', onBootRejection)
-          revealFallback()
-        }
-      })()
-    </script>
-
     <!-- Playfair Display 700 is self-hosted because the hero blocks on it: VoronoiTitle
          rasterises the glyph outline before it can build its sim, so this face sits on the
          critical path. Via Google Fonts that meant two sequential cross-origin round trips
@@ -192,11 +166,13 @@
       }
     </style>
     <style>
-      /* The build puts meaningful, crawlable HTML inside #root. It remains the visible,
-         resilient page when JavaScript is unavailable. On ordinary application loads the
-         synchronous marker above suppresses it before first paint; React then replaces it
-         with the real interface and removes the marker in the same commit. */
-      html[data-cupi-booting] .seo-fallback {
+      /* The build puts meaningful, crawlable HTML inside #root: a real no-JavaScript
+         version of the page, which non-rendering crawlers read straight from source.
+         Anyone whose browser runs scripts must never see it, not for a frame and not
+         when a script errors, so it is hidden here unconditionally and revealed only
+         by the <noscript> rule below. Nothing about that reveal depends on our own
+         JavaScript reaching the browser, which is exactly why it cannot flash. */
+      .seo-fallback {
         display: none;
       }
 
@@ -239,7 +215,14 @@
       .seo-fallback__footer { padding-top: 20px; border-top: 1px solid #bbb; font-size: 14px; }
       .seo-fallback__links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
     </style>
-    <script type="module" crossorigin src="/assets/index-BfaPts3V.js"></script>
+    <!-- The only thing that ever puts the crawlable version on screen. A browser with
+         scripting disabled applies this; every other visitor never renders it. -->
+    <noscript>
+      <style>
+        .seo-fallback { display: block; }
+      </style>
+    </noscript>
+    <script type="module" crossorigin src="/assets/index-CbbfJSfe.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/SiteFooter-DirRLX_y.js">
     <link rel="modulepreload" crossorigin href="/assets/ResponsiveImage-CuXImRy9.js">
     <link rel="modulepreload" crossorigin href="/assets/Overlay-c0mSxYc-.js">

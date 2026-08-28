@@ -22,14 +22,8 @@ const initialPage = getPageFromPath()
 const loadInitial = PAGE_LOADERS[initialPage]
 const InitialPage = loadInitial ? (await loadInitial()).default : null
 
-const revealApp = () => {
-  window.__cupiFinishBoot?.()
-  delete window.__cupiFinishBoot
-  document.documentElement.removeAttribute('data-cupi-booting')
-}
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App initialPage={initialPage} InitialPage={InitialPage} onFirstCommit={revealApp} />
+    <App initialPage={initialPage} InitialPage={InitialPage} />
   </StrictMode>,
 )

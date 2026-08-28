@@ -74,15 +74,16 @@ const BUILD_ENRICHMENT = {
   },
   apply: {
     highlights: [
-      'Current CUPI applications are closed',
-      'Contact the team about future recruitment',
+      'Join the CUPI interest list from the Apply page',
+      'Tell the team your subteam of interest and the coolest project you have built',
       'Explore CUPI robotics projects and technical reports',
     ],
     fallbackSections: [
       {
-        heading: 'Current application status',
+        heading: 'Joining CUPI',
         paragraphs: [
-          'Applications are currently closed. For questions about future recruitment, contact ab3233@cornell.edu.',
+          'The Apply page carries an interest form: name, email, subteam of interest, and the coolest project you have done. The team reaches out from that list when recruiting opens.',
+          'Questions about recruitment can go to cuphysint@cornell.edu.',
         ],
       },
     ],
