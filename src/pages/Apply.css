@@ -161,9 +161,6 @@
 }
 
 .ifz-attach {
-  display: flex;
-  align-items: center;
-  gap: 7px;
   align-self: flex-start;
   font: inherit;
   font-size: 0.74rem;
@@ -174,12 +171,6 @@
   padding: 6px 13px 10px;
   cursor: pointer;
   transition: color 0.15s ease;
-}
-
-.ifz-attach svg {
-  width: 13px;
-  height: 13px;
-  flex: none;
 }
 
 .ifz-attach:hover,
