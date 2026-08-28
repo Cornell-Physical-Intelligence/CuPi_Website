@@ -202,8 +202,23 @@ function ProjectBox({ project, onProject, file, onFile, onProblem }) {
           </button>
         </div>
       ) : (
-        <button type="button" className="ifz-attach" onClick={() => inputRef.current?.click()}>
-          Attach a photo or PDF
+        <button
+          type="button"
+          className="ifz-attach"
+          aria-label="Attach a photo or PDF"
+          title="Attach a photo or PDF"
+          onClick={() => inputRef.current?.click()}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 15V4m5 4-5-5-5 5M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
       )}
       <input
