@@ -22,7 +22,7 @@
    so the box runs larger than the crab looks. The vh term keeps height at most ~62vh
    (87vh / 1.41), since this page is meant not to scroll. */
 .apply-page__logo-wrap {
-  width: min(420px, 84vw, 44vh);
+  width: min(340px, 80vw, 34vh);
   aspect-ratio: 1257 / 892;
   display: flex;
   align-items: center;
@@ -57,18 +57,34 @@
 
 /* ---------------------------------------------------------------------------
    Interest form. The page scrolls now, so the section stops pinning content
-   to the viewport center and breathes instead. */
+   to the viewport center and breathes instead. The page also sits higher than
+   other alt pages so the crab, the intro, and the top of the form share the
+   first screen. */
+
+.alt-page--apply {
+  padding-top: clamp(48px, 7vh, 72px);
+}
 
 .alt-section--apply {
-  padding: clamp(24px, 5vh, 56px) 0;
+  padding: clamp(8px, 1.5vh, 20px) 0 clamp(24px, 4vh, 48px);
+}
+
+.apply-page__intro {
+  max-width: 46ch;
+  margin: 0;
+  padding: 0 20px;
+  text-align: center;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(var(--fg-rgb), 0.65);
 }
 
 .ifz {
   width: min(440px, 88vw);
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-top: clamp(8px, 2vh, 18px);
+  gap: 14px;
+  margin-top: clamp(4px, 1vh, 10px);
   /* The alt section centres text; a form reads left. */
   text-align: left;
 }
@@ -79,11 +95,11 @@
   gap: 6px;
 }
 
+/* Same face and size as the text inside the boxes, one shade quieter. */
 .ifz-label {
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(var(--fg-rgb), 0.55);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(var(--fg-rgb), 0.72);
 }
 
 .ifz-input {

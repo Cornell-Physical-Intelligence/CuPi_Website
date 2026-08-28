@@ -367,6 +367,7 @@ export default function Apply() {
       <section className="alt-section alt-section--apply">
         <div className="apply-page">
           <CrabPicture />
+          <p className="apply-page__intro">Fill in the information below to display interest in applying to CUPI.</p>
           <InterestForm />
         </div>
       </section>
