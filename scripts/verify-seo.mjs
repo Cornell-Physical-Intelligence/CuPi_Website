@@ -286,22 +286,18 @@ for (const [page, seo] of INDEXABLE_PAGES) {
     );
   }
 
+  // The active form page carries no crab, so no route may preload it. If the
+  // closed variant returns (APPLY_ACTIVE=false), the crab becomes the LCP
+  // again — restore the vite.config.js hint and this assertion's old form
+  // together (both are in git history).
   const applyLcpPreloads = count(
     html,
     /<link rel="preload" as="image" type="image\/avif" href="\/img\/CrabOnBeach-760\.avif"[^>]*>/g,
   );
   assert(
-    applyLcpPreloads === (page === 'apply' ? 1 : 0),
-    `${page} has an incorrect number of Apply LCP image preloads`,
+    applyLcpPreloads === 0,
+    `${page} preloads the apply crab, which is below the fold while the interest form is active`,
   );
-  if (page === 'apply') {
-    assert(
-      html.includes(
-        'imagesrcset="/img/CrabOnBeach-380.avif 380w, /img/CrabOnBeach-760.avif 760w" imagesizes="(max-width: 590px) 88vw, 520px" fetchpriority="high"',
-      ),
-      'Apply LCP preload must match the rendered responsive image candidates',
-    );
-  }
 
   if (page === 'home') {
     assert(

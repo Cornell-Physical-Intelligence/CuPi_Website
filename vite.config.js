@@ -539,16 +539,11 @@ const emitRoutePages = () => {
             lines.push(`    <link rel="preload" as="style" crossorigin href="/${css}" />`)
           }
         }
-        // Apply's crab is the route's LCP image, but React used to be the first thing
-        // that exposed its URL. Give the browser the exact same responsive AVIF candidates
-        // in the document so the winning source can start in parallel with the app. The
-        // matching imagesrcset/imagesizes means this coalesces with <ResponsiveImage>'s
-        // eventual request rather than downloading a second file.
-        if (route === 'apply') {
-          lines.push(
-            '    <link rel="preload" as="image" type="image/avif" href="/img/CrabOnBeach-760.avif" imagesrcset="/img/CrabOnBeach-380.avif 380w, /img/CrabOnBeach-760.avif 760w" imagesizes="(max-width: 590px) 88vw, 520px" fetchpriority="high" />',
-          )
-        }
+        // The apply crab once earned a preload here as the route's LCP image. The
+        // active form page has no crab at all, so no image hint: the form fields
+        // own the first paint. If ApplyClosed ever becomes the live variant again,
+        // the crab is the LCP once more and the preload is worth restoring (see
+        // git history for the exact line).
         return `${lines.join('\n')}\n`
       }
 

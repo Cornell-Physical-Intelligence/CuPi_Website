@@ -17,53 +17,10 @@
   margin: 0;
 }
 
-/* The box takes the artwork's own ratio (1257x892) so `contain` never letterboxes the
-   crab smaller than it needs to be; its edges still fade out through the alpha channel,
-   so the box runs larger than the crab looks. The vh term keeps height at most ~62vh
-   (87vh / 1.41), since this page is meant not to scroll. */
-.apply-page__logo-wrap {
-  width: min(340px, 80vw, 34vh);
-  aspect-ratio: 1257 / 892;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-/* Full colour with its own transparent edges: nothing to invert, tint, or fade. */
-.apply-page__logo {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
-}
-
-.apply-page__logo-loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -60%);
-  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(var(--fg-rgb), 0.6);
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.apply-page__logo-wrap.is-loaded .apply-page__logo-loading {
-  opacity: 0;
-}
-
 /* ---------------------------------------------------------------------------
-   Interest form. The page scrolls now, so the section stops pinning content
-   to the viewport center and breathes instead. The page also sits higher than
-   other alt pages so the crab, the intro, and the top of the form share the
-   first screen. */
-
-.alt-page--apply {
-  padding-top: clamp(48px, 7vh, 72px);
-}
+   Interest form. The intro line opens the page, the form is the whole show,
+   and the standard alt-page top padding keeps everything clear of the fixed
+   nav bar. */
 
 .alt-section--apply {
   padding: clamp(8px, 1.5vh, 20px) 0 clamp(24px, 4vh, 48px);
@@ -348,15 +305,24 @@
   padding: 13px 20px;
   cursor: pointer;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 1px 3px rgba(0, 0, 0, 0.14);
-  transition: background 0.15s ease, color 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+  transition: background 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
 }
 
-.ifz-submit:hover:not(:disabled),
+/* Hover stays in the same family: the gradient lifts a step and the shadow
+   deepens slightly. No inversion. */
+.ifz-submit:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(var(--fg-rgb), 0.66), rgba(var(--fg-rgb), 0.92) 80%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 6px rgba(0, 0, 0, 0.16);
+}
+
+.ifz-submit:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.28);
+}
+
 .ifz-submit:focus-visible {
-  outline: none;
-  background: transparent;
-  color: var(--fg);
-  box-shadow: none;
+  outline: 2px solid rgba(var(--fg-rgb), 0.45);
+  outline-offset: 3px;
 }
 
 .ifz-submit:disabled {
