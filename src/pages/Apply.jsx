@@ -355,7 +355,6 @@ function InterestForm() {
       <button className="ifz-submit" type="submit" disabled={status === 'sending'}>
         {status === 'sending' ? 'Sending...' : 'Join the interest list'}
       </button>
-      <p className="ifz-fine">We only use this to contact you about CUPI recruiting.</p>
     </form>
   );
 }
