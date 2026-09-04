@@ -309,8 +309,9 @@ for (const [page, seo] of INDEXABLE_PAGES) {
       'Homepage rel=me links must match the canonical organization identity set',
     );
     assert(
-      PAGE_SEO.home.description.startsWith('CUPI (Cornell Physical Intelligence)'),
-      'Homepage metadata must lead with the exact CUPI identity',
+      PAGE_SEO.home.title.startsWith('CUPI Cornell') &&
+        PAGE_SEO.home.description.startsWith('CUPI Cornell is Cornell Physical Intelligence'),
+      'Homepage metadata must lead with the exact branded CUPI Cornell identity',
     );
     assert(
       PAGE_SEO.home.fallbackIntro === ORGANIZATION_DESCRIPTION,

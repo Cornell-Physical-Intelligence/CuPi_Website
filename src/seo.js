@@ -4,7 +4,7 @@ export const SITE_URL = 'https://cornellphysicalintelligence.com';
 export const SITE_NAME = 'Cornell Physical Intelligence';
 export const SITE_ACRONYM = 'CUPI';
 export const SITE_RELEASE_DATE = '2026-08-16';
-export const HOME_LAST_MODIFIED = '2026-08-21';
+export const HOME_LAST_MODIFIED = '2026-09-03';
 export const SITE_ALTERNATE_NAMES = [
   SITE_ACRONYM,
   'Cornell University Physical Intelligence',
@@ -28,10 +28,10 @@ export const PAGE_SEO = {
   home: {
     path: '/',
     navLabel: 'Home',
-    title: 'CUPI | Cornell Physical Intelligence at Cornell University',
+    title: 'CUPI Cornell | Cornell Physical Intelligence',
     heading: 'Cornell Physical Intelligence (CUPI)',
     description:
-      'CUPI (Cornell Physical Intelligence) is a Cornell University student robotics organization building systems for manipulation, autonomous perception, and navigation.',
+      'CUPI Cornell is Cornell Physical Intelligence, a Cornell University student robotics organization building systems for manipulation, autonomous perception, and navigation.',
     lastModified: HOME_LAST_MODIFIED,
   },
   work: {
