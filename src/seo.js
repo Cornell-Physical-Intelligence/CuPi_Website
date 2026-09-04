@@ -220,6 +220,14 @@ export const ORGANIZATION_LINKS = [
   { label: 'CUPI Wiki', href: 'https://wiki.cornellphysicalintelligence.com/' },
 ];
 
+// One canonical identity set powers structured data and the homepage's rel=me links.
+// Keeping the Cornell listing beside CUPI's own profiles gives crawlers the same
+// unambiguous entity graph whether they read JSON-LD or ordinary document metadata.
+export const ORGANIZATION_SAME_AS = [
+  'https://cornell.campusgroups.com/cupi/home/',
+  ...ORGANIZATION_LINKS.map(({ href }) => href),
+];
+
 const organizationNode = {
   '@type': 'Organization',
   '@id': `${SITE_URL}/#organization`,
@@ -241,10 +249,7 @@ const organizationNode = {
     postalCode: '14853',
     addressCountry: 'US',
   },
-  sameAs: [
-    'https://cornell.campusgroups.com/cupi/home/',
-    ...ORGANIZATION_LINKS.map(({ href }) => href),
-  ],
+  sameAs: ORGANIZATION_SAME_AS,
 };
 
 const websiteNode = {

@@ -8,6 +8,7 @@ import { SPONSOR_ART_PICTURES } from './src/data/sponsorArt.js'
 import { PROFESSORS, TEAM_SECTIONS } from './src/data/team.js'
 import {
   ORGANIZATION_LINKS,
+  ORGANIZATION_SAME_AS,
   PAGE_SEO,
   SITE_ACRONYM,
   SITE_NAME,
@@ -306,13 +307,19 @@ const seoHead = (page) => {
     <meta property="og:image:alt" content="${escapeHtml(image.alt)}" />
     <meta name="twitter:image" content="${SITE_URL}${image.path}" />`
   })()
+  const identityLinks =
+    page === 'home'
+      ? ORGANIZATION_SAME_AS.map(
+          (href) => `\n    <link rel="me" href="${escapeHtml(href)}" />`,
+        ).join('')
+      : ''
 
   return `<!-- seo:head:start -->
     <title>${escapeHtml(seo.title)}</title>
     <meta name="description" content="${escapeHtml(seo.description)}" />
     <meta name="robots" content="${robots}" />
     <meta name="application-name" content="${SITE_NAME}" />
-    <link rel="canonical" href="${url}" />
+    <link rel="canonical" href="${url}" />${identityLinks}
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="${SITE_NAME}" />
@@ -418,7 +425,7 @@ ${ORGANIZATION_LINKS.map(
   ({ label, href }) => `          <a href="${href}" rel="me">${escapeHtml(label)}</a>`,
 ).join('\n')}
         </nav>
-        <p><a href="https://cornell.campusgroups.com/cupi/home/">Official Cornell listing: Cornell Physical Intelligence Club</a></p>
+        <p><a href="https://cornell.campusgroups.com/cupi/home/" rel="me">Official Cornell listing: Cornell Physical Intelligence Club</a></p>
         <p>General inquiries: <a href="mailto:cuphysint@cornell.edu">cuphysint@cornell.edu</a></p>
         <p><span data-nosnippet><a href="https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment">Equal Education &amp; Employment</a></span></p>
       </footer>

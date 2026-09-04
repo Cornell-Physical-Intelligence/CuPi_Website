@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import sharp from 'sharp';
 import {
   ORGANIZATION_DESCRIPTION,
+  ORGANIZATION_SAME_AS,
   PAGE_SEO,
   SITE_ALTERNATE_NAMES,
   SITE_URL,
@@ -300,6 +301,13 @@ for (const [page, seo] of INDEXABLE_PAGES) {
   );
 
   if (page === 'home') {
+    const identityLinks = [...html.matchAll(/<link rel="me" href="([^"]+)" \/>/g)].map(
+      (match) => match[1],
+    );
+    assert(
+      JSON.stringify(identityLinks) === JSON.stringify(ORGANIZATION_SAME_AS),
+      'Homepage rel=me links must match the canonical organization identity set',
+    );
     assert(
       PAGE_SEO.home.description.startsWith('CUPI (Cornell Physical Intelligence)'),
       'Homepage metadata must lead with the exact CUPI identity',
@@ -319,12 +327,8 @@ for (const [page, seo] of INDEXABLE_PAGES) {
       'Organization schema alternate names are missing or out of preference order',
     );
     assert(
-      organization.sameAs?.includes('https://cornell.campusgroups.com/cupi/home/'),
-      'Organization schema must reference the official Cornell listing',
-    );
-    assert(
-      organization.sameAs?.includes('https://www.youtube.com/@cornellphysicalintelligence'),
-      'Organization schema must reference the official CUPI YouTube channel',
+      JSON.stringify(organization.sameAs) === JSON.stringify(ORGANIZATION_SAME_AS),
+      'Organization schema must match the canonical organization identity set',
     );
     assert(organization.logo === `${SITE_URL}/favicon-cupi.png`, 'Organization logo is incorrect');
     assert(organization.email === 'cuphysint@cornell.edu', 'Organization email is incorrect');

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import {
+  ORGANIZATION_SAME_AS,
   PAGE_SEO,
   SITE_ALTERNATE_NAMES,
   SITE_URL,
@@ -175,12 +176,15 @@ assert(
   'Live WebSite aliases have drifted',
 );
 assert(
-  organization.sameAs?.includes('https://cornell.campusgroups.com/cupi/home/'),
-  'Live Organization schema is missing the Cornell CampusGroups entity URL',
+  JSON.stringify(organization.sameAs) === JSON.stringify(ORGANIZATION_SAME_AS),
+  'Live Organization identity URLs have drifted',
+);
+const liveIdentityLinks = [...homeHtml.matchAll(/<link rel="me" href="([^"]+)" \/>/g)].map(
+  (match) => match[1],
 );
 assert(
-  organization.sameAs?.includes('https://www.youtube.com/@cornellphysicalintelligence'),
-  'Live Organization schema is missing the official CUPI YouTube entity URL',
+  JSON.stringify(liveIdentityLinks) === JSON.stringify(ORGANIZATION_SAME_AS),
+  'Live homepage rel=me links have drifted',
 );
 assert(
   organization.contactPoint?.['@type'] === 'ContactPoint' &&
